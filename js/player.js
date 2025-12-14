@@ -66,16 +66,19 @@ class MusicPlayer {
     restoreState(state) {
         if (state.currentIndex >= 0 && state.currentIndex < this.playlist.length) {
             this.loadTrack(state.currentIndex);
-            this.audio.currentTime = state.currentTime || 0;
             
-            if (state.isPlaying) {
-                // Wait for audio to be ready before playing
-                const playWhenReady = () => {
-                    this.audio.play().catch(e => console.log('Auto-play prevented:', e));
-                    this.audio.removeEventListener('canplay', playWhenReady);
-                };
-                this.audio.addEventListener('canplay', playWhenReady);
-            }
+            // Wait for audio metadata to load before setting time and playing
+            const restorePlayback = () => {
+                this.audio.currentTime = state.currentTime || 0;
+                if (state.isPlaying) {
+                    this.audio.play().catch(e => {
+                        // Auto-play may be blocked by browser policy
+                        console.log('Auto-play prevented by browser:', e.message);
+                    });
+                }
+                this.audio.removeEventListener('loadedmetadata', restorePlayback);
+            };
+            this.audio.addEventListener('loadedmetadata', restorePlayback);
         }
     }
     
@@ -223,25 +226,34 @@ class MusicPlayer {
         
         const bars = this.spectrumContainer.children;
         const step = Math.floor(bufferLength / this.spectrumBars);
-        const maxHeight = 28; // Max height in pixels (container is h-10=40px minus p-1=8px padding)
+        
+        // Spectrum display constants
+        const SPECTRUM_MAX_HEIGHT = 28; // Container h-10 (40px) minus p-1 padding (8px) = 32px, with margin
+        const SPECTRUM_MIN_HEIGHT = 2;  // Minimum bar height
+        const PIXEL_STEP = 2;           // Pixelated effect step size
+        const MAX_FREQUENCY_VALUE = 255;
+        const HIGH_INTENSITY_THRESHOLD = 0.7;
+        const MEDIUM_INTENSITY_THRESHOLD = 0.4;
         
         for (let i = 0; i < this.spectrumBars && i < bars.length; i++) {
-            // Average values for this bar
+            // Average frequency values for this bar
             let sum = 0;
             for (let j = 0; j < step; j++) {
                 sum += dataArray[i * step + j];
             }
             const value = sum / step;
+            const intensity = value / MAX_FREQUENCY_VALUE;
             
-            // Scale to fit within container, pixelated effect: round to 2px increments
-            const height = Math.max(2, Math.min(maxHeight, Math.round((value / 255) * maxHeight / 2) * 2));
+            // Calculate height with pixelated effect (round to PIXEL_STEP increments)
+            const scaledHeight = intensity * SPECTRUM_MAX_HEIGHT;
+            const pixelatedHeight = Math.round(scaledHeight / PIXEL_STEP) * PIXEL_STEP;
+            const height = Math.max(SPECTRUM_MIN_HEIGHT, Math.min(SPECTRUM_MAX_HEIGHT, pixelatedHeight));
             bars[i].style.height = `${height}px`;
             
             // Color based on intensity
-            const intensity = value / 255;
-            if (intensity > 0.7) {
+            if (intensity > HIGH_INTENSITY_THRESHOLD) {
                 bars[i].className = 'spectrum-bar bg-red-500';
-            } else if (intensity > 0.4) {
+            } else if (intensity > MEDIUM_INTENSITY_THRESHOLD) {
                 bars[i].className = 'spectrum-bar bg-amber-500';
             } else {
                 bars[i].className = 'spectrum-bar bg-indigo-500';
