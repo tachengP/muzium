@@ -85,7 +85,38 @@
             box-shadow: 0 0 0 3px #98453F;
         }
         
+        /* Illustration container with mask effect */
+        .illust-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .illust-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30%;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));
+            pointer-events: none;
+        }
+        .illust-container img {
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        .illust-container.slide-left img {
+            transform: translateX(-20px);
+            opacity: 0;
+        }
+        .illust-container.slide-right img {
+            transform: translateX(20px);
+            opacity: 0;
+        }
+        
         /* Section scroll */
+        html {
+            scroll-snap-type: y proximity;
+            scroll-behavior: smooth;
+        }
         .section-full {
             min-height: 100vh;
             scroll-snap-align: start;
@@ -248,11 +279,11 @@
                     <!-- Right: Illustration (1/3) -->
                     <div class="lg:w-1/3 relative">
                         <!-- Main Illustration -->
-                        <div class="relative">
-                            <img id="main-illust" src="../assets/illust/Fuyi_Illust_05.png" alt="浮亦立绘" class="w-full h-auto max-h-[70vh] object-contain">
+                        <div class="illust-container relative">
+                            <img id="main-illust" src="../assets/illust/Fuyi_Illust_05.png" alt="浮亦立绘" class="w-full h-auto max-h-[70vh] object-contain object-top" style="object-position: center top; transform: scale(1.15); transform-origin: center top;">
                             
                             <!-- Download Button -->
-                            <button id="download-illust-btn" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full transition-colors flex items-center gap-2">
+                            <button id="download-illust-btn" class="absolute bottom-12 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full transition-colors flex items-center gap-2 z-10">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                 </svg>
@@ -870,27 +901,55 @@
             const illustDesigner = document.getElementById('illust-designer');
             const illustArtist = document.getElementById('illust-artist');
             const downloadIllustBtn = document.getElementById('download-illust-btn');
+            const illustContainer = document.querySelector('.illust-container');
             
             let currentIllustUrl = mainIllust?.src;
+            let currentIndex = iconSelector.length - 1; // Default to last (active) one
             
-            iconSelector.forEach(icon => {
+            iconSelector.forEach((icon, index) => {
                 icon.addEventListener('click', () => {
-                    // Update active state
-                    iconSelector.forEach(i => i.classList.remove('active'));
-                    icon.classList.add('active');
+                    if (icon.classList.contains('active')) return;
                     
-                    // Update illustration
-                    if (mainIllust) {
-                        mainIllust.src = icon.dataset.illust;
-                        currentIllustUrl = icon.dataset.illust;
-                    }
+                    // Determine slide direction
+                    const slideDirection = index > currentIndex ? 'slide-left' : 'slide-right';
+                    const slideIn = index > currentIndex ? 'slide-right' : 'slide-left';
                     
-                    // Update credits
-                    if (illustDesigner) {
-                        illustDesigner.textContent = icon.dataset.designer;
-                    }
-                    if (illustArtist) {
-                        illustArtist.textContent = icon.dataset.artist;
+                    // Start slide out animation
+                    if (illustContainer) {
+                        illustContainer.classList.add(slideDirection);
+                        
+                        setTimeout(() => {
+                            // Update active state
+                            iconSelector.forEach(i => i.classList.remove('active'));
+                            icon.classList.add('active');
+                            currentIndex = index;
+                            
+                            // Update illustration
+                            if (mainIllust) {
+                                mainIllust.src = icon.dataset.illust;
+                                currentIllustUrl = icon.dataset.illust;
+                            }
+                            
+                            // Update credits
+                            if (illustDesigner) {
+                                illustDesigner.textContent = icon.dataset.designer;
+                            }
+                            if (illustArtist) {
+                                illustArtist.textContent = icon.dataset.artist;
+                            }
+                            
+                            // Switch to slide in from opposite direction
+                            illustContainer.classList.remove(slideDirection);
+                            illustContainer.classList.add(slideIn);
+                            
+                            // Trigger reflow
+                            void illustContainer.offsetWidth;
+                            
+                            // Remove slide in class to complete animation
+                            setTimeout(() => {
+                                illustContainer.classList.remove(slideIn);
+                            }, 50);
+                        }, 200);
                     }
                 });
             });
