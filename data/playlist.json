@@ -1,20 +1,234 @@
 [
   {
-    "title": "Demo Song 1",
+    "title": "冠世一战 feat.浮曜",
     "artist": "浮亦",
-    "url": "/assets/audio/demo1.mp3",
-    "cover": "/images/Fuyi-Banner.jpg"
+    "timbre": "Natural",
+    "engine": "Unknown",
+    "url": "/assets/playlist/冠世一战_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
   },
   {
-    "title": "Demo Song 2",
+    "title": "梦关山",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "Unknown",
+    "url": "/assets/playlist/梦关山_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "In Your Breath",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "Unknown",
+    "url": "/assets/playlist/In_Your_Breath_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "风",
     "artist": "宛沚",
-    "url": "/assets/audio/demo2.mp3",
-    "cover": "/images/Wanzhi-Banner.jpg"
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/风_Mixdown.mp3",
+    "cover": "/assets/album/Wanzhi-Album.png"
   },
   {
-    "title": "Demo Song 3",
+    "title": "深昏睡 feat.浮亦",
+    "artist": "宛沚",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/深昏睡_0710.mp3",
+    "cover": "/assets/album/Wanzhi-Album.png"
+  },
+  {
+    "title": "Never End",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/Never_End_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "滋味常",
     "artist": "浮曜",
-    "url": "/assets/audio/demo3.mp3",
-    "cover": "/images/Yao-Banner.jpg"
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/滋味常_Mixdown.mp3",
+    "cover": "/assets/album/Fuyao-Album.png"
+  },
+  {
+    "title": "Always By Your Side",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/Always_By_Your_Side_Natural_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "Always By Your Side",
+    "artist": "浮亦",
+    "timbre": "Whisper",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/Always_By_Your_Side_Whisper_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "如见青山",
+    "artist": "浮曜",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/如见青山_Mixdown.mp3",
+    "cover": "/assets/album/Fuyao-Album.png"
+  },
+  {
+    "title": "好字唯之",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/好字唯之_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "祖龙吟",
+    "artist": "浮曜",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/祖龙吟_Mixdown.mp3",
+    "cover": "/assets/album/Fuyao-Album.png"
+  },
+  {
+    "title": "栖凰",
+    "artist": "浮曜",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/栖凰_Mixdown.mp3",
+    "cover": "/assets/album/Fuyao-Album.png"
+  },
+  {
+    "title": "君色に染まる",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "Unknown",
+    "url": "/assets/playlist/君色に染まる_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "始见千秋 feat.宛沚",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/始见千秋_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "Rove",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/Rove_浮亦.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "嘉平歌",
+    "artist": "宛沚",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/嘉平歌_Mixdown.mp3",
+    "cover": "/assets/album/Wanzhi-Album.png"
+  },
+  {
+    "title": "天星问",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/天星问_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "天星问",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "Unknown",
+    "url": "/assets/playlist/天星问_Mixdown2.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "笔底知交",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/笔底知交_浮亦.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "浸春芜 feat.浮亦",
+    "artist": "宛沚",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/浸春芜_宛沚.mp3",
+    "cover": "/assets/album/Wanzhi-Album.png"
+  },
+  {
+    "title": "遥相逢",
+    "artist": "宛沚",
+    "timbre": "Natural",
+    "engine": "DiffSinger",
+    "url": "/assets/playlist/遥相逢_Mixdown.mp3",
+    "cover": "/assets/album/Wanzhi-Album.png"
+  },
+  {
+    "title": "ドーナツホール",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/ドーナツホール_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "惊鹊",
+    "artist": "宛沚",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/惊鹊Full_宛沚.mp3",
+    "cover": "/assets/album/Wanzhi-Album.png"
+  },
+  {
+    "title": "ゴーストルール",
+    "artist": "浮曜",
+    "timbre": "Natural",
+    "engine": "Unknown",
+    "url": "/assets/playlist/ゴーストルール_Mixdown.mp3",
+    "cover": "/assets/album/Fuyao-Album.png"
+  },
+  {
+    "title": "泛泛人类不会祈祷",
+    "artist": "浮亦",
+    "timbre": "Whisper",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/泛泛人类不会祈祷_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "海棠又落微雨时",
+    "artist": "浮亦",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/海棠又落微雨时_Mixdown.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "マシュマリー",
+    "artist": "浮亦",
+    "timbre": "Whisper",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/マシュマリー_Whisper.mp3",
+    "cover": "/assets/album/Fuyi-Album.png"
+  },
+  {
+    "title": "マシュマリー",
+    "artist": "宛沚",
+    "timbre": "Natural",
+    "engine": "ACE Studio",
+    "url": "/assets/playlist/マシュマリー_宛沚.mp3",
+    "cover": "/assets/album/Wanzhi-Album.png"
   }
 ]
