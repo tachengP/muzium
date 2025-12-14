@@ -114,9 +114,14 @@ class MusicPlayer {
         // Preload the next track in the playlist
         const nextIndex = (this.currentIndex + 1) % this.playlist.length;
         if (this.playlist[nextIndex]) {
-            const preloadAudio = new Audio();
-            preloadAudio.preload = 'auto';
-            preloadAudio.src = this.playlist[nextIndex].url;
+            // Clean up previous preloaded audio to prevent memory leaks
+            if (this.preloadedAudio) {
+                this.preloadedAudio.src = '';
+                this.preloadedAudio = null;
+            }
+            this.preloadedAudio = new Audio();
+            this.preloadedAudio.preload = 'auto';
+            this.preloadedAudio.src = this.playlist[nextIndex].url;
         }
     }
     
@@ -507,9 +512,8 @@ class SampleAudioPlayer {
         for (let i = 0; i < barCount; i++) {
             const bar = document.createElement('div');
             bar.className = 'waveform-bar bg-gray-600 transition-colors';
-            bar.style.flex = '1'; // Use flex: 1 to fill container width evenly
-            bar.style.minWidth = '2px';
-            bar.style.maxWidth = '6px';
+            bar.style.flex = '1 1 0'; // Use flex: 1 1 0 for even distribution
+            bar.style.minWidth = '1px';
             bar.style.marginRight = '1px';
             bar.style.borderRadius = '0';
             // Random height for visual placeholder (will be replaced with actual waveform data)
