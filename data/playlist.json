@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Demo Song 1",
+    "artist": "浮亦",
+    "url": "/assets/audio/demo1.mp3",
+    "cover": "/images/Fuyi-Banner.jpg"
+  },
+  {
+    "title": "Demo Song 2",
+    "artist": "宛沚",
+    "url": "/assets/audio/demo2.mp3",
+    "cover": "/images/Wanzhi-Banner.jpg"
+  },
+  {
+    "title": "Demo Song 3",
+    "artist": "浮曜",
+    "url": "/assets/audio/demo3.mp3",
+    "cover": "/images/Yao-Banner.jpg"
+  }
+]
