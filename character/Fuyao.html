@@ -16,17 +16,23 @@
         .nav-character:hover::after, .nav-character.active::after { transform: scaleX(1); }
         .scroll-to-top { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .scroll-to-top.visible { opacity: 1; visibility: visible; }
-        .music-player { backdrop-filter: blur(10px); background: rgba(30, 30, 30, 0.9); }
+        .music-player { backdrop-filter: blur(10px); background: rgba(30, 30, 30, 0.8); }
         .spectrum-bar { transition: height 0.05s linear; }
         .icon-selector img { transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .icon-selector img:hover { transform: scale(1.1); }
         .icon-selector img.active { box-shadow: 0 0 0 3px #FFB600; }
+        html { scroll-snap-type: y proximity; scroll-behavior: smooth; }
         .section-full { min-height: 100vh; scroll-snap-align: start; }
         .tools-dropdown { opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; }
         .tools-nav:hover .tools-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
         .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .engine-section { scroll-margin-top: 80px; }
+        .illust-container { position: relative; overflow: hidden; }
+        .illust-container::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 30%; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8)); pointer-events: none; }
+        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; }
+        .illust-container.slide-left img { transform: translateX(-20px); opacity: 0; }
+        .illust-container.slide-right img { transform: translateX(20px); opacity: 0; }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -35,10 +41,10 @@
             <a href="../index.html" class="flex items-center gap-2"><img src="../assets/icon/Icon_03.svg" alt="Logo" class="h-10 w-10"><span class="text-xl font-bold hidden sm:block">虚拟歌手</span></a>
             <nav class="flex items-center gap-6">
                 <a href="Feimeng.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">飞梦</a>
-                <a href="Fuhao.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">浮皓</a>
                 <a href="Fuyao.html" class="nav-character active text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">浮曜</a>
                 <a href="Fuyi.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">浮亦</a>
                 <a href="Wanzhi.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">宛沚</a>
+                <a href="Fuhao.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">浮皓</a>
                 <div class="relative tools-nav">
                     <button class="text-gray-300 hover:text-white transition-colors flex items-center gap-1">其他工具<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
                     <div class="tools-dropdown absolute top-full right-0 mt-2 bg-gray-800 rounded-lg shadow-xl py-2 min-w-40">
@@ -56,7 +62,7 @@
                 <div class="flex flex-col lg:flex-row gap-8 items-center">
                     <div class="lg:w-2/3 space-y-6">
                         <div class="flex items-center gap-4">
-                            <img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-16 h-16">
+                            <img src="../assets/icon/Fuyao_Icon_05.png" alt="浮曜" class="w-16 h-16 rounded-xl">
                             <div><h1 class="text-5xl font-bold text-gray-900">浮曜</h1><p class="text-xl text-gray-700 mt-1">朝日映江涛。</p></div>
                         </div>
                         <p class="text-lg text-gray-700">多引擎男性青年虚拟歌手</p>
@@ -72,6 +78,10 @@
                                 <span class="text-gray-600 text-sm">代表色</span>
                                 <div class="flex items-center gap-2 mt-1"><div class="w-6 h-6 rounded" style="background-color: #FFB600;"></div><span class="font-mono text-gray-900">#FFB600</span></div>
                             </div>
+                            <div class="mt-2">
+                                <span class="text-gray-600 text-sm">次要色</span>
+                                <div class="flex items-center gap-2 mt-1"><div class="w-6 h-6 rounded" style="background-color: #D0D7E5;"></div><span class="font-mono text-gray-900">#D0D7E5</span></div>
+                            </div>
                         </div>
                         <div id="illust-credits" class="bg-black/20 rounded-xl p-6 backdrop-blur-sm">
                             <h3 class="text-lg font-bold mb-2 text-gray-900">立绘信息</h3>
@@ -80,9 +90,9 @@
                         </div>
                     </div>
                     <div class="lg:w-1/3 relative">
-                        <div class="relative">
-                            <img id="main-illust" src="../assets/illust/Fuyao_Illust_05.png" alt="浮曜立绘" class="w-full h-auto max-h-[70vh] object-contain">
-                            <button id="download-illust-btn" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full transition-colors flex items-center gap-2">
+                        <div class="illust-container relative">
+                            <img id="main-illust" src="../assets/illust/Fuyao_Illust_05.png" alt="浮曜立绘" class="w-full h-auto max-h-[70vh] object-contain object-top" style="transform: scale(1.15); transform-origin: center top;">
+                            <button id="download-illust-btn" class="absolute bottom-12 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full transition-colors flex items-center gap-2 z-10">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>下载立绘
                             </button>
                         </div>
@@ -126,7 +136,7 @@
                     </div>
                     <div class="lg:w-1/2 space-y-6">
                         <h3 class="text-xl font-bold">干声试听</h3>
-                        <div class="space-y-4">
+                        <div class="space-y-6">
                             <div><h4 class="text-sm text-gray-400 mb-2">Original 音色</h4><div class="space-y-2"><div class="sample-player" data-src="../assets/sample/Fuyao_UTAU_Original_01.mp3"></div><div class="sample-player" data-src="../assets/sample/Fuyao_UTAU_Original_02.mp3"></div></div></div>
                             <div><h4 class="text-sm text-gray-400 mb-2">Natural 音色</h4><div class="space-y-2"><div class="sample-player" data-src="../assets/sample/Fuyao_UTAU_Natural_01.mp3"></div></div></div>
                             <div><h4 class="text-sm text-gray-400 mb-2">Tight 音色</h4><div class="space-y-2"><div class="sample-player" data-src="../assets/sample/Fuyao_UTAU_Tight_01.mp3"></div></div></div>
@@ -158,7 +168,7 @@
                     </div>
                     <div class="lg:w-1/2 space-y-6">
                         <h3 class="text-xl font-bold">干声试听</h3>
-                        <div class="space-y-4">
+                        <div class="space-y-6">
                             <div><h4 class="text-sm text-gray-400 mb-2">Original 音色</h4><div class="space-y-2"><div class="sample-player" data-src="../assets/sample/Fuyao_DeepVocal_Original_01.mp3"></div><div class="sample-player" data-src="../assets/sample/Fuyao_DeepVocal_Original_02.mp3"></div></div></div>
                             <div><h4 class="text-sm text-gray-400 mb-2">Natural 音色</h4><div class="space-y-2"><div class="sample-player" data-src="../assets/sample/Fuyao_DeepVocal_Natural_01.mp3"></div><div class="sample-player" data-src="../assets/sample/Fuyao_DeepVocal_Natural_02.mp3"></div></div></div>
                             <div><h4 class="text-sm text-gray-400 mb-2">Tight 音色</h4><div class="space-y-2"><div class="sample-player" data-src="../assets/sample/Fuyao_DeepVocal_Tight_01.mp3"></div></div></div>
@@ -190,7 +200,7 @@
                     </div>
                     <div class="lg:w-1/2 space-y-6">
                         <h3 class="text-xl font-bold">干声试听</h3>
-                        <div class="space-y-4"><div><h4 class="text-sm text-gray-400 mb-2">Natural 音色</h4><div class="space-y-2"><div class="sample-player" data-src="../assets/sample/Fuyao_ACE_Studio_Natural_01.mp3"></div><div class="sample-player" data-src="../assets/sample/Fuyao_ACE_Studio_Natural_02.mp3"></div></div></div></div>
+                        <div class="space-y-6"><div><h4 class="text-sm text-gray-400 mb-2">Natural 音色</h4><div class="space-y-2"><div class="sample-player" data-src="../assets/sample/Fuyao_ACE_Studio_Natural_01.mp3"></div><div class="sample-player" data-src="../assets/sample/Fuyao_ACE_Studio_Natural_02.mp3"></div></div></div></div>
                     </div>
                 </div>
             </div>
@@ -218,7 +228,7 @@
                     </div>
                     <div class="lg:w-1/2 space-y-6">
                         <h3 class="text-xl font-bold">干声试听</h3>
-                        <div class="space-y-4"><div><h4 class="text-sm text-gray-400 mb-2">Natural 音色</h4><div class="space-y-2"><div class="sample-player" data-src="../assets/sample/Fuyao_DiffSinger_Natural_01.mp3"></div></div></div></div>
+                        <div class="space-y-6"><div><h4 class="text-sm text-gray-400 mb-2">Natural 音色</h4><div class="space-y-2"><div class="sample-player" data-src="../assets/sample/Fuyao_DiffSinger_Natural_01.mp3"></div></div></div></div>
                     </div>
                 </div>
             </div>
@@ -283,15 +293,31 @@
             const illustDesigner = document.getElementById('illust-designer');
             const illustArtist = document.getElementById('illust-artist');
             const downloadIllustBtn = document.getElementById('download-illust-btn');
+            const illustContainer = document.querySelector('.illust-container');
             let currentIllustUrl = mainIllust?.src;
+            let currentIndex = iconSelector.length - 1;
             
-            iconSelector.forEach(icon => {
+            iconSelector.forEach((icon, index) => {
                 icon.addEventListener('click', () => {
-                    iconSelector.forEach(i => i.classList.remove('active'));
-                    icon.classList.add('active');
-                    if (mainIllust) { mainIllust.src = icon.dataset.illust; currentIllustUrl = icon.dataset.illust; }
-                    if (illustDesigner) illustDesigner.textContent = icon.dataset.designer;
-                    if (illustArtist) illustArtist.textContent = icon.dataset.artist;
+                    if (icon.classList.contains('active')) return;
+                    const slideDirection = index > currentIndex ? 'slide-left' : 'slide-right';
+                    const slideIn = index > currentIndex ? 'slide-right' : 'slide-left';
+                    
+                    if (illustContainer) {
+                        illustContainer.classList.add(slideDirection);
+                        setTimeout(() => {
+                            iconSelector.forEach(i => i.classList.remove('active'));
+                            icon.classList.add('active');
+                            currentIndex = index;
+                            if (mainIllust) { mainIllust.src = icon.dataset.illust; currentIllustUrl = icon.dataset.illust; }
+                            if (illustDesigner) illustDesigner.textContent = icon.dataset.designer;
+                            if (illustArtist) illustArtist.textContent = icon.dataset.artist;
+                            illustContainer.classList.remove(slideDirection);
+                            illustContainer.classList.add(slideIn);
+                            void illustContainer.offsetWidth;
+                            setTimeout(() => { illustContainer.classList.remove(slideIn); }, 50);
+                        }, 200);
+                    }
                 });
             });
             if (downloadIllustBtn) downloadIllustBtn.addEventListener('click', () => openDownloadModal(currentIllustUrl));

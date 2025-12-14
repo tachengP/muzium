@@ -28,8 +28,17 @@ class MusicPlayer {
     
     async loadPlaylist() {
         try {
-            const response = await fetch('data/playlist.json');
-            this.playlist = await response.json();
+            // Determine base path based on current page location
+            const isCharacterPage = window.location.pathname.includes('/character/');
+            const basePath = isCharacterPage ? '../' : '';
+            const response = await fetch(basePath + 'data/playlist.json');
+            const playlistData = await response.json();
+            // Convert absolute paths to relative paths based on current page location
+            this.playlist = playlistData.map(track => ({
+                ...track,
+                url: basePath + track.url.replace(/^\//, ''),
+                cover: basePath + track.cover.replace(/^\//, '')
+            }));
         } catch (error) {
             console.error('Failed to load playlist:', error);
             this.playlist = [];
@@ -105,10 +114,12 @@ class MusicPlayer {
         this.spectrumContainer.innerHTML = '';
         for (let i = 0; i < this.spectrumBars; i++) {
             const bar = document.createElement('div');
-            bar.className = 'spectrum-bar bg-indigo-500 rounded-sm';
-            bar.style.width = `${100 / this.spectrumBars}%`;
+            bar.className = 'spectrum-bar bg-indigo-500';
+            bar.style.flex = '1';
+            bar.style.maxWidth = '4px';
+            bar.style.marginRight = '1px';
             bar.style.height = '2px';
-            bar.style.minWidth = '2px';
+            bar.style.minWidth = '1px';
             this.spectrumContainer.appendChild(bar);
         }
     }
@@ -175,11 +186,11 @@ class MusicPlayer {
             // Color based on intensity
             const intensity = value / 255;
             if (intensity > 0.7) {
-                bars[i].className = 'spectrum-bar bg-red-500 rounded-sm';
+                bars[i].className = 'spectrum-bar bg-red-500';
             } else if (intensity > 0.4) {
-                bars[i].className = 'spectrum-bar bg-amber-500 rounded-sm';
+                bars[i].className = 'spectrum-bar bg-amber-500';
             } else {
-                bars[i].className = 'spectrum-bar bg-indigo-500 rounded-sm';
+                bars[i].className = 'spectrum-bar bg-indigo-500';
             }
         }
         
@@ -404,9 +415,10 @@ class SampleAudioPlayer {
         
         for (let i = 0; i < barCount; i++) {
             const bar = document.createElement('div');
-            bar.className = 'waveform-bar bg-gray-600 rounded-sm transition-colors';
-            bar.style.flex = '1';
-            bar.style.minWidth = '2px';
+            bar.className = 'waveform-bar bg-gray-600 transition-colors';
+            bar.style.flex = '0 0 2px';
+            bar.style.marginRight = '1px';
+            bar.style.borderRadius = '0';
             // Random height for visual placeholder (will be replaced with actual waveform data)
             const height = Math.random() * 24 + 8;
             bar.style.height = `${height}px`;
