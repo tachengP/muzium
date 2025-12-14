@@ -73,7 +73,7 @@ class MusicPlayer {
                 if (state.isPlaying) {
                     this.audio.play().catch(e => {
                         // Auto-play may be blocked by browser policy
-                        console.log('Auto-play prevented by browser:', e.message);
+                        console.log('Auto-play prevented by browser:', e?.message || e);
                     });
                 }
                 this.audio.removeEventListener('loadedmetadata', restorePlayback);
@@ -228,7 +228,7 @@ class MusicPlayer {
         const step = Math.floor(bufferLength / this.spectrumBars);
         
         // Spectrum display constants
-        const SPECTRUM_MAX_HEIGHT = 28; // Container h-10 (40px) minus p-1 padding (8px) = 32px, with margin
+        const SPECTRUM_MAX_HEIGHT = 28; // Max bar height to fit within container (h-10 = 40px, minus padding and visual margin)
         const SPECTRUM_MIN_HEIGHT = 2;  // Minimum bar height
         const PIXEL_STEP = 2;           // Pixelated effect step size
         const MAX_FREQUENCY_VALUE = 255;
