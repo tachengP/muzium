@@ -3,6 +3,7 @@
 class MusicPlayer {
     constructor() {
         this.audio = new Audio();
+        this.audio.preload = 'auto'; // Enable preloading
         this.playlist = [];
         this.currentIndex = 0;
         this.isPlaying = false;
@@ -89,15 +90,33 @@ class MusicPlayer {
             const basePath = isCharacterPage ? '../' : '';
             const response = await fetch(basePath + 'data/playlist.json');
             const playlistData = await response.json();
-            // Convert absolute paths to relative paths based on current page location
+            
+            // Use GitHub raw URLs for faster loading when hosted on GitHub Pages
+            const isGitHubPages = window.location.hostname.endsWith('.github.io');
+            const githubRawBase = 'https://raw.githubusercontent.com/tachengP/muzium/main';
+            
+            // Convert paths based on hosting environment
             this.playlist = playlistData.map(track => ({
                 ...track,
-                url: basePath + track.url.replace(/^\//, ''),
+                url: isGitHubPages ? githubRawBase + track.url : basePath + track.url.replace(/^\//, ''),
                 cover: basePath + track.cover.replace(/^\//, '')
             }));
+            
+            // Preload next track for faster switching
+            this.preloadNextTrack();
         } catch (error) {
             console.error('Failed to load playlist:', error);
             this.playlist = [];
+        }
+    }
+    
+    preloadNextTrack() {
+        // Preload the next track in the playlist
+        const nextIndex = (this.currentIndex + 1) % this.playlist.length;
+        if (this.playlist[nextIndex]) {
+            const preloadAudio = new Audio();
+            preloadAudio.preload = 'auto';
+            preloadAudio.src = this.playlist[nextIndex].url;
         }
     }
     
@@ -225,18 +244,20 @@ class MusicPlayer {
         this.analyser.getByteFrequencyData(dataArray);
         
         const bars = this.spectrumContainer.children;
-        const step = Math.floor(bufferLength / this.spectrumBars);
+        // Use only 80% of frequency range (right endpoint Hz reduced to 80%)
+        const usableBufferLength = Math.floor(bufferLength * 0.8);
+        const step = Math.floor(usableBufferLength / this.spectrumBars);
         
-        // Spectrum display constants
-        const SPECTRUM_MAX_HEIGHT = 28; // Max bar height to fit within container (h-10 = 40px, minus padding and visual margin)
-        const SPECTRUM_MIN_HEIGHT = 2;  // Minimum bar height
-        const PIXEL_STEP = 2;           // Pixelated effect step size
+        // Spectrum display constants - height reduced to 10% of original
+        const SPECTRUM_MAX_HEIGHT = 3;  // Reduced to 10% of original 28px
+        const SPECTRUM_MIN_HEIGHT = 1;  // Minimum bar height
+        const PIXEL_STEP = 1;           // Pixelated effect step size
         const MAX_FREQUENCY_VALUE = 255;
         const HIGH_INTENSITY_THRESHOLD = 0.7;
         const MEDIUM_INTENSITY_THRESHOLD = 0.4;
         
         for (let i = 0; i < this.spectrumBars && i < bars.length; i++) {
-            // Average frequency values for this bar
+            // Average frequency values for this bar (within 80% frequency range)
             let sum = 0;
             for (let j = 0; j < step; j++) {
                 sum += dataArray[i * step + j];
@@ -270,6 +291,7 @@ class MusicPlayer {
         const track = this.playlist[index];
         
         this.audio.src = track.url;
+        this.audio.load(); // Force immediate loading
         
         if (this.coverElement) {
             this.coverElement.src = track.cover;
@@ -283,6 +305,9 @@ class MusicPlayer {
         
         // Update playlist active state
         this.updatePlaylistActiveState();
+        
+        // Preload next track for faster switching
+        this.preloadNextTrack();
     }
     
     togglePlay() {
@@ -482,7 +507,9 @@ class SampleAudioPlayer {
         for (let i = 0; i < barCount; i++) {
             const bar = document.createElement('div');
             bar.className = 'waveform-bar bg-gray-600 transition-colors';
-            bar.style.flex = '0 0 2px';
+            bar.style.flex = '1'; // Use flex: 1 to fill container width evenly
+            bar.style.minWidth = '2px';
+            bar.style.maxWidth = '6px';
             bar.style.marginRight = '1px';
             bar.style.borderRadius = '0';
             // Random height for visual placeholder (will be replaced with actual waveform data)

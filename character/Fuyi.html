@@ -88,27 +88,25 @@
         /* Illustration container with mask effect */
         .illust-container {
             position: relative;
-            overflow: hidden;
-        }
-        .illust-container::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 30%;
-            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));
-            pointer-events: none;
+            overflow: visible;
+            width: 100%;
+            min-width: 100%;
         }
         .illust-container img {
             transition: transform 0.4s ease, opacity 0.4s ease;
+            /* Apply mask to image itself for bottom fade transparency */
+            mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+            /* Scale to focus on top 60% of image */
+            transform: scale(1.4);
+            transform-origin: center top;
         }
         .illust-container.slide-left img {
-            transform: translateX(-20px);
+            transform: scale(1.4) translateX(-20px);
             opacity: 0;
         }
         .illust-container.slide-right img {
-            transform: translateX(20px);
+            transform: scale(1.4) translateX(20px);
             opacity: 0;
         }
         
@@ -295,13 +293,13 @@
                     </div>
                     
                     <!-- Right: Illustration (1/3) -->
-                    <div class="lg:w-1/3 relative">
+                    <div class="lg:w-1/3 relative lg:-mr-[20%]">
                         <!-- Main Illustration -->
                         <div class="illust-container relative">
-                            <img id="main-illust" src="../assets/illust/Fuyi_Illust_05.png" alt="浮亦立绘" class="w-full h-auto max-h-[70vh] object-contain object-top" style="object-position: center top; transform: scale(1.15); transform-origin: center top;">
+                            <img id="main-illust" src="../assets/illust/Fuyi_Illust_05.png" alt="浮亦立绘" class="w-full h-auto max-h-[70vh] object-contain">
                             
                             <!-- Download Button -->
-                            <button id="download-illust-btn" class="absolute bottom-12 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full transition-colors flex items-center gap-2 z-10">
+                            <button id="download-illust-btn" class="absolute bottom-20 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full transition-colors flex items-center gap-2 z-10">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                 </svg>
@@ -310,7 +308,7 @@
                         </div>
                         
                         <!-- Icon Selector -->
-                        <div class="icon-selector absolute right-0 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 bg-black/30 rounded-l-lg p-2">
+                        <div class="icon-selector absolute right-0 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 bg-black/30 rounded-l-lg p-2 z-20">
                             <img src="../assets/icon/Fuyi_Icon_01.png" alt="立绘1" class="w-12 h-12 rounded-lg cursor-pointer object-cover" data-illust="../assets/illust/Fuyi_Illust_01.png" data-designer="99円" data-artist="99円">
                             <img src="../assets/icon/Fuyi_Icon_02.png" alt="立绘2" class="w-12 h-12 rounded-lg cursor-pointer object-cover" data-illust="../assets/illust/Fuyi_Illust_02.png" data-designer="99円" data-artist="CruxLake">
                             <img src="../assets/icon/Fuyi_Icon_03.png" alt="立绘3" class="w-12 h-12 rounded-lg cursor-pointer object-cover" data-illust="../assets/illust/Fuyi_Illust_03.png" data-designer="海纳不是法号" data-artist="海纳不是法号">
@@ -424,8 +422,7 @@
                         <!-- Download Links -->
                         <div class="flex flex-wrap gap-3">
                             <span class="px-4 py-2 bg-gray-700 rounded-lg text-gray-400">声库下载：已下架</span>
-                            <a href="https://github.com/keirokeer/OpenUtau-DiffSinger-Lunai/releases" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors flex items-center gap-2">
-                                <img src="../assets/icon/To_Engine_Site.svg" alt="Link" class="w-4 h-4">
+                            <a href="https://github.com/keirokeer/OpenUtau-DiffSinger-Lunai/releases" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors">
                                 编辑器下载
                             </a>
                         </div>
@@ -555,8 +552,7 @@
                         <!-- Download Links -->
                         <div class="flex flex-wrap gap-3">
                             <span class="px-4 py-2 bg-gray-700 rounded-lg text-gray-400">声库申请：已关闭申请通道</span>
-                            <a href="https://ace-studio.timedomain.cn/" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors flex items-center gap-2">
-                                <img src="../assets/icon/To_Engine_Site.svg" alt="Link" class="w-4 h-4">
+                            <a href="https://ace-studio.timedomain.cn/" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors">
                                 编辑器下载
                             </a>
                         </div>
@@ -673,8 +669,7 @@
                         <!-- Download Links -->
                         <div class="flex flex-wrap gap-3">
                             <span class="px-4 py-2 bg-gray-700 rounded-lg text-gray-400">声库下载：无法提供</span>
-                            <a href="https://gejigejikugou.com/index.html" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors flex items-center gap-2">
-                                <img src="../assets/icon/To_Engine_Site.svg" alt="Link" class="w-4 h-4">
+                            <a href="https://gejigejikugou.com/index.html" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors">
                                 编辑器下载
                             </a>
                         </div>
@@ -924,6 +919,15 @@
             let currentIllustUrl = mainIllust?.src;
             let currentIndex = iconSelector.length - 1; // Default to last (active) one
             
+            // Pre-cache all character illustrations on page load
+            iconSelector.forEach((icon) => {
+                const illustUrl = icon.dataset.illust;
+                if (illustUrl) {
+                    const preloadImg = new Image();
+                    preloadImg.src = illustUrl;
+                }
+            });
+            
             iconSelector.forEach((icon, index) => {
                 icon.addEventListener('click', () => {
                     if (icon.classList.contains('active')) return;
@@ -1051,6 +1055,73 @@
                     new SampleAudioPlayer(container, audioUrl);
                 }
             });
+            
+            // Custom smooth scroll with bezier easing for snap sections
+            let isScrolling = false;
+            let scrollTimeout = null;
+            const sections = document.querySelectorAll('.section-full, .engine-section');
+            
+            // Bezier easing function (ease-out cubic)
+            function easeOutCubic(t) {
+                return 1 - Math.pow(1 - t, 3);
+            }
+            
+            // Smooth scroll to target with custom easing
+            function smoothScrollTo(targetY, duration = 600) {
+                if (isScrolling) return;
+                isScrolling = true;
+                const startY = window.scrollY;
+                const distance = targetY - startY;
+                const startTime = performance.now();
+                
+                function scrollStep(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easedProgress = easeOutCubic(progress);
+                    
+                    window.scrollTo(0, startY + distance * easedProgress);
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(scrollStep);
+                    } else {
+                        isScrolling = false;
+                    }
+                }
+                
+                requestAnimationFrame(scrollStep);
+            }
+            
+            // Handle scroll snap with custom easing
+            window.addEventListener('scroll', () => {
+                if (scrollTimeout) clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    if (isScrolling) return;
+                    
+                    const scrollTop = window.scrollY;
+                    const viewportHeight = window.innerHeight;
+                    
+                    // Find the closest section
+                    let closestSection = null;
+                    let minDistance = Infinity;
+                    
+                    sections.forEach(section => {
+                        const rect = section.getBoundingClientRect();
+                        const sectionTop = scrollTop + rect.top;
+                        const distance = Math.abs(rect.top);
+                        
+                        // Only consider sections that are close to viewport top
+                        if (distance < viewportHeight * 0.3 && distance < minDistance) {
+                            minDistance = distance;
+                            closestSection = section;
+                        }
+                    });
+                    
+                    if (closestSection && minDistance > 50) {
+                        const rect = closestSection.getBoundingClientRect();
+                        smoothScrollTo(scrollTop + rect.top, 500);
+                    }
+                }, 150);
+            }, { passive: true });
         });
     </script>
     <script src="../js/main.js"></script>
