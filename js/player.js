@@ -115,8 +115,9 @@ class MusicPlayer {
         for (let i = 0; i < this.spectrumBars; i++) {
             const bar = document.createElement('div');
             bar.className = 'spectrum-bar bg-indigo-500';
-            bar.style.width = `${Math.floor(75 / this.spectrumBars)}%`;
-            bar.style.marginRight = '2px';
+            bar.style.flex = '1';
+            bar.style.maxWidth = '4px';
+            bar.style.marginRight = '1px';
             bar.style.height = '2px';
             bar.style.minWidth = '1px';
             this.spectrumContainer.appendChild(bar);
@@ -415,10 +416,8 @@ class SampleAudioPlayer {
         for (let i = 0; i < barCount; i++) {
             const bar = document.createElement('div');
             bar.className = 'waveform-bar bg-gray-600 transition-colors';
-            bar.style.flex = '1';
-            bar.style.minWidth = '1px';
-            bar.style.width = '75%';
-            bar.style.marginRight = '25%';
+            bar.style.flex = '0 0 2px';
+            bar.style.marginRight = '1px';
             bar.style.borderRadius = '0';
             // Random height for visual placeholder (will be replaced with actual waveform data)
             const height = Math.random() * 24 + 8;
