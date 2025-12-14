@@ -11,6 +11,7 @@ class MusicPlayer {
         this.source = null;
         this.spectrumBars = 64; // Number of frequency bars
         this.animationId = null;
+        this.stateKey = 'musicPlayerState';
         
         this.init();
     }
@@ -21,8 +22,60 @@ class MusicPlayer {
         this.setupEventListeners();
         this.createSpectrumBars();
         
-        if (this.playlist.length > 0) {
+        // Restore saved state if exists
+        const savedState = this.loadState();
+        if (savedState && this.playlist.length > 0) {
+            this.restoreState(savedState);
+        } else if (this.playlist.length > 0) {
             this.loadTrack(0);
+        }
+        
+        // Save state before page unload
+        window.addEventListener('beforeunload', () => this.saveState());
+    }
+    
+    saveState() {
+        if (!this.audio.src) return;
+        
+        const state = {
+            currentIndex: this.currentIndex,
+            currentTime: this.audio.currentTime,
+            isPlaying: this.isPlaying,
+            timestamp: Date.now()
+        };
+        sessionStorage.setItem(this.stateKey, JSON.stringify(state));
+    }
+    
+    loadState() {
+        try {
+            const stateJson = sessionStorage.getItem(this.stateKey);
+            if (!stateJson) return null;
+            
+            const state = JSON.parse(stateJson);
+            // Only restore if state is less than 30 minutes old
+            if (Date.now() - state.timestamp > 30 * 60 * 1000) {
+                sessionStorage.removeItem(this.stateKey);
+                return null;
+            }
+            return state;
+        } catch (e) {
+            return null;
+        }
+    }
+    
+    restoreState(state) {
+        if (state.currentIndex >= 0 && state.currentIndex < this.playlist.length) {
+            this.loadTrack(state.currentIndex);
+            this.audio.currentTime = state.currentTime || 0;
+            
+            if (state.isPlaying) {
+                // Wait for audio to be ready before playing
+                const playWhenReady = () => {
+                    this.audio.play().catch(e => console.log('Auto-play prevented:', e));
+                    this.audio.removeEventListener('canplay', playWhenReady);
+                };
+                this.audio.addEventListener('canplay', playWhenReady);
+            }
         }
     }
     
@@ -170,6 +223,7 @@ class MusicPlayer {
         
         const bars = this.spectrumContainer.children;
         const step = Math.floor(bufferLength / this.spectrumBars);
+        const maxHeight = 28; // Max height in pixels (container is h-10=40px minus p-1=8px padding)
         
         for (let i = 0; i < this.spectrumBars && i < bars.length; i++) {
             // Average values for this bar
@@ -179,8 +233,8 @@ class MusicPlayer {
             }
             const value = sum / step;
             
-            // Pixelated effect: round to 4px increments
-            const height = Math.max(2, Math.round(value / 8) * 4);
+            // Scale to fit within container, pixelated effect: round to 2px increments
+            const height = Math.max(2, Math.min(maxHeight, Math.round((value / 255) * maxHeight / 2) * 2));
             bars[i].style.height = `${height}px`;
             
             // Color based on intensity
