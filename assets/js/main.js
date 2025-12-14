@@ -376,26 +376,32 @@ function startSpectrum() {
   
   if (!audio || !container) return;
   
-  // 创建音频上下文
-  if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  
-  if (audioContext.state === 'suspended') {
-    audioContext.resume();
-  }
-  
-  // 创建分析器
-  if (!analyser) {
-    analyser = audioContext.createAnalyser();
-    analyser.fftSize = 256;
-  }
-  
-  // 连接音频源
-  if (!sourceNode) {
-    sourceNode = audioContext.createMediaElementSource(audio);
-    sourceNode.connect(analyser);
-    analyser.connect(audioContext.destination);
+  // 创建音频上下文（需要用户交互后才能创建）
+  try {
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    if (audioContext.state === 'suspended') {
+      audioContext.resume();
+    }
+    
+    // 创建分析器
+    if (!analyser) {
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 256;
+    }
+    
+    // 连接音频源 - 检查是否已连接避免重复创建
+    if (!sourceNode && !audio._sourceConnected) {
+      sourceNode = audioContext.createMediaElementSource(audio);
+      sourceNode.connect(analyser);
+      analyser.connect(audioContext.destination);
+      audio._sourceConnected = true; // 标记已连接
+    }
+  } catch (e) {
+    console.log('AudioContext创建失败:', e.message);
+    return;
   }
   
   const bars = container.querySelectorAll('.spectrum-bar');

@@ -3,8 +3,7 @@
    全局样式表
    ============================================ */
 
-/* 引入MiSans SC字体 */
-@import url('https://cdn-font.hyperos.mi.com/font/css?family=MiSans_VF:VF:Chinese_Simplify,Latin&display=swap');
+/* 注意：MiSans SC字体已在HTML head中引入，此处不再重复导入 */
 
 /* CSS变量定义 */
 :root {
