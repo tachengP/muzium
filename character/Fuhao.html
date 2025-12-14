@@ -33,12 +33,17 @@
         .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; }
         .illust-container.slide-left img { transform: translateX(-20px); opacity: 0; }
         .illust-container.slide-right img { transform: translateX(20px); opacity: 0; }
+        #playlist-panel::-webkit-scrollbar { width: 6px; }
+        #playlist-panel::-webkit-scrollbar-track { background: transparent; }
+        #playlist-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 3px; }
+        #playlist-panel::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
+        #playlist-panel { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.3) transparent; }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
     <header class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
         <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="../index.html" class="flex items-center gap-2"><img src="../assets/icon/Icon_03.svg" alt="Logo" class="h-10 w-10"><span class="text-xl font-bold hidden sm:block">虚拟歌手</span></a>
+            <a href="../index.html" class="flex items-center"><img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-28 brightness-0 invert"></a>
             <nav class="flex items-center gap-6">
                 <a href="Feimeng.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">飞梦</a>
                 <a href="Fuyao.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">浮曜</a>
@@ -111,7 +116,7 @@
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
-                            <img src="../assets/icon/DeepVocal.svg" alt="DeepVocal" class="w-12 h-12">
+                            <img src="../assets/icon/Fuhao_Icon_02.png" alt="浮皓" class="w-14 h-14 rounded-lg">
                             <div><h2 class="text-3xl font-bold">浮皓 for DeepVocal</h2><a href="https://www.deep-vocal.com/#/" target="_blank" class="text-indigo-400 hover:underline text-sm">引擎官网 →</a></div>
                         </div>
                         <p class="text-gray-300">DeepVocal是由BoxStar自主研发的拼接式歌声合成引擎。</p>
@@ -128,6 +133,7 @@
                         </div>
                         <div class="space-y-3">
                             <h3 class="font-bold">音色信息</h3>
+                            <div class="bg-gray-700/50 rounded-lg p-4"><h4 class="font-medium text-indigo-300">Original</h4><p class="text-sm text-gray-300 mt-1">以自然柔和的发声状态录制的声库</p><div class="flex gap-4 mt-2 text-sm"><span class="text-gray-400">推荐音域: <span class="text-white">E2 ~ D4</span></span><span class="text-gray-400">推荐曲速: <span class="text-white">60 ~ 150 BPM</span></span></div></div>
                             <div class="bg-gray-700/50 rounded-lg p-4"><h4 class="font-medium text-indigo-300">Power</h4><p class="text-sm text-gray-300 mt-1">以强劲有力的发声状态录制的声库</p><div class="flex gap-4 mt-2 text-sm"><span class="text-gray-400">推荐音域: <span class="text-white">E2 ~ F4</span></span><span class="text-gray-400">推荐曲速: <span class="text-white">70 ~ 160 BPM</span></span></div></div>
                         </div>
                         <div class="grid grid-cols-3 gap-4 text-sm mt-4">
@@ -154,7 +160,7 @@
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
-                            <img src="../assets/icon/ACE_Studio.svg" alt="ACE Studio" class="w-12 h-12">
+                            <img src="../assets/icon/Fuhao_Icon_02.png" alt="浮皓" class="w-14 h-14 rounded-lg">
                             <div><h2 class="text-3xl font-bold">浮皓 for ACE Studio</h2><a href="https://ace-studio.timedomain.cn/" target="_blank" class="text-indigo-400 hover:underline text-sm">引擎官网 →</a></div>
                         </div>
                         <p class="text-gray-300">ACE Studio 是由北京时域科技有限公司自主研发的次世代 AI 歌声合成引擎。</p>
@@ -173,6 +179,7 @@
                         </div>
                         <div class="space-y-3">
                             <h3 class="font-bold">音色信息</h3>
+                            <div class="bg-gray-700/50 rounded-lg p-4"><h4 class="font-medium text-indigo-300">Original</h4><p class="text-sm text-gray-300 mt-1">以自然柔和的发声状态录制的声库</p><div class="flex gap-4 mt-2 text-sm"><span class="text-gray-400">推荐音域: <span class="text-white">E2 ~ F4</span></span><span class="text-gray-400">推荐曲速: <span class="text-white">60 ~ 150 BPM</span></span></div></div>
                             <div class="bg-gray-700/50 rounded-lg p-4"><h4 class="font-medium text-indigo-300">Power</h4><p class="text-sm text-gray-300 mt-1">以强劲有力的发声状态录制的声库</p><div class="flex gap-4 mt-2 text-sm"><span class="text-gray-400">推荐音域: <span class="text-white">E2 ~ B4</span></span><span class="text-gray-400">推荐曲速: <span class="text-white">70 ~ 160 BPM</span></span></div></div>
                         </div>
                         <div class="grid grid-cols-3 gap-4 text-sm mt-4">
@@ -199,7 +206,7 @@
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
-                            <img src="../assets/icon/Unknown.svg" alt="Unknown" class="w-12 h-12">
+                            <img src="../assets/icon/Fuhao_Icon_02.png" alt="浮皓" class="w-14 h-14 rounded-lg">
                             <div><h2 class="text-3xl font-bold">浮皓 for Unknown</h2><span class="text-gray-400 text-sm">引擎官网：404 Not Found</span></div>
                         </div>
                         <p class="text-gray-300">404 Not Found</p>
@@ -236,7 +243,7 @@
             <div class="flex-1 min-w-0"><h4 id="player-title" class="font-medium truncate">选择歌曲</h4><p id="player-artist" class="text-sm text-gray-400 truncate">--</p></div>
             <button id="player-download" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="下载"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
         </div>
-        <div id="spectrum" class="flex items-end justify-center h-10 gap-0.5 mb-3 bg-gray-800/50 rounded-lg p-1"></div>
+        <div id="spectrum" class="flex items-end justify-center h-10 gap-0.5 mb-3 bg-gray-800/50 rounded-lg p-1 overflow-hidden"></div>
         <div class="mb-3">
             <input type="range" id="player-progress" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
             <div class="flex justify-between text-xs text-gray-400 mt-1"><span id="player-current-time">0:00</span><span id="player-duration">0:00</span></div>

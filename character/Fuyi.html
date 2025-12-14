@@ -150,6 +150,25 @@
         .engine-section {
             scroll-margin-top: 80px;
         }
+        
+        /* Custom scrollbar for playlist */
+        #playlist-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        #playlist-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #playlist-panel::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+        #playlist-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        #playlist-panel {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -157,9 +176,8 @@
     <header id="main-header" class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
         <div class="container mx-auto px-4 py-3 flex items-center justify-between">
             <!-- Logo -->
-            <a href="../index.html" class="flex items-center gap-2">
-                <img src="../assets/icon/Icon_03.svg" alt="Logo" class="h-10 w-10">
-                <span class="text-xl font-bold hidden sm:block">虚拟歌手</span>
+            <a href="../index.html" class="flex items-center">
+                <img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-28 brightness-0 invert">
             </a>
             
             <!-- Navigation -->
@@ -313,7 +331,7 @@
                     <!-- Left: Voice Library Info (1/2) -->
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
-                            <img src="../assets/icon/DiffSinger.svg" alt="DiffSinger" class="w-12 h-12">
+                            <img src="../assets/icon/Fuyi_Icon_05.png" alt="浮亦" class="w-14 h-14 rounded-lg">
                             <div>
                                 <h2 class="text-3xl font-bold">浮亦 for DiffSinger</h2>
                                 <a href="https://github.com/openvpi/DiffSinger" target="_blank" class="text-indigo-400 hover:underline text-sm">引擎官网 →</a>
@@ -439,7 +457,7 @@
                     <!-- Left: Voice Library Info (1/2) -->
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
-                            <img src="../assets/icon/ACE_Studio.svg" alt="ACE Studio" class="w-12 h-12">
+                            <img src="../assets/icon/Fuyi_Icon_05.png" alt="浮亦" class="w-14 h-14 rounded-lg">
                             <div>
                                 <h2 class="text-3xl font-bold">浮亦 for ACE Studio</h2>
                                 <a href="https://ace-studio.timedomain.cn/" target="_blank" class="text-indigo-400 hover:underline text-sm">引擎官网 →</a>
@@ -594,7 +612,7 @@
                     <!-- Left: Voice Library Info (1/2) -->
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
-                            <img src="../assets/icon/GJGJ.svg" alt="歌叽歌叽" class="w-12 h-12">
+                            <img src="../assets/icon/Fuyi_Icon_05.png" alt="浮亦" class="w-14 h-14 rounded-lg">
                             <div>
                                 <h2 class="text-3xl font-bold">浮亦 for 歌叽歌叽</h2>
                                 <a href="https://gejigejikugou.com/index.html" target="_blank" class="text-indigo-400 hover:underline text-sm">引擎官网 →</a>
@@ -688,7 +706,7 @@
                     <!-- Left: Voice Library Info (1/2) -->
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
-                            <img src="../assets/icon/Unknown.svg" alt="Unknown" class="w-12 h-12">
+                            <img src="../assets/icon/Fuyi_Icon_05.png" alt="浮亦" class="w-14 h-14 rounded-lg">
                             <div>
                                 <h2 class="text-3xl font-bold">浮亦 for Unknown</h2>
                                 <span class="text-gray-400 text-sm">引擎官网：404 Not Found</span>
@@ -796,7 +814,7 @@
         </div>
         
         <!-- Spectrum Visualization -->
-        <div id="spectrum" class="flex items-end justify-center h-10 gap-0.5 mb-3 bg-gray-800/50 rounded-lg p-1">
+        <div id="spectrum" class="flex items-end justify-center h-10 gap-0.5 mb-3 bg-gray-800/50 rounded-lg p-1 overflow-hidden">
         </div>
         
         <!-- Progress Bar -->

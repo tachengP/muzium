@@ -11,6 +11,7 @@ class MusicPlayer {
         this.source = null;
         this.spectrumBars = 64; // Number of frequency bars
         this.animationId = null;
+        this.stateKey = 'musicPlayerState';
         
         this.init();
     }
@@ -21,8 +22,63 @@ class MusicPlayer {
         this.setupEventListeners();
         this.createSpectrumBars();
         
-        if (this.playlist.length > 0) {
+        // Restore saved state if exists
+        const savedState = this.loadState();
+        if (savedState && this.playlist.length > 0) {
+            this.restoreState(savedState);
+        } else if (this.playlist.length > 0) {
             this.loadTrack(0);
+        }
+        
+        // Save state before page unload
+        window.addEventListener('beforeunload', () => this.saveState());
+    }
+    
+    saveState() {
+        if (!this.audio.src) return;
+        
+        const state = {
+            currentIndex: this.currentIndex,
+            currentTime: this.audio.currentTime,
+            isPlaying: this.isPlaying,
+            timestamp: Date.now()
+        };
+        sessionStorage.setItem(this.stateKey, JSON.stringify(state));
+    }
+    
+    loadState() {
+        try {
+            const stateJson = sessionStorage.getItem(this.stateKey);
+            if (!stateJson) return null;
+            
+            const state = JSON.parse(stateJson);
+            // Only restore if state is less than 30 minutes old
+            if (Date.now() - state.timestamp > 30 * 60 * 1000) {
+                sessionStorage.removeItem(this.stateKey);
+                return null;
+            }
+            return state;
+        } catch (e) {
+            return null;
+        }
+    }
+    
+    restoreState(state) {
+        if (state.currentIndex >= 0 && state.currentIndex < this.playlist.length) {
+            this.loadTrack(state.currentIndex);
+            
+            // Wait for audio metadata to load before setting time and playing
+            const restorePlayback = () => {
+                this.audio.currentTime = state.currentTime || 0;
+                if (state.isPlaying) {
+                    this.audio.play().catch(e => {
+                        // Auto-play may be blocked by browser policy
+                        console.log('Auto-play prevented by browser:', e?.message || e);
+                    });
+                }
+                this.audio.removeEventListener('loadedmetadata', restorePlayback);
+            };
+            this.audio.addEventListener('loadedmetadata', restorePlayback);
         }
     }
     
@@ -171,23 +227,33 @@ class MusicPlayer {
         const bars = this.spectrumContainer.children;
         const step = Math.floor(bufferLength / this.spectrumBars);
         
+        // Spectrum display constants
+        const SPECTRUM_MAX_HEIGHT = 28; // Max bar height to fit within container (h-10 = 40px, minus padding and visual margin)
+        const SPECTRUM_MIN_HEIGHT = 2;  // Minimum bar height
+        const PIXEL_STEP = 2;           // Pixelated effect step size
+        const MAX_FREQUENCY_VALUE = 255;
+        const HIGH_INTENSITY_THRESHOLD = 0.7;
+        const MEDIUM_INTENSITY_THRESHOLD = 0.4;
+        
         for (let i = 0; i < this.spectrumBars && i < bars.length; i++) {
-            // Average values for this bar
+            // Average frequency values for this bar
             let sum = 0;
             for (let j = 0; j < step; j++) {
                 sum += dataArray[i * step + j];
             }
             const value = sum / step;
+            const intensity = value / MAX_FREQUENCY_VALUE;
             
-            // Pixelated effect: round to 4px increments
-            const height = Math.max(2, Math.round(value / 8) * 4);
+            // Calculate height with pixelated effect (round to PIXEL_STEP increments)
+            const scaledHeight = intensity * SPECTRUM_MAX_HEIGHT;
+            const pixelatedHeight = Math.round(scaledHeight / PIXEL_STEP) * PIXEL_STEP;
+            const height = Math.max(SPECTRUM_MIN_HEIGHT, Math.min(SPECTRUM_MAX_HEIGHT, pixelatedHeight));
             bars[i].style.height = `${height}px`;
             
             // Color based on intensity
-            const intensity = value / 255;
-            if (intensity > 0.7) {
+            if (intensity > HIGH_INTENSITY_THRESHOLD) {
                 bars[i].className = 'spectrum-bar bg-red-500';
-            } else if (intensity > 0.4) {
+            } else if (intensity > MEDIUM_INTENSITY_THRESHOLD) {
                 bars[i].className = 'spectrum-bar bg-amber-500';
             } else {
                 bars[i].className = 'spectrum-bar bg-indigo-500';
