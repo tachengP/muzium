@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工具列表 - 虚拟歌手官网</title>
+    <link rel="icon" type="image/svg+xml" href="assets/icon/Icon_01.svg">
+    <link href="https://cdn-font.hyperos.mi.com/font/css?family=MiSans_VF:VF:Chinese_Simplify,Latin&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <style type="text/tailwindcss">
+        @theme {
+            --font-family-sans: 'MiSans VF', 'MiSans', system-ui, sans-serif;
+        }
+        * { font-family: 'MiSans VF', 'MiSans', system-ui, sans-serif; }
+        
+        .nav-character { position: relative; padding-bottom: 4px; }
+        .nav-character::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px;
+            background-color: var(--character-color); transform: scaleX(0); transition: transform 0.3s ease;
+        }
+        .nav-character:hover::after { transform: scaleX(1); }
+        
+        .tools-dropdown { opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; }
+        .tools-nav:hover .tools-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+        
+        .scroll-to-top { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .scroll-to-top.visible { opacity: 1; visibility: visible; }
+        
+        .tool-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <img src="assets/icon/Icon_03.svg" alt="Logo" class="h-10 w-10">
+                <span class="text-xl font-bold hidden sm:block">虚拟歌手</span>
+            </a>
+            <nav class="flex items-center gap-6">
+                <a href="character/Feimeng.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">飞梦</a>
+                <a href="character/Fuhao.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">浮皓</a>
+                <a href="character/Fuyao.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">浮曜</a>
+                <a href="character/Fuyi.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">浮亦</a>
+                <a href="character/Wanzhi.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">宛沚</a>
+                <div class="relative tools-nav">
+                    <button class="text-gray-300 hover:text-white transition-colors flex items-center gap-1">
+                        其他工具
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="tools-dropdown absolute top-full right-0 mt-2 bg-gray-800 rounded-lg shadow-xl py-2 min-w-40">
+                        <a href="tools.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700 bg-gray-700/50">工具列表</a>
+                        <a href="eula.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">使用规范</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="pt-24 pb-16">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold mb-2">工具列表</h1>
+            <p class="text-gray-400 mb-8">歌声合成相关的实用工具与资源</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Tool Card: OpenUTAU -->
+                <div class="tool-card bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="assets/icon/UTAU.svg" alt="OpenUTAU" class="w-12 h-12">
+                        <div>
+                            <h3 class="text-xl font-bold">OpenUTAU</h3>
+                            <span class="text-sm text-gray-400">歌声合成编辑器</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">开源的跨平台UTAU编辑器，支持多种声库格式，包括DiffSinger、ENUNU等AI引擎。</p>
+                    <a href="https://www.openutau.com/" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                        访问官网
+                    </a>
+                </div>
+                
+                <!-- Tool Card: DeepVocal -->
+                <div class="tool-card bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="assets/icon/DeepVocal.svg" alt="DeepVocal" class="w-12 h-12">
+                        <div>
+                            <h3 class="text-xl font-bold">DeepVocal</h3>
+                            <span class="text-sm text-gray-400">歌声合成引擎</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">BoxStar自主研发的拼接式歌声合成引擎，具有操作便捷、音素系统高度可定制化等特点。</p>
+                    <a href="https://www.deep-vocal.com/#/" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                        访问官网
+                    </a>
+                </div>
+                
+                <!-- Tool Card: VocalSharp -->
+                <div class="tool-card bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="assets/icon/VocalSharp.svg" alt="VocalSharp" class="w-12 h-12">
+                        <div>
+                            <h3 class="text-xl font-bold">VocalSharp</h3>
+                            <span class="text-sm text-gray-400">歌声合成引擎</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">金刚小刘自主研发的拼接式歌声合成引擎，具有调整空间大、音素系统高度可定制化等特点。</p>
+                    <a href="https://www.vocalsharp.net/" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                        访问官网
+                    </a>
+                </div>
+                
+                <!-- Tool Card: ACE Studio -->
+                <div class="tool-card bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="assets/icon/ACE_Studio.svg" alt="ACE Studio" class="w-12 h-12">
+                        <div>
+                            <h3 class="text-xl font-bold">ACE Studio</h3>
+                            <span class="text-sm text-gray-400">AI歌声合成引擎</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">北京时域科技有限公司自主研发的次世代AI歌声合成引擎，支持多种语言的高性能合成。</p>
+                    <a href="https://ace-studio.timedomain.cn/" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                        访问官网
+                    </a>
+                </div>
+                
+                <!-- Tool Card: DiffSinger -->
+                <div class="tool-card bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="assets/icon/DiffSinger.svg" alt="DiffSinger" class="w-12 h-12">
+                        <div>
+                            <h3 class="text-xl font-bold">DiffSinger</h3>
+                            <span class="text-sm text-gray-400">开源AI歌声合成</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">由OpenVPI团队维护的次世代开源AI歌声合成引擎，具有高度可定制化、更新迅速等特点。</p>
+                    <a href="https://github.com/openvpi/DiffSinger" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                
+                <!-- Tool Card: DiffSinger Lunai -->
+                <div class="tool-card bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="assets/icon/DiffSinger.svg" alt="DiffSinger Lunai" class="w-12 h-12">
+                        <div>
+                            <h3 class="text-xl font-bold">OpenUTAU DiffSinger</h3>
+                            <span class="text-sm text-gray-400">DiffSinger for OpenUTAU</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">在OpenUTAU中使用DiffSinger引擎的发行版本，支持多语言声库。</p>
+                    <a href="https://github.com/keirokeer/OpenUtau-DiffSinger-Lunai/releases" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        下载
+                    </a>
+                </div>
+            </div>
+            
+            <!-- External Links Section -->
+            <h2 class="text-2xl font-bold mt-12 mb-6">相关链接</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="https://space.bilibili.com/3546580430883685" target="_blank" class="flex items-center gap-4 p-4 bg-gray-800 rounded-xl hover:bg-gray-750 transition-colors">
+                    <div class="w-12 h-12 bg-pink-600 rounded-lg flex items-center justify-center">
+                        <span class="text-xl font-bold">B</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold">DiffSinger开源社区</h3>
+                        <p class="text-sm text-gray-400">Bilibili 官方账号</p>
+                    </div>
+                </a>
+                
+                <a href="https://space.bilibili.com/7644915" target="_blank" class="flex items-center gap-4 p-4 bg-gray-800 rounded-xl hover:bg-gray-750 transition-colors">
+                    <div class="w-12 h-12 bg-pink-600 rounded-lg flex items-center justify-center">
+                        <span class="text-xl font-bold">B</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold">BoxStar</h3>
+                        <p class="text-sm text-gray-400">DeepVocal 开发者</p>
+                    </div>
+                </a>
+                
+                <a href="https://space.bilibili.com/24331207" target="_blank" class="flex items-center gap-4 p-4 bg-gray-800 rounded-xl hover:bg-gray-750 transition-colors">
+                    <div class="w-12 h-12 bg-pink-600 rounded-lg flex items-center justify-center">
+                        <span class="text-xl font-bold">B</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold">金刚小刘</h3>
+                        <p class="text-sm text-gray-400">VocalSharp 开发者</p>
+                    </div>
+                </a>
+                
+                <a href="https://space.bilibili.com/102844209" target="_blank" class="flex items-center gap-4 p-4 bg-gray-800 rounded-xl hover:bg-gray-750 transition-colors">
+                    <div class="w-12 h-12 bg-pink-600 rounded-lg flex items-center justify-center">
+                        <span class="text-xl font-bold">B</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold">YQ之神@OpenVPI团队</h3>
+                        <p class="text-sm text-gray-400">DiffSinger 维护者</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top fixed bottom-4 right-4 z-40 p-3 bg-gray-800 hover:bg-gray-700 rounded-full shadow-lg transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-700 py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap items-center justify-between text-sm text-gray-400">
+                <div class="flex items-center gap-4">
+                    <span>© 2024 虚拟歌手官网</span>
+                    <span>|</span>
+                    <span>字体: MiSans by Xiaomi</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="mailto:contact@example.com" class="hover:text-white transition-colors">联系我们</a>
+                    <a href="eula.html" class="hover:text-white transition-colors">使用规范</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Scroll to top
+        const scrollBtn = document.getElementById('scroll-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
