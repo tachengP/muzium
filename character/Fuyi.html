@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浮亦 - 虚拟歌手官网</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/icon/Icon_01.svg">
+    
+    <!-- MiSans SC Font -->
+    <link href="https://cdn-font.hyperos.mi.com/font/css?family=MiSans_VF:VF:Chinese_Simplify,Latin&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <style type="text/tailwindcss">
+        @theme {
+            --font-family-sans: 'MiSans VF', 'MiSans', system-ui, sans-serif;
+            --color-character: #98453F;
+        }
+        
+        * {
+            font-family: 'MiSans VF', 'MiSans', system-ui, sans-serif;
+        }
+        
+        /* Character theme colors */
+        .theme-feimeng { --character-color: #000000; }
+        .theme-fuhao { --character-color: #D0D7E5; }
+        .theme-fuyao { --character-color: #FFB600; }
+        .theme-fuyi { --character-color: #98453F; }
+        .theme-wanzhi { --character-color: #545F8D; }
+        
+        /* Navigation hover effect */
+        .nav-character {
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-character::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--character-color);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        .nav-character:hover::after {
+            transform: scaleX(1);
+        }
+        .nav-character.active::after {
+            transform: scaleX(1);
+        }
+        
+        /* Scroll-to-top button */
+        .scroll-to-top {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Music player */
+        .music-player {
+            backdrop-filter: blur(10px);
+            background: rgba(30, 30, 30, 0.9);
+        }
+        
+        /* Pixelated spectrum */
+        .spectrum-bar {
+            transition: height 0.05s linear;
+        }
+        
+        /* Icon selector */
+        .icon-selector img {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .icon-selector img:hover {
+            transform: scale(1.1);
+        }
+        .icon-selector img.active {
+            box-shadow: 0 0 0 3px #98453F;
+        }
+        
+        /* Section scroll */
+        .section-full {
+            min-height: 100vh;
+            scroll-snap-align: start;
+        }
+        
+        /* Tools dropdown */
+        .tools-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        }
+        .tools-nav:hover .tools-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        /* Download modal */
+        .modal-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Engine section */
+        .engine-section {
+            scroll-margin-top: 80px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Header -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="../index.html" class="flex items-center gap-2">
+                <img src="../assets/icon/Icon_03.svg" alt="Logo" class="h-10 w-10">
+                <span class="text-xl font-bold hidden sm:block">虚拟歌手</span>
+            </a>
+            
+            <!-- Navigation -->
+            <nav class="flex items-center gap-6">
+                <!-- Character Links -->
+                <a href="Feimeng.html" class="nav-character theme-feimeng text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">
+                    飞梦
+                </a>
+                <a href="Fuhao.html" class="nav-character theme-fuhao text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">
+                    浮皓
+                </a>
+                <a href="Fuyao.html" class="nav-character theme-fuyao text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">
+                    浮曜
+                </a>
+                <a href="Fuyi.html" class="nav-character active theme-fuyi text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">
+                    浮亦
+                </a>
+                <a href="Wanzhi.html" class="nav-character theme-wanzhi text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">
+                    宛沚
+                </a>
+                
+                <!-- Tools Dropdown -->
+                <div class="relative tools-nav">
+                    <button class="text-gray-300 hover:text-white transition-colors flex items-center gap-1">
+                        其他工具
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="tools-dropdown absolute top-full right-0 mt-2 bg-gray-800 rounded-lg shadow-xl py-2 min-w-40">
+                        <a href="../tools.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">工具列表</a>
+                        <a href="../eula.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">使用规范</a>
+                    </div>
+                </div>
+                
+                <!-- Language Selector -->
+                <div class="relative group">
+                    <button class="flex items-center gap-1 text-gray-300 hover:text-white transition-colors">
+                        <img src="../assets/icon/lang-zh.svg" alt="Language" class="w-5 h-5">
+                    </button>
+                    <div class="absolute top-full right-0 mt-2 bg-gray-800 rounded-lg shadow-xl py-2 min-w-32 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                        <button data-lang="zh" class="flex items-center gap-2 w-full px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
+                            <img src="../assets/icon/lang-zh.svg" alt="中文" class="w-5 h-5">
+                            简体中文
+                        </button>
+                        <button data-lang="en" class="flex items-center gap-2 w-full px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
+                            <img src="../assets/icon/lang-en.svg" alt="English" class="w-5 h-5">
+                            English
+                        </button>
+                        <button data-lang="ja" class="flex items-center gap-2 w-full px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
+                            <img src="../assets/icon/lang-ja.svg" alt="日本語" class="w-5 h-5">
+                            日本語
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="pt-16">
+        <!-- Hero Section - Character Introduction -->
+        <section class="section-full flex items-center" style="background: linear-gradient(135deg, #98453F 0%, #5C2D2D 100%);">
+            <div class="container mx-auto px-4 py-12">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <!-- Left: Character Info (2/3) -->
+                    <div class="lg:w-2/3 space-y-6">
+                        <!-- Logo and Name -->
+                        <div class="flex items-center gap-4">
+                            <img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-16 h-16">
+                            <div>
+                                <h1 class="text-5xl font-bold">浮亦</h1>
+                                <p class="text-xl text-gray-200 mt-1">「如果」的对立面。</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-lg text-gray-200">多引擎男性青年虚拟歌手</p>
+                        
+                        <!-- Character Settings -->
+                        <div class="bg-black/20 rounded-xl p-6 backdrop-blur-sm">
+                            <h2 class="text-2xl font-bold mb-4">角色设定</h2>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div>
+                                    <span class="text-gray-400 text-sm">性别</span>
+                                    <p class="font-medium">男</p>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 text-sm">身高</span>
+                                    <p class="font-medium">185cm</p>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 text-sm">年龄</span>
+                                    <p class="font-medium">24岁</p>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 text-sm">生日</span>
+                                    <p class="font-medium">02月06日</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <span class="text-gray-400 text-sm">代表色</span>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <div class="w-6 h-6 rounded" style="background-color: #98453F;"></div>
+                                    <span class="font-mono">#98453F</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Illustration Credits -->
+                        <div id="illust-credits" class="bg-black/20 rounded-xl p-6 backdrop-blur-sm">
+                            <h3 class="text-lg font-bold mb-2">立绘信息</h3>
+                            <p class="text-sm text-gray-300">设计：<span id="illust-designer">XUNZ-</span></p>
+                            <p class="text-sm text-gray-300">绘制：<span id="illust-artist">XUNZ-</span></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Illustration (1/3) -->
+                    <div class="lg:w-1/3 relative">
+                        <!-- Main Illustration -->
+                        <div class="relative">
+                            <img id="main-illust" src="../assets/illust/Fuyi_Illust_05.png" alt="浮亦立绘" class="w-full h-auto max-h-[70vh] object-contain">
+                            
+                            <!-- Download Button -->
+                            <button id="download-illust-btn" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full transition-colors flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                                下载立绘
+                            </button>
+                        </div>
+                        
+                        <!-- Icon Selector -->
+                        <div class="icon-selector absolute right-0 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 bg-black/30 rounded-l-lg p-2">
+                            <img src="../assets/icon/Fuyi_Icon_01.png" alt="立绘1" class="w-12 h-12 rounded-lg cursor-pointer object-cover" data-illust="../assets/illust/Fuyi_Illust_01.png" data-designer="99円" data-artist="99円">
+                            <img src="../assets/icon/Fuyi_Icon_02.png" alt="立绘2" class="w-12 h-12 rounded-lg cursor-pointer object-cover" data-illust="../assets/illust/Fuyi_Illust_02.png" data-designer="99円" data-artist="CruxLake">
+                            <img src="../assets/icon/Fuyi_Icon_03.png" alt="立绘3" class="w-12 h-12 rounded-lg cursor-pointer object-cover" data-illust="../assets/illust/Fuyi_Illust_03.png" data-designer="海纳不是法号" data-artist="海纳不是法号">
+                            <img src="../assets/icon/Fuyi_Icon_04.png" alt="立绘4" class="w-12 h-12 rounded-lg cursor-pointer object-cover" data-illust="../assets/illust/Fuyi_Illust_04.png" data-designer="一笼蒸虾饺" data-artist="一笼蒸虾饺">
+                            <img src="../assets/icon/Fuyi_Icon_05.png" alt="立绘5" class="w-12 h-12 rounded-lg cursor-pointer object-cover active" data-illust="../assets/illust/Fuyi_Illust_05.png" data-designer="XUNZ-" data-artist="XUNZ-">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Engine Sections -->
+        
+        <!-- DiffSinger Section -->
+        <section id="engine-diffsinger" class="engine-section section-full flex items-center bg-gray-800">
+            <div class="container mx-auto px-4 py-12">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Left: Voice Library Info (1/2) -->
+                    <div class="lg:w-1/2 space-y-6">
+                        <div class="flex items-center gap-4">
+                            <img src="../assets/icon/DiffSinger.svg" alt="DiffSinger" class="w-12 h-12">
+                            <div>
+                                <h2 class="text-3xl font-bold">浮亦 for DiffSinger</h2>
+                                <a href="https://github.com/openvpi/DiffSinger" target="_blank" class="text-indigo-400 hover:underline text-sm">引擎官网 →</a>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-300">DiffSinger 是由刘静林（MoonInTheRiver）开创性推出，YQ之神@OpenVPI团队接续开发维护的次世代开源AI歌声合成引擎，具有高度可定制化、更新迅速等特点。</p>
+                        
+                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4">
+                            <p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮亦」歌声数据库将暂时关闭声库申请通道并下架。</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-gray-400 text-sm">支持音色</span>
+                                <p class="font-medium">Natural、Whisper、Mature</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 text-sm">最新版本</span>
+                                <p class="font-medium">v20250430</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <span class="text-gray-400 text-sm">支持语言</span>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm">
+                                    <img src="../assets/icon/lang-zh.svg" alt="zh" class="w-4 h-4"> 汉语普通话
+                                </span>
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm">
+                                    <img src="../assets/icon/lang-ja.svg" alt="ja" class="w-4 h-4"> 日语
+                                </span>
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm">
+                                    <img src="../assets/icon/lang-en.svg" alt="en" class="w-4 h-4"> 英语
+                                </span>
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm">
+                                    <img src="../assets/icon/lang-ko.svg" alt="ko" class="w-4 h-4"> 朝鲜语
+                                </span>
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm">
+                                    <img src="../assets/icon/lang-zh-yue.svg" alt="zh-yue" class="w-4 h-4"> 粤语
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Timbre Info -->
+                        <div class="space-y-3">
+                            <h3 class="font-bold">音色信息</h3>
+                            <div class="bg-gray-700/50 rounded-lg p-4">
+                                <h4 class="font-medium text-indigo-300">Natural</h4>
+                                <p class="text-sm text-gray-300 mt-1">以最自然的发声状态录制的声库</p>
+                                <div class="flex gap-4 mt-2 text-sm">
+                                    <span class="text-gray-400">推荐音域: <span class="text-white">F2 ~ F4</span></span>
+                                    <span class="text-gray-400">推荐曲速: <span class="text-white">70 ~ 140 BPM</span></span>
+                                </div>
+                            </div>
+                            <div class="bg-gray-700/50 rounded-lg p-4">
+                                <h4 class="font-medium text-indigo-300">Whisper</h4>
+                                <p class="text-sm text-gray-300 mt-1">以耳语般轻柔的发声状态录制的声库</p>
+                                <div class="flex gap-4 mt-2 text-sm">
+                                    <span class="text-gray-400">推荐音域: <span class="text-white">A2 ~ F4</span></span>
+                                    <span class="text-gray-400">推荐曲速: <span class="text-white">60 ~ 140 BPM</span></span>
+                                </div>
+                            </div>
+                            <div class="bg-gray-700/50 rounded-lg p-4">
+                                <h4 class="font-medium text-indigo-300">Mature</h4>
+                                <p class="text-sm text-gray-300 mt-1">模仿年长者的发声状态录制的声库</p>
+                                <div class="flex gap-4 mt-2 text-sm">
+                                    <span class="text-gray-400">推荐音域: <span class="text-white">A2 ~ G4</span></span>
+                                    <span class="text-gray-400">推荐曲速: <span class="text-white">70 ~ 140 BPM</span></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Credits -->
+                        <div class="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-400">角色配音</span>
+                                <p>他城（復一）</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">原音标定</span>
+                                <p>他城（復一）</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">声库制作</span>
+                                <p>他城（復一）</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Download Links -->
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-gray-700 rounded-lg text-gray-400">声库下载：已下架</span>
+                            <a href="https://github.com/keirokeer/OpenUtau-DiffSinger-Lunai/releases" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors flex items-center gap-2">
+                                <img src="../assets/icon/To_Engine_Site.svg" alt="Link" class="w-4 h-4">
+                                编辑器下载
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Sample Audition (1/2) -->
+                    <div class="lg:w-1/2 space-y-6">
+                        <h3 class="text-xl font-bold">干声试听</h3>
+                        
+                        <div class="space-y-4">
+                            <!-- Natural Samples -->
+                            <div>
+                                <h4 class="text-sm text-gray-400 mb-2">Natural 音色</h4>
+                                <div class="space-y-2">
+                                    <div class="sample-player" data-src="../assets/sample/Fuyi_DiffSinger_Natural_01.mp3"></div>
+                                    <div class="sample-player" data-src="../assets/sample/Fuyi_DiffSinger_Natural_02.mp3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ACE Studio Section -->
+        <section id="engine-ace" class="engine-section section-full flex items-center bg-gray-900">
+            <div class="container mx-auto px-4 py-12">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Left: Voice Library Info (1/2) -->
+                    <div class="lg:w-1/2 space-y-6">
+                        <div class="flex items-center gap-4">
+                            <img src="../assets/icon/ACE_Studio.svg" alt="ACE Studio" class="w-12 h-12">
+                            <div>
+                                <h2 class="text-3xl font-bold">浮亦 for ACE Studio</h2>
+                                <a href="https://ace-studio.timedomain.cn/" target="_blank" class="text-indigo-400 hover:underline text-sm">引擎官网 →</a>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-300">ACE Studio 是由北京时域科技有限公司自主研发的次世代 AI 歌声合成引擎，支持汉语普通话、日语与英语等多种语言的高性能合成。</p>
+                        
+                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4">
+                            <p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮亦」歌声数据库将暂时关闭声库申请通道并下架。</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-gray-400 text-sm">支持音色</span>
+                                <p class="font-medium">Natural、Whisper、Mature、Light</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 text-sm">最新版本</span>
+                                <p class="font-medium">Solo24</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <span class="text-gray-400 text-sm">支持语言</span>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm">
+                                    <img src="../assets/icon/lang-zh.svg" alt="zh" class="w-4 h-4"> 汉语普通话
+                                </span>
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm">
+                                    <img src="../assets/icon/lang-ja.svg" alt="ja" class="w-4 h-4"> 日语
+                                </span>
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm">
+                                    <img src="../assets/icon/lang-en.svg" alt="en" class="w-4 h-4"> 英语
+                                </span>
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm">
+                                    <img src="../assets/icon/lang-es.svg" alt="es" class="w-4 h-4"> 西班牙语
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Timbre Info -->
+                        <div class="space-y-3">
+                            <h3 class="font-bold">音色信息</h3>
+                            <div class="bg-gray-700/50 rounded-lg p-4">
+                                <h4 class="font-medium text-indigo-300">Natural</h4>
+                                <p class="text-sm text-gray-300 mt-1">以最自然的发声状态录制的声库</p>
+                                <div class="flex gap-4 mt-2 text-sm">
+                                    <span class="text-gray-400">推荐音域: <span class="text-white">D2 ~ B4</span></span>
+                                    <span class="text-gray-400">推荐曲速: <span class="text-white">60 ~ 170 BPM</span></span>
+                                </div>
+                            </div>
+                            <div class="bg-gray-700/50 rounded-lg p-4">
+                                <h4 class="font-medium text-indigo-300">Whisper</h4>
+                                <p class="text-sm text-gray-300 mt-1">以耳语般轻柔的发声状态录制的声库</p>
+                                <div class="flex gap-4 mt-2 text-sm">
+                                    <span class="text-gray-400">推荐音域: <span class="text-white">F2 ~ G4</span></span>
+                                    <span class="text-gray-400">推荐曲速: <span class="text-white">60 ~ 160 BPM</span></span>
+                                </div>
+                            </div>
+                            <div class="bg-gray-700/50 rounded-lg p-4">
+                                <h4 class="font-medium text-indigo-300">Mature</h4>
+                                <p class="text-sm text-gray-300 mt-1">模仿年长者的发声状态录制的声库</p>
+                                <div class="flex gap-4 mt-2 text-sm">
+                                    <span class="text-gray-400">推荐音域: <span class="text-white">F2 ~ B4</span></span>
+                                    <span class="text-gray-400">推荐曲速: <span class="text-white">70 ~ 160 BPM</span></span>
+                                </div>
+                            </div>
+                            <div class="bg-gray-700/50 rounded-lg p-4">
+                                <h4 class="font-medium text-indigo-300">Light</h4>
+                                <p class="text-sm text-gray-300 mt-1">以清亮的音色维持流行唱法的发声状态录制的声库</p>
+                                <div class="flex gap-4 mt-2 text-sm">
+                                    <span class="text-gray-400">推荐音域: <span class="text-white">F2 ~ G4</span></span>
+                                    <span class="text-gray-400">推荐曲速: <span class="text-white">70 ~ 160 BPM</span></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Credits -->
+                        <div class="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-400">角色配音</span>
+                                <p>他城（復一）</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">原音标定</span>
+                                <p>北京时域科技有限公司</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">声库制作</span>
+                                <p>北京时域科技有限公司</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Download Links -->
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-gray-700 rounded-lg text-gray-400">声库申请：已关闭申请通道</span>
+                            <a href="https://ace-studio.timedomain.cn/" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors flex items-center gap-2">
+                                <img src="../assets/icon/To_Engine_Site.svg" alt="Link" class="w-4 h-4">
+                                编辑器下载
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Sample Audition (1/2) -->
+                    <div class="lg:w-1/2 space-y-6">
+                        <h3 class="text-xl font-bold">干声试听</h3>
+                        
+                        <div class="space-y-4">
+                            <!-- Natural Samples -->
+                            <div>
+                                <h4 class="text-sm text-gray-400 mb-2">Natural 音色</h4>
+                                <div class="space-y-2">
+                                    <div class="sample-player" data-src="../assets/sample/Fuyi_ACE_Studio_Natural_01.mp3"></div>
+                                    <div class="sample-player" data-src="../assets/sample/Fuyi_ACE_Studio_Natural_02.mp3"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Whisper Samples -->
+                            <div>
+                                <h4 class="text-sm text-gray-400 mb-2">Whisper 音色</h4>
+                                <div class="space-y-2">
+                                    <div class="sample-player" data-src="../assets/sample/Fuyi_ACE_Studio_Whisper_01.mp3"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Mature Samples -->
+                            <div>
+                                <h4 class="text-sm text-gray-400 mb-2">Mature 音色</h4>
+                                <div class="space-y-2">
+                                    <div class="sample-player" data-src="../assets/sample/Fuyi_ACE_Studio_Mature_01.mp3"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Light Samples -->
+                            <div>
+                                <h4 class="text-sm text-gray-400 mb-2">Light 音色</h4>
+                                <div class="space-y-2">
+                                    <div class="sample-player" data-src="../assets/sample/Fuyi_ACE_Studio_Light_01.mp3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 歌叽歌叽 Section -->
+        <section id="engine-gjgj" class="engine-section section-full flex items-center bg-gray-800">
+            <div class="container mx-auto px-4 py-12">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Left: Voice Library Info (1/2) -->
+                    <div class="lg:w-1/2 space-y-6">
+                        <div class="flex items-center gap-4">
+                            <img src="../assets/icon/GJGJ.svg" alt="歌叽歌叽" class="w-12 h-12">
+                            <div>
+                                <h2 class="text-3xl font-bold">浮亦 for 歌叽歌叽</h2>
+                                <a href="https://gejigejikugou.com/index.html" target="_blank" class="text-indigo-400 hover:underline text-sm">引擎官网 →</a>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-300">歌叽歌叽是由腾讯音乐集团广州酷狗计算机科技有限公司推出的AI歌声合成引擎，现已停止维护。</p>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-gray-400 text-sm">支持音色</span>
+                                <p class="font-medium">Natural</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 text-sm">最新版本</span>
+                                <p class="font-medium">2022</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <span class="text-gray-400 text-sm">支持语言</span>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm">
+                                    <img src="../assets/icon/lang-zh.svg" alt="zh" class="w-4 h-4"> 汉语普通话
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Timbre Info -->
+                        <div class="space-y-3">
+                            <h3 class="font-bold">音色信息</h3>
+                            <div class="bg-gray-700/50 rounded-lg p-4">
+                                <h4 class="font-medium text-indigo-300">Natural</h4>
+                                <p class="text-sm text-gray-300 mt-1">以最自然的发声状态录制的声库</p>
+                                <div class="flex gap-4 mt-2 text-sm">
+                                    <span class="text-gray-400">推荐音域: <span class="text-white">G2 ~ E4</span></span>
+                                    <span class="text-gray-400">推荐曲速: <span class="text-white">60 ~ 150 BPM</span></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Credits -->
+                        <div class="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-400">角色配音</span>
+                                <p>他城（復一）</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">原音标定</span>
+                                <p>广州酷狗计算机科技有限公司</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">声库制作</span>
+                                <p>广州酷狗计算机科技有限公司</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Download Links -->
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-gray-700 rounded-lg text-gray-400">声库下载：无法提供</span>
+                            <a href="https://gejigejikugou.com/index.html" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors flex items-center gap-2">
+                                <img src="../assets/icon/To_Engine_Site.svg" alt="Link" class="w-4 h-4">
+                                编辑器下载
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Sample Audition (1/2) -->
+                    <div class="lg:w-1/2 space-y-6">
+                        <h3 class="text-xl font-bold">干声试听</h3>
+                        
+                        <div class="space-y-4">
+                            <!-- Natural Samples -->
+                            <div>
+                                <h4 class="text-sm text-gray-400 mb-2">Natural 音色</h4>
+                                <div class="space-y-2">
+                                    <div class="sample-player" data-src="../assets/sample/Fuyi_GJGJ_Natural_01.mp3"></div>
+                                    <div class="sample-player" data-src="../assets/sample/Fuyi_GJGJ_Natural_02.mp3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Unknown Section -->
+        <section id="engine-unknown" class="engine-section section-full flex items-center bg-gray-900">
+            <div class="container mx-auto px-4 py-12">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Left: Voice Library Info (1/2) -->
+                    <div class="lg:w-1/2 space-y-6">
+                        <div class="flex items-center gap-4">
+                            <img src="../assets/icon/Unknown.svg" alt="Unknown" class="w-12 h-12">
+                            <div>
+                                <h2 class="text-3xl font-bold">浮亦 for Unknown</h2>
+                                <span class="text-gray-400 text-sm">引擎官网：404 Not Found</span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-300">404 Not Found</p>
+                        
+                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4">
+                            <p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮亦」歌声数据库将暂时关闭声库申请通道并下架。</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-gray-400 text-sm">支持音色</span>
+                                <p class="font-medium">Natural</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 text-sm">最新版本</span>
+                                <p class="font-medium">v4</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <span class="text-gray-400 text-sm">支持语言</span>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm">
+                                    <img src="../assets/icon/lang-zh.svg" alt="zh" class="w-4 h-4"> 汉语普通话
+                                </span>
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm">
+                                    <img src="../assets/icon/lang-ja.svg" alt="ja" class="w-4 h-4"> 日语
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Timbre Info -->
+                        <div class="space-y-3">
+                            <h3 class="font-bold">音色信息</h3>
+                            <div class="bg-gray-700/50 rounded-lg p-4">
+                                <h4 class="font-medium text-indigo-300">Natural</h4>
+                                <p class="text-sm text-gray-300 mt-1">以最自然的发声状态录制的声库</p>
+                                <div class="flex gap-4 mt-2 text-sm">
+                                    <span class="text-gray-400">推荐音域: <span class="text-white">D2 ~ B4</span></span>
+                                    <span class="text-gray-400">推荐曲速: <span class="text-white">60 ~ 160 BPM</span></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Credits -->
+                        <div class="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-400">角色配音</span>
+                                <p>他城（復一）</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">原音标定</span>
+                                <p>他城（復一）</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">声库制作</span>
+                                <p>他城（復一）</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Download Links -->
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-gray-700 rounded-lg text-gray-400">声库下载：404 Not Found</span>
+                            <span class="px-4 py-2 bg-gray-700 rounded-lg text-gray-400">编辑器下载：404 Not Found</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Sample Audition (1/2) -->
+                    <div class="lg:w-1/2 space-y-6">
+                        <h3 class="text-xl font-bold">干声试听</h3>
+                        
+                        <div class="space-y-4">
+                            <!-- Natural Samples -->
+                            <div>
+                                <h4 class="text-sm text-gray-400 mb-2">Natural 音色</h4>
+                                <div class="space-y-2">
+                                    <div class="sample-player" data-src="../assets/sample/Fuyi_Unknown_Natural_01.mp3"></div>
+                                    <div class="sample-player" data-src="../assets/sample/Fuyi_Unknown_Natural_02.mp3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Music Player (Fixed Bottom Left) -->
+    <div id="music-player" class="music-player fixed bottom-4 left-4 z-40 rounded-xl p-4 w-80 shadow-2xl">
+        <div class="flex items-center gap-3 mb-3">
+            <img id="player-cover" src="../assets/album/Fuyi-Album.png" alt="Album Cover" class="w-14 h-14 rounded-lg object-cover">
+            <div class="flex-1 min-w-0">
+                <h4 id="player-title" class="font-medium truncate">选择歌曲</h4>
+                <p id="player-artist" class="text-sm text-gray-400 truncate">--</p>
+            </div>
+            <button id="player-download" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="下载">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Spectrum Visualization -->
+        <div id="spectrum" class="flex items-end justify-center h-10 gap-0.5 mb-3 bg-gray-800/50 rounded-lg p-1">
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="mb-3">
+            <input type="range" id="player-progress" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
+            <div class="flex justify-between text-xs text-gray-400 mt-1">
+                <span id="player-current-time">0:00</span>
+                <span id="player-duration">0:00</span>
+            </div>
+        </div>
+        
+        <!-- Controls -->
+        <div class="flex items-center justify-center gap-4">
+            <button id="player-prev" class="p-2 hover:bg-gray-700 rounded-full transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path>
+                </svg>
+            </button>
+            <button id="player-play" class="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-200 transition-colors">
+                <svg id="play-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
+                <svg id="pause-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+                </svg>
+            </button>
+            <button id="player-next" class="p-2 hover:bg-gray-700 rounded-full transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path>
+                </svg>
+            </button>
+            <button id="player-list" class="p-2 hover:bg-gray-700 rounded-full transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Playlist (Hidden by default) -->
+        <div id="playlist-panel" class="hidden mt-4 max-h-60 overflow-y-auto">
+            <ul id="playlist" class="space-y-1">
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top fixed bottom-4 right-4 z-40 p-3 bg-gray-800 hover:bg-gray-700 rounded-full shadow-lg transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-700 py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap items-center justify-between text-sm text-gray-400">
+                <div class="flex items-center gap-4">
+                    <span>© 2024 虚拟歌手官网</span>
+                    <span>|</span>
+                    <span>字体: MiSans by Xiaomi</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="mailto:contact@example.com" class="hover:text-white transition-colors">联系我们</a>
+                    <a href="../eula.html" class="hover:text-white transition-colors">使用规范</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Download Modal -->
+    <div id="download-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-lg w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <h3 class="text-xl font-bold mb-4">使用规范确认</h3>
+            <div id="eula-content" class="text-sm text-gray-300 mb-4 max-h-60 overflow-y-auto">
+                <h4 class="font-bold mb-2">使用规范摘要</h4>
+                <ul class="list-disc list-inside space-y-1 text-sm">
+                    <li>使用本站歌声合成数据库或角色形象时即视为同意本规约</li>
+                    <li>使用时请务必在能让观众清楚看到的地方记载角色名称</li>
+                    <li>禁止二次配布歌声数据库</li>
+                    <li>禁止使用原生采样训练AI歌声合成数据库或歌声转换模型</li>
+                    <li>由于使用本站音源及角色造成的一切问题请自负责任</li>
+                </ul>
+                <p class="mt-3 text-xs text-gray-400">完整规范请查看 <a href="../eula.html" class="text-indigo-400 hover:underline">使用规范</a> 页面</p>
+            </div>
+            <label class="flex items-center gap-2 mb-4 cursor-pointer">
+                <input type="checkbox" id="eula-agree" class="rounded">
+                <span class="text-sm">我已阅读并同意以上使用规范</span>
+            </label>
+            <div class="flex justify-end gap-3">
+                <button id="modal-cancel" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">取消</button>
+                <button id="modal-confirm" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>确认下载</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Character page specific scripts
+        document.addEventListener('DOMContentLoaded', () => {
+            // Illustration switcher
+            const iconSelector = document.querySelectorAll('.icon-selector img');
+            const mainIllust = document.getElementById('main-illust');
+            const illustDesigner = document.getElementById('illust-designer');
+            const illustArtist = document.getElementById('illust-artist');
+            const downloadIllustBtn = document.getElementById('download-illust-btn');
+            
+            let currentIllustUrl = mainIllust?.src;
+            
+            iconSelector.forEach(icon => {
+                icon.addEventListener('click', () => {
+                    // Update active state
+                    iconSelector.forEach(i => i.classList.remove('active'));
+                    icon.classList.add('active');
+                    
+                    // Update illustration
+                    if (mainIllust) {
+                        mainIllust.src = icon.dataset.illust;
+                        currentIllustUrl = icon.dataset.illust;
+                    }
+                    
+                    // Update credits
+                    if (illustDesigner) {
+                        illustDesigner.textContent = icon.dataset.designer;
+                    }
+                    if (illustArtist) {
+                        illustArtist.textContent = icon.dataset.artist;
+                    }
+                });
+            });
+            
+            // Download illustration button
+            if (downloadIllustBtn) {
+                downloadIllustBtn.addEventListener('click', () => {
+                    openDownloadModal(currentIllustUrl);
+                });
+            }
+            
+            // Scroll to top
+            const scrollBtn = document.getElementById('scroll-to-top');
+            if (scrollBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 100) {
+                        scrollBtn.classList.add('visible');
+                    } else {
+                        scrollBtn.classList.remove('visible');
+                    }
+                });
+                
+                scrollBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+            
+            // Download modal
+            const modal = document.getElementById('download-modal');
+            const agreeCheckbox = document.getElementById('eula-agree');
+            const confirmBtn = document.getElementById('modal-confirm');
+            const cancelBtn = document.getElementById('modal-cancel');
+            let pendingDownloadUrl = null;
+            
+            window.openDownloadModal = function(downloadUrl) {
+                pendingDownloadUrl = downloadUrl;
+                if (agreeCheckbox) agreeCheckbox.checked = false;
+                if (confirmBtn) confirmBtn.disabled = true;
+                if (modal) modal.classList.add('active');
+            };
+            
+            window.closeDownloadModal = function() {
+                if (modal) modal.classList.remove('active');
+                pendingDownloadUrl = null;
+            };
+            
+            if (agreeCheckbox) {
+                agreeCheckbox.addEventListener('change', () => {
+                    confirmBtn.disabled = !agreeCheckbox.checked;
+                });
+            }
+            
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', () => {
+                    if (pendingDownloadUrl) {
+                        const a = document.createElement('a');
+                        a.href = pendingDownloadUrl;
+                        a.download = '';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    }
+                    closeDownloadModal();
+                });
+            }
+            
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', closeDownloadModal);
+            }
+            
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeDownloadModal();
+                });
+            }
+            
+            // Initialize sample players
+            document.querySelectorAll('.sample-player').forEach(container => {
+                const audioUrl = container.dataset.src;
+                if (audioUrl && window.SampleAudioPlayer) {
+                    new SampleAudioPlayer(container, audioUrl);
+                }
+            });
+        });
+    </script>
+    <script src="../js/main.js"></script>
+    <script src="../js/player.js"></script>
+</body>
+</html>

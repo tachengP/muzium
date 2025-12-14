@@ -1,0 +1,476 @@
+// Music Player with Pixelated Spectrum Visualization
+
+class MusicPlayer {
+    constructor() {
+        this.audio = new Audio();
+        this.playlist = [];
+        this.currentIndex = 0;
+        this.isPlaying = false;
+        this.audioContext = null;
+        this.analyser = null;
+        this.source = null;
+        this.spectrumBars = 64; // Number of frequency bars
+        this.animationId = null;
+        
+        this.init();
+    }
+    
+    async init() {
+        await this.loadPlaylist();
+        this.setupElements();
+        this.setupEventListeners();
+        this.createSpectrumBars();
+        
+        if (this.playlist.length > 0) {
+            this.loadTrack(0);
+        }
+    }
+    
+    async loadPlaylist() {
+        try {
+            const response = await fetch('data/playlist.json');
+            this.playlist = await response.json();
+        } catch (error) {
+            console.error('Failed to load playlist:', error);
+            this.playlist = [];
+        }
+    }
+    
+    setupElements() {
+        this.playerElement = document.getElementById('music-player');
+        this.coverElement = document.getElementById('player-cover');
+        this.titleElement = document.getElementById('player-title');
+        this.artistElement = document.getElementById('player-artist');
+        this.progressElement = document.getElementById('player-progress');
+        this.currentTimeElement = document.getElementById('player-current-time');
+        this.durationElement = document.getElementById('player-duration');
+        this.playButton = document.getElementById('player-play');
+        this.playIcon = document.getElementById('play-icon');
+        this.pauseIcon = document.getElementById('pause-icon');
+        this.prevButton = document.getElementById('player-prev');
+        this.nextButton = document.getElementById('player-next');
+        this.listButton = document.getElementById('player-list');
+        this.downloadButton = document.getElementById('player-download');
+        this.spectrumContainer = document.getElementById('spectrum');
+        this.playlistPanel = document.getElementById('playlist-panel');
+        this.playlistElement = document.getElementById('playlist');
+    }
+    
+    setupEventListeners() {
+        // Play/Pause
+        this.playButton?.addEventListener('click', () => this.togglePlay());
+        
+        // Previous/Next
+        this.prevButton?.addEventListener('click', () => this.prev());
+        this.nextButton?.addEventListener('click', () => this.next());
+        
+        // Progress bar
+        this.progressElement?.addEventListener('input', (e) => {
+            const percent = e.target.value / 100;
+            this.audio.currentTime = percent * this.audio.duration;
+        });
+        
+        // Playlist toggle
+        this.listButton?.addEventListener('click', () => this.togglePlaylist());
+        
+        // Download button
+        this.downloadButton?.addEventListener('click', () => {
+            if (this.playlist[this.currentIndex]) {
+                window.openDownloadModal(this.playlist[this.currentIndex].url);
+            }
+        });
+        
+        // Audio events
+        this.audio.addEventListener('timeupdate', () => this.updateProgress());
+        this.audio.addEventListener('loadedmetadata', () => this.updateDuration());
+        this.audio.addEventListener('ended', () => this.next());
+        this.audio.addEventListener('play', () => {
+            this.isPlaying = true;
+            this.updatePlayButton();
+            this.startSpectrum();
+        });
+        this.audio.addEventListener('pause', () => {
+            this.isPlaying = false;
+            this.updatePlayButton();
+            this.stopSpectrum();
+        });
+        
+        // Build playlist UI
+        this.buildPlaylistUI();
+    }
+    
+    createSpectrumBars() {
+        if (!this.spectrumContainer) return;
+        
+        this.spectrumContainer.innerHTML = '';
+        for (let i = 0; i < this.spectrumBars; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'spectrum-bar bg-indigo-500 rounded-sm';
+            bar.style.width = `${100 / this.spectrumBars}%`;
+            bar.style.height = '2px';
+            bar.style.minWidth = '2px';
+            this.spectrumContainer.appendChild(bar);
+        }
+    }
+    
+    initAudioContext() {
+        if (this.audioContext) return;
+        
+        try {
+            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            this.analyser = this.audioContext.createAnalyser();
+            this.analyser.fftSize = 256;
+            this.source = this.audioContext.createMediaElementSource(this.audio);
+            this.source.connect(this.analyser);
+            this.analyser.connect(this.audioContext.destination);
+        } catch (error) {
+            console.error('Failed to initialize audio context:', error);
+        }
+    }
+    
+    startSpectrum() {
+        if (!this.audioContext) {
+            this.initAudioContext();
+        }
+        
+        if (this.audioContext?.state === 'suspended') {
+            this.audioContext.resume();
+        }
+        
+        this.drawSpectrum();
+    }
+    
+    stopSpectrum() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
+    }
+    
+    drawSpectrum() {
+        if (!this.analyser || !this.spectrumContainer) {
+            this.animationId = requestAnimationFrame(() => this.drawSpectrum());
+            return;
+        }
+        
+        const bufferLength = this.analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        this.analyser.getByteFrequencyData(dataArray);
+        
+        const bars = this.spectrumContainer.children;
+        const step = Math.floor(bufferLength / this.spectrumBars);
+        
+        for (let i = 0; i < this.spectrumBars && i < bars.length; i++) {
+            // Average values for this bar
+            let sum = 0;
+            for (let j = 0; j < step; j++) {
+                sum += dataArray[i * step + j];
+            }
+            const value = sum / step;
+            
+            // Pixelated effect: round to 4px increments
+            const height = Math.max(2, Math.round(value / 8) * 4);
+            bars[i].style.height = `${height}px`;
+            
+            // Color based on intensity
+            const intensity = value / 255;
+            if (intensity > 0.7) {
+                bars[i].className = 'spectrum-bar bg-red-500 rounded-sm';
+            } else if (intensity > 0.4) {
+                bars[i].className = 'spectrum-bar bg-amber-500 rounded-sm';
+            } else {
+                bars[i].className = 'spectrum-bar bg-indigo-500 rounded-sm';
+            }
+        }
+        
+        this.animationId = requestAnimationFrame(() => this.drawSpectrum());
+    }
+    
+    loadTrack(index) {
+        if (index < 0 || index >= this.playlist.length) return;
+        
+        this.currentIndex = index;
+        const track = this.playlist[index];
+        
+        this.audio.src = track.url;
+        
+        if (this.coverElement) {
+            this.coverElement.src = track.cover;
+        }
+        if (this.titleElement) {
+            this.titleElement.textContent = track.title;
+        }
+        if (this.artistElement) {
+            this.artistElement.textContent = `${track.artist} · ${track.engine}`;
+        }
+        
+        // Update playlist active state
+        this.updatePlaylistActiveState();
+    }
+    
+    togglePlay() {
+        if (this.isPlaying) {
+            this.audio.pause();
+        } else {
+            this.audio.play().catch(e => console.log('Playback failed:', e));
+        }
+    }
+    
+    play() {
+        this.audio.play().catch(e => console.log('Playback failed:', e));
+    }
+    
+    pause() {
+        this.audio.pause();
+    }
+    
+    prev() {
+        let newIndex = this.currentIndex - 1;
+        if (newIndex < 0) newIndex = this.playlist.length - 1;
+        this.loadTrack(newIndex);
+        if (this.isPlaying) this.play();
+    }
+    
+    next() {
+        let newIndex = this.currentIndex + 1;
+        if (newIndex >= this.playlist.length) newIndex = 0;
+        this.loadTrack(newIndex);
+        if (this.isPlaying) this.play();
+    }
+    
+    updatePlayButton() {
+        if (this.playIcon && this.pauseIcon) {
+            if (this.isPlaying) {
+                this.playIcon.classList.add('hidden');
+                this.pauseIcon.classList.remove('hidden');
+            } else {
+                this.playIcon.classList.remove('hidden');
+                this.pauseIcon.classList.add('hidden');
+            }
+        }
+    }
+    
+    updateProgress() {
+        if (!this.audio.duration) return;
+        
+        const percent = (this.audio.currentTime / this.audio.duration) * 100;
+        if (this.progressElement) {
+            this.progressElement.value = percent;
+        }
+        if (this.currentTimeElement) {
+            this.currentTimeElement.textContent = this.formatTime(this.audio.currentTime);
+        }
+    }
+    
+    updateDuration() {
+        if (this.durationElement) {
+            this.durationElement.textContent = this.formatTime(this.audio.duration);
+        }
+    }
+    
+    formatTime(seconds) {
+        if (isNaN(seconds)) return '0:00';
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    togglePlaylist() {
+        if (this.playlistPanel) {
+            this.playlistPanel.classList.toggle('hidden');
+        }
+    }
+    
+    buildPlaylistUI() {
+        if (!this.playlistElement) return;
+        
+        this.playlistElement.innerHTML = '';
+        
+        this.playlist.forEach((track, index) => {
+            const li = document.createElement('li');
+            li.className = 'flex items-center gap-2 p-2 rounded-lg hover:bg-gray-700/50 cursor-pointer transition-colors';
+            li.dataset.index = index;
+            
+            li.innerHTML = `
+                <img src="${track.cover}" alt="${track.title}" class="w-10 h-10 rounded object-cover">
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium truncate">${track.title}</p>
+                    <p class="text-xs text-gray-400 truncate">${track.artist}</p>
+                </div>
+            `;
+            
+            li.addEventListener('click', () => {
+                this.loadTrack(index);
+                this.play();
+            });
+            
+            this.playlistElement.appendChild(li);
+        });
+    }
+    
+    updatePlaylistActiveState() {
+        if (!this.playlistElement) return;
+        
+        const items = this.playlistElement.children;
+        for (let i = 0; i < items.length; i++) {
+            if (i === this.currentIndex) {
+                items[i].classList.add('bg-indigo-600/30');
+            } else {
+                items[i].classList.remove('bg-indigo-600/30');
+            }
+        }
+    }
+}
+
+// Sample audio player for character pages
+class SampleAudioPlayer {
+    constructor(container, audioUrl) {
+        this.container = container;
+        this.audioUrl = audioUrl;
+        this.audio = new Audio(audioUrl);
+        this.isPlaying = false;
+        this.audioContext = null;
+        this.analyser = null;
+        this.waveformData = null;
+        
+        this.init();
+    }
+    
+    async init() {
+        this.render();
+        this.setupEventListeners();
+        await this.loadWaveform();
+    }
+    
+    render() {
+        this.container.innerHTML = `
+            <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                <button class="sample-play-btn p-2 bg-indigo-600 hover:bg-indigo-500 rounded-full transition-colors">
+                    <svg class="play-icon w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"></path>
+                    </svg>
+                    <svg class="pause-icon w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+                    </svg>
+                </button>
+                <div class="waveform-display flex-1 h-10 flex items-center gap-px bg-gray-900/50 rounded overflow-hidden px-1">
+                    <!-- Waveform bars will be generated here -->
+                </div>
+                <span class="sample-time text-xs text-gray-400 w-12 text-right">0:00</span>
+            </div>
+        `;
+        
+        this.playBtn = this.container.querySelector('.sample-play-btn');
+        this.playIcon = this.container.querySelector('.play-icon');
+        this.pauseIcon = this.container.querySelector('.pause-icon');
+        this.waveformDisplay = this.container.querySelector('.waveform-display');
+        this.timeDisplay = this.container.querySelector('.sample-time');
+    }
+    
+    setupEventListeners() {
+        this.playBtn?.addEventListener('click', () => this.togglePlay());
+        
+        this.audio.addEventListener('timeupdate', () => this.updateProgress());
+        this.audio.addEventListener('loadedmetadata', () => {
+            this.timeDisplay.textContent = this.formatTime(this.audio.duration);
+        });
+        this.audio.addEventListener('ended', () => {
+            this.isPlaying = false;
+            this.updatePlayButton();
+            this.audio.currentTime = 0;
+        });
+        this.audio.addEventListener('play', () => {
+            this.isPlaying = true;
+            this.updatePlayButton();
+        });
+        this.audio.addEventListener('pause', () => {
+            this.isPlaying = false;
+            this.updatePlayButton();
+        });
+        
+        // Click on waveform to seek
+        this.waveformDisplay?.addEventListener('click', (e) => {
+            if (!this.audio.duration) return;
+            const rect = this.waveformDisplay.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            this.audio.currentTime = percent * this.audio.duration;
+        });
+    }
+    
+    async loadWaveform() {
+        // Generate pixelated waveform visualization
+        const barCount = 80;
+        this.waveformDisplay.innerHTML = '';
+        
+        for (let i = 0; i < barCount; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'waveform-bar bg-gray-600 rounded-sm transition-colors';
+            bar.style.flex = '1';
+            bar.style.minWidth = '2px';
+            // Random height for visual placeholder (will be replaced with actual waveform data)
+            const height = Math.random() * 24 + 8;
+            bar.style.height = `${height}px`;
+            this.waveformDisplay.appendChild(bar);
+        }
+    }
+    
+    togglePlay() {
+        if (this.isPlaying) {
+            this.audio.pause();
+        } else {
+            this.audio.play().catch(e => console.log('Playback failed:', e));
+        }
+    }
+    
+    updatePlayButton() {
+        if (this.playIcon && this.pauseIcon) {
+            if (this.isPlaying) {
+                this.playIcon.classList.add('hidden');
+                this.pauseIcon.classList.remove('hidden');
+            } else {
+                this.playIcon.classList.remove('hidden');
+                this.pauseIcon.classList.add('hidden');
+            }
+        }
+    }
+    
+    updateProgress() {
+        if (!this.audio.duration) return;
+        
+        const percent = this.audio.currentTime / this.audio.duration;
+        const bars = this.waveformDisplay?.children;
+        
+        if (bars) {
+            for (let i = 0; i < bars.length; i++) {
+                const barPercent = i / bars.length;
+                if (barPercent <= percent) {
+                    bars[i].classList.remove('bg-gray-600');
+                    bars[i].classList.add('bg-indigo-500');
+                } else {
+                    bars[i].classList.remove('bg-indigo-500');
+                    bars[i].classList.add('bg-gray-600');
+                }
+            }
+        }
+        
+        const remaining = this.audio.duration - this.audio.currentTime;
+        this.timeDisplay.textContent = this.formatTime(remaining);
+    }
+    
+    formatTime(seconds) {
+        if (isNaN(seconds)) return '0:00';
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+}
+
+// Initialize music player on page load
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('music-player')) {
+        window.musicPlayer = new MusicPlayer();
+    }
+});
+
+// Export for use in character pages
+window.SampleAudioPlayer = SampleAudioPlayer;
