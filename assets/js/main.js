@@ -3,6 +3,12 @@
    主要JavaScript文件
    ============================================ */
 
+// 获取基础路径
+function getBasePath() {
+  const base = document.querySelector('base');
+  return base ? base.getAttribute('href') : '/';
+}
+
 // 多语言支持
 const i18n = {
   'zh-CN': {
@@ -350,7 +356,7 @@ function createAudioElement(player) {
 
 async function loadPlaylist() {
   try {
-    const response = await fetch('/data/playlist.json');
+    const response = await fetch(getBasePath() + 'data/playlist.json');
     if (!response.ok) return [];
     return await response.json();
   } catch (e) {
@@ -730,7 +736,7 @@ async function fetchBilibiliStats() {
   
   try {
     // 从配置获取用户ID
-    const response = await fetch('/data/bilibili-config.json');
+    const response = await fetch(getBasePath() + 'data/bilibili-config.json');
     if (!response.ok) return;
     
     const config = await response.json();
