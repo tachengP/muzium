@@ -177,34 +177,39 @@
 <body class="bg-gray-900 text-white min-h-screen overflow-x-hidden">
     <!-- Header -->
     <header id="main-header" class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
-        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
             <!-- Logo -->
             <a href="index.html" class="flex items-center">
-                <img src="assets/icon/Icon_03.svg" alt="Logo" class="w-28 brightness-0 invert">
+                <img src="assets/icon/Icon_03.svg" alt="Logo" class="w-36 brightness-0 invert">
             </a>
             
             <!-- Navigation -->
             <nav class="flex items-center gap-6">
                 <!-- Character Links -->
-                <a href="character/Feimeng.html" class="nav-character theme-feimeng text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">
+                <a href="character/Feimeng.html" class="nav-character theme-feimeng text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded" style="--character-color: #000000;">
                     飞梦
                 </a>
-                <a href="character/Fuyao.html" class="nav-character theme-fuyao text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">
+                <a href="character/Fuyao.html" class="nav-character theme-fuyao text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded" style="--character-color: #FFB600;">
                     浮曜
                 </a>
-                <a href="character/Fuyi.html" class="nav-character theme-fuyi text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">
+                <a href="character/Fuyi.html" class="nav-character theme-fuyi text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded" style="--character-color: #98453F;">
                     浮亦
                 </a>
-                <a href="character/Wanzhi.html" class="nav-character theme-wanzhi text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">
+                <a href="character/Wanzhi.html" class="nav-character theme-wanzhi text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded" style="--character-color: #545F8D;">
                     宛沚
                 </a>
-                <a href="character/Fuhao.html" class="nav-character theme-fuhao text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">
+                <a href="character/Fuhao.html" class="nav-character theme-fuhao text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded" style="--character-color: #D0D7E5;">
                     浮皓
+                </a>
+                
+                <!-- EULA Link (moved here between Fuhao and Tools) -->
+                <a href="eula.html" class="text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded">
+                    使用规范
                 </a>
                 
                 <!-- Tools Dropdown -->
                 <div class="relative tools-nav">
-                    <button class="text-gray-300 hover:text-white transition-colors flex items-center gap-1">
+                    <button class="text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded flex items-center gap-1">
                         其他工具
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -212,7 +217,6 @@
                     </button>
                     <div class="tools-dropdown absolute top-full right-0 mt-2 bg-gray-800 rounded-lg shadow-xl py-2 min-w-40">
                         <a href="tools.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">工具列表</a>
-                        <a href="eula.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">使用规范</a>
                     </div>
                 </div>
                 
@@ -245,7 +249,7 @@
     </header>
     
     <!-- Main Content - Homepage -->
-    <main id="homepage" class="h-screen w-full pt-16 overflow-hidden">
+    <main id="homepage" class="h-screen w-full pt-[68px] overflow-hidden">
         <div class="character-panels flex h-full w-full">
             <!-- Feimeng Panel -->
             <div class="character-panel cursor-pointer relative group" onclick="location.href='character/Feimeng.html'" style="background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);">

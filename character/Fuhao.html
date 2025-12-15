@@ -16,22 +16,32 @@
         .nav-character:hover::after, .nav-character.active::after { transform: scaleX(1); }
         .scroll-to-top { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .scroll-to-top.visible { opacity: 1; visibility: visible; }
+        .toc-button { opacity: 1; visibility: visible; }
+        .toc-menu { opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; max-height: 70vh; overflow-y: auto; }
+        .toc-button:hover .toc-menu { opacity: 1; visibility: visible; transform: translateY(0); }
         .music-player { backdrop-filter: blur(10px); background: rgba(30, 30, 30, 0.8); }
+        .music-player.mini-mode { width: 200px; }
+        .music-player.mini-mode .mini-only { display: block; }
+        .music-player.mini-mode .full-only { display: none; }
+        .music-player:not(.mini-mode) .mini-only { display: none; }
+        .music-player:not(.mini-mode) .full-only { display: block; }
+        .mini-cover-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.3); opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .mini-cover-container:hover .mini-cover-overlay { opacity: 1; }
         .spectrum-bar { transition: height 0.05s linear; }
         .icon-selector img { transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .icon-selector img:hover { transform: scale(1.1); }
         .icon-selector img.active { box-shadow: 0 0 0 3px #D0D7E5; }
-        html { scroll-snap-type: y proximity; scroll-behavior: smooth; }
-        .section-full { min-height: 100vh; scroll-snap-align: start; }
+        html { scroll-behavior: smooth; }
+        .section-full { min-height: 100vh; }
         .tools-dropdown { opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; }
         .tools-nav:hover .tools-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
         .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .engine-section { scroll-margin-top: 80px; }
         .illust-container { position: relative; overflow: visible; width: 100%; min-width: 100%; }
-        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 60%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%); transform: scale(1.4); transform-origin: center top; }
-        .illust-container.slide-left img { transform: scale(1.4) translateX(-20px); opacity: 0; }
-        .illust-container.slide-right img { transform: scale(1.4) translateX(20px); opacity: 0; }
+        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%); transform: scale(1.65); transform-origin: center top; }
+        .illust-container.slide-left img { transform: scale(1.65) translateX(-20px); opacity: 0; }
+        .illust-container.slide-right img { transform: scale(1.65) translateX(20px); opacity: 0; }
         #playlist-panel::-webkit-scrollbar { width: 6px; }
         #playlist-panel::-webkit-scrollbar-track { background: transparent; }
         #playlist-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 3px; }
@@ -41,28 +51,28 @@
 </head>
 <body class="bg-gray-900 text-white">
     <header class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
-        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="../index.html" class="flex items-center"><img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-28 brightness-0 invert"></a>
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="../index.html" class="flex items-center"><img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-36 brightness-0 invert"></a>
             <nav class="flex items-center gap-6">
-                <a href="Feimeng.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">飞梦</a>
-                <a href="Fuyao.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">浮曜</a>
-                <a href="Fuyi.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">浮亦</a>
-                <a href="Wanzhi.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">宛沚</a>
-                <a href="Fuhao.html" class="nav-character active text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">浮皓</a>
+                <a href="Feimeng.html" class="nav-character text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded" style="--character-color: #000000;">飞梦</a>
+                <a href="Fuyao.html" class="nav-character text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded" style="--character-color: #FFB600;">浮曜</a>
+                <a href="Fuyi.html" class="nav-character text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded" style="--character-color: #98453F;">浮亦</a>
+                <a href="Wanzhi.html" class="nav-character text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded" style="--character-color: #545F8D;">宛沚</a>
+                <a href="Fuhao.html" class="nav-character active text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded" style="--character-color: #D0D7E5;">浮皓</a>
+                <a href="../eula.html" class="text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded">使用规范</a>
                 <div class="relative tools-nav">
-                    <button class="text-gray-300 hover:text-white transition-colors flex items-center gap-1">其他工具<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                    <button class="text-gray-300 hover:text-white transition-colors hover:bg-white/10 px-3 py-2 rounded flex items-center gap-1">其他工具<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
                     <div class="tools-dropdown absolute top-full right-0 mt-2 bg-gray-800 rounded-lg shadow-xl py-2 min-w-40">
                         <a href="../tools.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">工具列表</a>
-                        <a href="../eula.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">使用规范</a>
                     </div>
                 </div>
             </nav>
         </div>
     </header>
     
-    <main class="pt-16">
+    <main class="pt-[68px]">
         <section class="section-full flex items-center" style="background: linear-gradient(135deg, #D0D7E5 0%, #6B7280 100%);">
-            <div class="container mx-auto px-4 py-12">
+            <div class="container mx-auto px-4 py-18">
                 <div class="flex flex-col lg:flex-row gap-8 items-center">
                     <div class="lg:w-2/3 space-y-6">
                         <div class="flex items-center gap-4">
@@ -111,7 +121,7 @@
         
         <!-- DeepVocal Section -->
         <section id="engine-deepvocal" class="engine-section section-full flex items-center bg-gray-800">
-            <div class="container mx-auto px-4 py-12">
+            <div class="container mx-auto px-4 py-18">
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
@@ -155,7 +165,7 @@
         
         <!-- ACE Studio Section -->
         <section id="engine-ace" class="engine-section section-full flex items-center bg-gray-900">
-            <div class="container mx-auto px-4 py-12">
+            <div class="container mx-auto px-4 py-18">
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
@@ -201,7 +211,7 @@
         
         <!-- Unknown Section -->
         <section id="engine-unknown" class="engine-section section-full flex items-center bg-gray-800">
-            <div class="container mx-auto px-4 py-12">
+            <div class="container mx-auto px-4 py-18">
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
@@ -242,26 +252,64 @@
     </main>
     
     <div id="music-player" class="music-player fixed bottom-4 left-4 z-40 rounded-xl p-4 w-80 shadow-2xl">
-        <div class="flex items-center gap-3 mb-3">
-            <img id="player-cover" src="../assets/album/Fuhao-Album.png" alt="Album Cover" class="w-14 h-14 rounded-lg object-cover">
-            <div class="flex-1 min-w-0"><h4 id="player-title" class="font-medium truncate">选择歌曲</h4><p id="player-artist" class="text-sm text-gray-400 truncate">--</p></div>
-            <button id="player-download" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="下载"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
+        <!-- Full Mode Content -->
+        <div class="full-only">
+            <div class="flex items-center gap-3 mb-3">
+                <img id="player-cover" src="../assets/album/Fuhao-Album.png" alt="Album Cover" class="w-14 h-14 rounded-lg object-cover">
+                <div class="flex-1 min-w-0"><h4 id="player-title" class="font-medium truncate">选择歌曲</h4><p id="player-artist" class="text-sm text-gray-400 truncate">--</p></div>
+                <button id="player-download" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="下载"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
+            </div>
+            <div id="spectrum" class="flex items-end justify-center h-10 gap-0.5 mb-3 bg-gray-800/50 rounded-lg p-1 overflow-hidden"></div>
+            <div class="mb-3">
+                <input type="range" id="player-progress" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
+                <div class="flex justify-between text-xs text-gray-400 mt-1"><span id="player-current-time">0:00</span><span id="player-duration">0:00</span></div>
+            </div>
+            <div class="flex items-center justify-center gap-4">
+                <button id="player-prev" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path></svg></button>
+                <button id="player-play" class="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-200 transition-colors"><svg id="play-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg><svg id="pause-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+                <button id="player-next" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path></svg></button>
+                <button id="player-list" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg></button>
+                <button id="player-mini" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="小窗模式"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"></path></svg></button>
+            </div>
+            <div id="playlist-panel" class="hidden mt-4 max-h-60 overflow-y-auto"><ul id="playlist" class="space-y-1"></ul></div>
         </div>
-        <div id="spectrum" class="flex items-end justify-center h-10 gap-0.5 mb-3 bg-gray-800/50 rounded-lg p-1 overflow-hidden"></div>
-        <div class="mb-3">
-            <input type="range" id="player-progress" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
-            <div class="flex justify-between text-xs text-gray-400 mt-1"><span id="player-current-time">0:00</span><span id="player-duration">0:00</span></div>
+        
+        <!-- Mini Mode Content -->
+        <div class="mini-only">
+            <div class="mini-cover-container relative mb-2">
+                <img id="player-cover-mini" src="../assets/album/Fuhao-Album.png" alt="Album Cover" class="w-full h-auto rounded-lg object-cover">
+                <div class="mini-cover-overlay rounded-lg">
+                    <button id="player-play-mini" class="p-3 bg-white/90 text-gray-900 rounded-full hover:bg-white transition-colors">
+                        <svg class="play-icon-mini w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+                        <svg class="pause-icon-mini w-8 h-8 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <h4 id="player-title-mini" class="font-medium truncate text-sm mb-1">选择歌曲</h4>
+            <div class="mb-2">
+                <input type="range" id="player-progress-mini" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
+                <div class="flex justify-between text-xs text-gray-400 mt-1"><span id="player-current-time-mini">0:00</span><span id="player-duration-mini">0:00</span></div>
+            </div>
+            <button id="player-restore" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors text-sm">恢复常规窗口</button>
         </div>
-        <div class="flex items-center justify-center gap-4">
-            <button id="player-prev" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path></svg></button>
-            <button id="player-play" class="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-200 transition-colors"><svg id="play-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg><svg id="pause-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
-            <button id="player-next" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path></svg></button>
-            <button id="player-list" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg></button>
-        </div>
-        <div id="playlist-panel" class="hidden mt-4 max-h-60 overflow-y-auto"><ul id="playlist" class="space-y-1"></ul></div>
     </div>
     
-    <button id="scroll-to-top" class="scroll-to-top fixed bottom-4 right-4 z-40 p-3 bg-gray-800 hover:bg-gray-700 rounded-full shadow-lg transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg></button>
+    <button id="scroll-to-top" class="scroll-to-top fixed bottom-[72px] right-4 z-40 p-3 bg-gray-800 hover:bg-gray-700 rounded-full shadow-lg transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg></button>
+    
+    <!-- Table of Contents Button -->
+    <div id="toc-button" class="toc-button fixed bottom-4 right-4 z-40">
+        <button class="p-3 bg-gray-800 hover:bg-gray-700 rounded-full shadow-lg transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+        <div class="toc-menu absolute bottom-full right-0 mb-2 bg-gray-800 rounded-lg shadow-xl py-2 min-w-48">
+            <a href="#" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700 text-sm">角色信息</a>
+            <a href="#engine-deepvocal" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700 text-sm">浮皓 for DeepVocal</a>
+            <a href="#engine-ace" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700 text-sm">浮皓 for ACE Studio</a>
+            <a href="#engine-unknown" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700 text-sm">浮皓 for Unknown</a>
+        </div>
+    </div>
     
     <footer class="bg-gray-900 border-t border-gray-700 py-6">
         <div class="container mx-auto px-4">
@@ -361,54 +409,74 @@
                 if (audioUrl && window.SampleAudioPlayer) new SampleAudioPlayer(container, audioUrl);
             });
             
-            // Custom smooth scroll with bezier easing for snap sections
-            let isScrolling = false;
-            let scrollTimeout = null;
-            const sections = document.querySelectorAll('.section-full, .engine-section');
+            // Mini player functionality
+            const musicPlayer = document.getElementById('music-player');
+            const miniBtn = document.getElementById('player-mini');
+            const restoreBtn = document.getElementById('player-restore');
             
-            function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-            
-            function smoothScrollTo(targetY, duration = 600) {
-                if (isScrolling) return;
-                isScrolling = true;
-                const startY = window.scrollY;
-                const distance = targetY - startY;
-                const startTime = performance.now();
-                
-                function scrollStep(currentTime) {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    window.scrollTo(0, startY + distance * easeOutCubic(progress));
-                    if (progress < 1) requestAnimationFrame(scrollStep);
-                    else isScrolling = false;
-                }
-                requestAnimationFrame(scrollStep);
+            if (miniBtn) {
+                miniBtn.addEventListener('click', () => {
+                    musicPlayer?.classList.add('mini-mode');
+                    syncMiniPlayer();
+                });
             }
             
-            window.addEventListener('scroll', () => {
-                if (scrollTimeout) clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    if (isScrolling) return;
-                    const scrollTop = window.scrollY;
-                    const viewportHeight = window.innerHeight;
-                    let closestSection = null;
-                    let minDistance = Infinity;
-                    
-                    sections.forEach(section => {
-                        const rect = section.getBoundingClientRect();
-                        const distance = Math.abs(rect.top);
-                        if (distance < viewportHeight * 0.3 && distance < minDistance) {
-                            minDistance = distance;
-                            closestSection = section;
+            if (restoreBtn) {
+                restoreBtn.addEventListener('click', () => {
+                    musicPlayer?.classList.remove('mini-mode');
+                });
+            }
+            
+            // Sync mini player with main player
+            function syncMiniPlayer() {
+                const cover = document.getElementById('player-cover');
+                const coverMini = document.getElementById('player-cover-mini');
+                const title = document.getElementById('player-title');
+                const titleMini = document.getElementById('player-title-mini');
+                
+                if (cover && coverMini) coverMini.src = cover.src;
+                if (title && titleMini) titleMini.textContent = title.textContent;
+            }
+            
+            // Mini player play button
+            const playMiniBtn = document.getElementById('player-play-mini');
+            if (playMiniBtn && window.musicPlayer) {
+                playMiniBtn.addEventListener('click', () => {
+                    window.musicPlayer.togglePlay();
+                });
+            }
+            
+            // Mini player progress bar
+            const progressMini = document.getElementById('player-progress-mini');
+            if (progressMini && window.musicPlayer) {
+                progressMini.addEventListener('input', (e) => {
+                    const percent = e.target.value / 100;
+                    window.musicPlayer.audio.currentTime = percent * window.musicPlayer.audio.duration;
+                });
+                
+                // Sync progress
+                setInterval(() => {
+                    if (musicPlayer?.classList.contains('mini-mode') && window.musicPlayer) {
+                        const progress = (window.musicPlayer.audio.currentTime / window.musicPlayer.audio.duration) * 100 || 0;
+                        progressMini.value = progress;
+                        const currentTime = document.getElementById('player-current-time-mini');
+                        const duration = document.getElementById('player-duration-mini');
+                        if (currentTime) currentTime.textContent = window.musicPlayer.formatTime(window.musicPlayer.audio.currentTime);
+                        if (duration) duration.textContent = window.musicPlayer.formatTime(window.musicPlayer.audio.duration);
+                        
+                        // Sync play/pause icons
+                        const playIcon = document.querySelector('.play-icon-mini');
+                        const pauseIcon = document.querySelector('.pause-icon-mini');
+                        if (window.musicPlayer.isPlaying) {
+                            playIcon?.classList.add('hidden');
+                            pauseIcon?.classList.remove('hidden');
+                        } else {
+                            playIcon?.classList.remove('hidden');
+                            pauseIcon?.classList.add('hidden');
                         }
-                    });
-                    
-                    if (closestSection && minDistance > 50) {
-                        const rect = closestSection.getBoundingClientRect();
-                        smoothScrollTo(scrollTop + rect.top, 500);
                     }
-                }, 150);
-            }, { passive: true });
+                }, 100);
+            }
         });
     </script>
     <script src="../js/main.js"></script>
