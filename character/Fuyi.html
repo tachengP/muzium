@@ -67,6 +67,54 @@
         .music-player {
             backdrop-filter: blur(10px);
             background: rgba(30, 30, 30, 0.8);
+            transition: all 0.3s ease;
+        }
+        
+        /* Mini-mode styles */
+        .music-player.mini-mode {
+            width: 16rem;
+            padding: 0;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        .music-player.mini-mode .player-full-content {
+            display: none;
+        }
+        .music-player.mini-mode .player-mini-content {
+            display: block;
+        }
+        .player-mini-content {
+            display: none;
+        }
+        .mini-cover-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+        }
+        .mini-cover-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .mini-play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .mini-cover-container:hover .mini-play-overlay {
+            opacity: 1;
+        }
+        .mini-info {
+            padding: 0.5rem 0.75rem;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .mini-progress-container {
+            padding: 0 0.75rem 0.5rem;
         }
         
         /* Pixelated spectrum */
@@ -88,36 +136,119 @@
         /* Illustration container with mask effect */
         .illust-container {
             position: relative;
-            overflow: visible;
+            overflow: hidden;
             width: 100%;
             min-width: 100%;
         }
         .illust-container img {
             transition: transform 0.4s ease, opacity 0.4s ease;
-            /* Apply mask to image itself for bottom fade transparency */
-            mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-            /* Scale to focus on top 60% of image */
-            transform: scale(1.4);
+            /* Apply mask to image itself for bottom fade transparency - contained within container */
+            mask-image: linear-gradient(to bottom, black 65%, transparent 95%);
+            -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 95%);
+            /* Scale to focus on top portion of image - increased to 1.7 (120% of 1.4) */
+            transform: scale(1.7);
             transform-origin: center top;
         }
         .illust-container.slide-left img {
-            transform: scale(1.4) translateX(-20px);
+            transform: scale(1.7) translateX(-20px);
             opacity: 0;
         }
         .illust-container.slide-right img {
-            transform: scale(1.4) translateX(20px);
+            transform: scale(1.7) translateX(20px);
             opacity: 0;
         }
         
-        /* Section scroll */
+        /* Engine section spacing - increased to 150% of original */
+        .engine-section .space-y-6 {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(2.25rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(2.25rem * var(--tw-space-y-reverse));
+        }
+        
+        /* PJAX loading state */
+        .pjax-loading #pjax-container {
+            opacity: 0.6;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        
+        /* Section scroll - removed snap scroll for smoother experience */
         html {
-            scroll-snap-type: y proximity;
             scroll-behavior: smooth;
         }
         .section-full {
             min-height: 100vh;
-            scroll-snap-align: start;
+        }
+        
+        /* TOC floating button */
+        .toc-container {
+            position: fixed;
+            bottom: 4rem;
+            right: 1rem;
+            z-index: 40;
+        }
+        .toc-btn {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            background: rgba(31, 41, 55, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: background 0.3s ease;
+        }
+        .toc-btn:hover {
+            background: rgba(55, 65, 81, 0.9);
+        }
+        .toc-menu {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: 0.5rem;
+            background: rgba(31, 41, 55, 0.95);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0;
+            min-width: 10rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .toc-container:hover .toc-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .toc-menu a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #d1d5db;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+        .toc-menu a:hover {
+            color: white;
+            background: rgba(75, 85, 99, 0.5);
+        }
+        
+        /* Nav item hover effect */
+        .nav-item-hover {
+            position: relative;
+            padding: 0.25rem 0.5rem;
+        }
+        .nav-item-hover::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .nav-item-hover:hover::before {
+            opacity: 1;
         }
         
         /* Tools dropdown */
@@ -172,34 +303,39 @@
 <body class="bg-gray-900 text-white">
     <!-- Header -->
     <header id="main-header" class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
-        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
             <!-- Logo -->
             <a href="../index.html" class="flex items-center">
-                <img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-28 brightness-0 invert">
+                <img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-36 brightness-0 invert">
             </a>
             
             <!-- Navigation -->
             <nav class="flex items-center gap-6">
                 <!-- Character Links -->
-                <a href="Feimeng.html" class="nav-character theme-feimeng text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">
+                <a href="Feimeng.html" class="nav-character nav-item-hover theme-feimeng text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">
                     飞梦
                 </a>
-                <a href="Fuyao.html" class="nav-character theme-fuyao text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">
+                <a href="Fuyao.html" class="nav-character nav-item-hover theme-fuyao text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">
                     浮曜
                 </a>
-                <a href="Fuyi.html" class="nav-character active theme-fuyi text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">
+                <a href="Fuyi.html" class="nav-character nav-item-hover active theme-fuyi text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">
                     浮亦
                 </a>
-                <a href="Wanzhi.html" class="nav-character theme-wanzhi text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">
+                <a href="Wanzhi.html" class="nav-character nav-item-hover theme-wanzhi text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">
                     宛沚
                 </a>
-                <a href="Fuhao.html" class="nav-character theme-fuhao text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">
+                <a href="Fuhao.html" class="nav-character nav-item-hover theme-fuhao text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">
                     浮皓
+                </a>
+                
+                <!-- EULA Link (separate) -->
+                <a href="../eula.html" class="nav-item-hover text-gray-300 hover:text-white transition-colors">
+                    使用规范
                 </a>
                 
                 <!-- Tools Dropdown -->
                 <div class="relative tools-nav">
-                    <button class="text-gray-300 hover:text-white transition-colors flex items-center gap-1">
+                    <button class="nav-item-hover text-gray-300 hover:text-white transition-colors flex items-center gap-1">
                         其他工具
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -207,7 +343,6 @@
                     </button>
                     <div class="tools-dropdown absolute top-full right-0 mt-2 bg-gray-800 rounded-lg shadow-xl py-2 min-w-40">
                         <a href="../tools.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">工具列表</a>
-                        <a href="../eula.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">使用规范</a>
                     </div>
                 </div>
                 
@@ -235,8 +370,8 @@
         </div>
     </header>
     
-    <!-- Main Content -->
-    <main class="pt-16">
+    <!-- Main Content - PJAX Container -->
+    <main id="pjax-container" class="pt-20">
         <!-- Hero Section - Character Introduction -->
         <section class="section-full flex items-center" style="background: linear-gradient(135deg, #98453F 0%, #5C2D2D 100%);">
             <div class="container mx-auto px-4 py-12">
@@ -336,10 +471,12 @@
                             </div>
                         </div>
                         
-                        <p class="text-gray-300">DiffSinger 是由刘静林（MoonInTheRiver）开创性推出，YQ之神@OpenVPI团队接续开发维护的次世代开源AI歌声合成引擎，具有高度可定制化、更新迅速等特点。</p>
+                        <p class="text-gray-300">DiffSinger 是由刘静林（MoonInTheRiver）开创性推出，YQ之神@OpenVPI团队接续开发维护的次世代开源AI歌声合成引擎，具有高度可定制化、更新迅速等特点。DiffSinger 具有高创造力且完备的开源社区，请访问哔哩哔哩 DiffSinger开源社区 或 QQ 交流群：907879266。</p>
                         
-                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4">
-                            <p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮亦」歌声数据库将暂时关闭声库申请通道并下架。</p>
+                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4 space-y-2">
+                            <p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮亦」歌声数据库将暂时关闭声库申请通道并下架，未经许可使用与传播「浮亦」歌声数据库将不被允许。</p>
+                            <p class="text-amber-200 text-sm">⚠️ 在此希望已经获得歌声数据集副本的用户停止使用该角色所属歌声数据库进行创作，不要将其传播给其他人。</p>
+                            <p class="text-amber-200 text-sm">⚠️ 如有违背管理者个人意愿的稿件，我方可能会提出交涉下架相关视频/音频。</p>
                         </div>
                         
                         <div class="grid grid-cols-2 gap-4">
@@ -461,10 +598,12 @@
                             </div>
                         </div>
                         
-                        <p class="text-gray-300">ACE Studio 是由北京时域科技有限公司自主研发的次世代 AI 歌声合成引擎，支持汉语普通话、日语与英语等多种语言的高性能合成。</p>
+                        <p class="text-gray-300">ACE Studio 是由北京时域科技有限公司自主研发的次世代 AI 歌声合成引擎，支持汉语普通话、日语与英语等多种语言的高性能合成，现已面向个人非企业单位用户提供歌声数据库定制服务。根据不同的付费会员档位，用户可以获取声线调整、干声转换等进阶功能。</p>
                         
-                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4">
-                            <p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮亦」歌声数据库将暂时关闭声库申请通道并下架。</p>
+                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4 space-y-2">
+                            <p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮亦」歌声数据库将暂时关闭声库申请通道并下架，未经许可使用与传播「浮亦」歌声数据库将不被允许。</p>
+                            <p class="text-amber-200 text-sm">⚠️ 在此希望已经获得歌声数据集副本的用户停止使用该角色所属歌声数据库进行创作，不要将其传播给其他人。</p>
+                            <p class="text-amber-200 text-sm">⚠️ 如有违背管理者个人意愿的稿件，我方可能会提出交涉下架相关视频/音频。</p>
                         </div>
                         
                         <div class="grid grid-cols-2 gap-4">
@@ -710,8 +849,10 @@
                         
                         <p class="text-gray-300">404 Not Found</p>
                         
-                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4">
-                            <p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮亦」歌声数据库将暂时关闭声库申请通道并下架。</p>
+                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4 space-y-2">
+                            <p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮亦」歌声数据库将暂时关闭声库申请通道并下架，未经许可使用与传播「浮亦」歌声数据库将不被允许。</p>
+                            <p class="text-amber-200 text-sm">⚠️ 在此希望已经获得歌声数据集副本的用户停止使用该角色所属歌声数据库进行创作，不要将其传播给其他人。</p>
+                            <p class="text-amber-200 text-sm">⚠️ 如有违背管理者个人意愿的稿件，我方可能会提出交涉下架相关视频/音频。</p>
                         </div>
                         
                         <div class="grid grid-cols-2 gap-4">
@@ -795,64 +936,117 @@
     
     <!-- Music Player (Fixed Bottom Left) -->
     <div id="music-player" class="music-player fixed bottom-4 left-4 z-40 rounded-xl p-4 w-80 shadow-2xl">
-        <div class="flex items-center gap-3 mb-3">
-            <img id="player-cover" src="../assets/album/Fuyi-Album.png" alt="Album Cover" class="w-14 h-14 rounded-lg object-cover">
-            <div class="flex-1 min-w-0">
-                <h4 id="player-title" class="font-medium truncate">选择歌曲</h4>
-                <p id="player-artist" class="text-sm text-gray-400 truncate">--</p>
+        <!-- Full Player Content -->
+        <div class="player-full-content">
+            <div class="flex items-center gap-3 mb-3">
+                <img id="player-cover" src="../assets/album/Fuyi-Album.png" alt="Album Cover" class="w-14 h-14 rounded-lg object-cover">
+                <div class="flex-1 min-w-0">
+                    <h4 id="player-title" class="font-medium truncate">选择歌曲</h4>
+                    <p id="player-artist" class="text-sm text-gray-400 truncate">--</p>
+                </div>
+                <button id="player-mini-mode" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="小窗模式">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 3h-4m4 0v4m0-4l-5 5M4 21h4m-4 0v-4m0 4l5-5"></path>
+                    </svg>
+                </button>
+                <button id="player-download" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="下载">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                </button>
             </div>
-            <button id="player-download" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="下载">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                </svg>
-            </button>
-        </div>
-        
-        <!-- Spectrum Visualization -->
-        <div id="spectrum" class="flex items-end justify-center h-10 gap-0.5 mb-3 bg-gray-800/50 rounded-lg p-1 overflow-hidden">
-        </div>
-        
-        <!-- Progress Bar -->
-        <div class="mb-3">
-            <input type="range" id="player-progress" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
-            <div class="flex justify-between text-xs text-gray-400 mt-1">
-                <span id="player-current-time">0:00</span>
-                <span id="player-duration">0:00</span>
+            
+            <!-- Spectrum Visualization -->
+            <div id="spectrum" class="flex items-end justify-center h-10 gap-0.5 mb-3 bg-gray-800/50 rounded-lg p-1 overflow-hidden">
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="mb-3">
+                <input type="range" id="player-progress" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
+                <div class="flex justify-between text-xs text-gray-400 mt-1">
+                    <span id="player-current-time">0:00</span>
+                    <span id="player-duration">0:00</span>
+                </div>
+            </div>
+            
+            <!-- Controls -->
+            <div class="flex items-center justify-center gap-4">
+                <button id="player-prev" class="p-2 hover:bg-gray-700 rounded-full transition-colors">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path>
+                    </svg>
+                </button>
+                <button id="player-play" class="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-200 transition-colors">
+                    <svg id="play-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"></path>
+                    </svg>
+                    <svg id="pause-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+                    </svg>
+                </button>
+                <button id="player-next" class="p-2 hover:bg-gray-700 rounded-full transition-colors">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path>
+                    </svg>
+                </button>
+                <button id="player-list" class="p-2 hover:bg-gray-700 rounded-full transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Playlist (Hidden by default) -->
+            <div id="playlist-panel" class="hidden mt-4 max-h-60 overflow-y-auto">
+                <ul id="playlist" class="space-y-1">
+                </ul>
             </div>
         </div>
         
-        <!-- Controls -->
-        <div class="flex items-center justify-center gap-4">
-            <button id="player-prev" class="p-2 hover:bg-gray-700 rounded-full transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path>
-                </svg>
-            </button>
-            <button id="player-play" class="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-200 transition-colors">
-                <svg id="play-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"></path>
-                </svg>
-                <svg id="pause-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
-                </svg>
-            </button>
-            <button id="player-next" class="p-2 hover:bg-gray-700 rounded-full transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path>
-                </svg>
-            </button>
-            <button id="player-list" class="p-2 hover:bg-gray-700 rounded-full transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
-                </svg>
-            </button>
+        <!-- Mini-mode Content -->
+        <div class="player-mini-content">
+            <div class="mini-cover-container">
+                <img id="player-cover-mini" src="../assets/album/Fuyi-Album.png" alt="Album Cover">
+                <div class="mini-play-overlay">
+                    <button id="player-mini-play" class="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-200 transition-colors">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <button id="player-restore" class="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-black/70 rounded-full transition-colors" title="恢复常规窗口">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="mini-info">
+                <h4 id="player-title-mini" class="font-medium truncate text-sm">选择歌曲</h4>
+            </div>
+            <div class="mini-progress-container">
+                <input type="range" id="player-progress-mini" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
+                <div class="flex justify-between text-xs text-gray-400 mt-1">
+                    <span id="player-current-time-mini">0:00</span>
+                    <span id="player-duration-mini">0:00</span>
+                </div>
+            </div>
         </div>
-        
-        <!-- Playlist (Hidden by default) -->
-        <div id="playlist-panel" class="hidden mt-4 max-h-60 overflow-y-auto">
-            <ul id="playlist" class="space-y-1">
-            </ul>
+    </div>
+    
+    <!-- TOC (Table of Contents) Button -->
+    <div class="toc-container">
+        <div class="toc-menu">
+            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">角色信息</a>
+            <a href="#engine-diffsinger">浮亦 for DiffSinger</a>
+            <a href="#engine-ace">浮亦 for ACE Studio</a>
+            <a href="#engine-gjgj">浮亦 for 歌叽歌叽</a>
+            <a href="#engine-unknown">浮亦 for Unknown</a>
         </div>
+        <button class="toc-btn" title="目录">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+            </svg>
+        </button>
     </div>
     
     <!-- Scroll to Top Button -->
@@ -1055,76 +1249,10 @@
                     new SampleAudioPlayer(container, audioUrl);
                 }
             });
-            
-            // Custom smooth scroll with bezier easing for snap sections
-            let isScrolling = false;
-            let scrollTimeout = null;
-            const sections = document.querySelectorAll('.section-full, .engine-section');
-            
-            // Bezier easing function (ease-out cubic)
-            function easeOutCubic(t) {
-                return 1 - Math.pow(1 - t, 3);
-            }
-            
-            // Smooth scroll to target with custom easing
-            function smoothScrollTo(targetY, duration = 600) {
-                if (isScrolling) return;
-                isScrolling = true;
-                const startY = window.scrollY;
-                const distance = targetY - startY;
-                const startTime = performance.now();
-                
-                function scrollStep(currentTime) {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    const easedProgress = easeOutCubic(progress);
-                    
-                    window.scrollTo(0, startY + distance * easedProgress);
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(scrollStep);
-                    } else {
-                        isScrolling = false;
-                    }
-                }
-                
-                requestAnimationFrame(scrollStep);
-            }
-            
-            // Handle scroll snap with custom easing
-            window.addEventListener('scroll', () => {
-                if (scrollTimeout) clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    if (isScrolling) return;
-                    
-                    const scrollTop = window.scrollY;
-                    const viewportHeight = window.innerHeight;
-                    
-                    // Find the closest section
-                    let closestSection = null;
-                    let minDistance = Infinity;
-                    
-                    sections.forEach(section => {
-                        const rect = section.getBoundingClientRect();
-                        const sectionTop = scrollTop + rect.top;
-                        const distance = Math.abs(rect.top);
-                        
-                        // Only consider sections that are close to viewport top
-                        if (distance < viewportHeight * 0.3 && distance < minDistance) {
-                            minDistance = distance;
-                            closestSection = section;
-                        }
-                    });
-                    
-                    if (closestSection && minDistance > 50) {
-                        const rect = closestSection.getBoundingClientRect();
-                        smoothScrollTo(scrollTop + rect.top, 500);
-                    }
-                }, 150);
-            }, { passive: true });
         });
     </script>
     <script src="../js/main.js"></script>
     <script src="../js/player.js"></script>
+    <script src="../js/pjax.js"></script>
 </body>
 </html>

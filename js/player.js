@@ -1,4 +1,9 @@
 // Music Player with Pixelated Spectrum Visualization
+// 
+// PJAX Integration:
+// This player works with the PJAX system (pjax.js) to persist across page navigation.
+// The player exists outside the #pjax-container, so it won't be swapped during navigation.
+// Session state is saved/restored via sessionStorage for seamless playback continuity.
 
 class MusicPlayer {
     constructor() {
@@ -91,14 +96,10 @@ class MusicPlayer {
             const response = await fetch(basePath + 'data/playlist.json');
             const playlistData = await response.json();
             
-            // Use GitHub raw URLs for faster loading when hosted on GitHub Pages
-            const isGitHubPages = window.location.hostname.endsWith('.github.io');
-            const githubRawBase = 'https://raw.githubusercontent.com/tachengP/muzium/main';
-            
-            // Convert paths based on hosting environment
+            // Convert paths to use relative paths (reverted from GitHub raw URLs)
             this.playlist = playlistData.map(track => ({
                 ...track,
-                url: isGitHubPages ? githubRawBase + track.url : basePath + track.url.replace(/^\//, ''),
+                url: basePath + track.url.replace(/^\//, ''),
                 cover: basePath + track.cover.replace(/^\//, '')
             }));
             
@@ -143,6 +144,17 @@ class MusicPlayer {
         this.spectrumContainer = document.getElementById('spectrum');
         this.playlistPanel = document.getElementById('playlist-panel');
         this.playlistElement = document.getElementById('playlist');
+        
+        // Mini-mode elements
+        this.miniModeButton = document.getElementById('player-mini-mode');
+        this.restoreButton = document.getElementById('player-restore');
+        this.miniPlayButton = document.getElementById('player-mini-play');
+        this.coverMiniElement = document.getElementById('player-cover-mini');
+        this.titleMiniElement = document.getElementById('player-title-mini');
+        this.progressMiniElement = document.getElementById('player-progress-mini');
+        this.currentTimeMiniElement = document.getElementById('player-current-time-mini');
+        this.durationMiniElement = document.getElementById('player-duration-mini');
+        this.isMiniMode = false;
     }
     
     setupEventListeners() {
@@ -153,11 +165,13 @@ class MusicPlayer {
         this.prevButton?.addEventListener('click', () => this.prev());
         this.nextButton?.addEventListener('click', () => this.next());
         
-        // Progress bar
-        this.progressElement?.addEventListener('input', (e) => {
+        // Progress bar handler
+        const handleProgressInput = (e) => {
             const percent = e.target.value / 100;
             this.audio.currentTime = percent * this.audio.duration;
-        });
+        };
+        this.progressElement?.addEventListener('input', handleProgressInput);
+        this.progressMiniElement?.addEventListener('input', handleProgressInput);
         
         // Playlist toggle
         this.listButton?.addEventListener('click', () => this.togglePlaylist());
@@ -184,8 +198,20 @@ class MusicPlayer {
             this.stopSpectrum();
         });
         
+        // Mini-mode toggle
+        this.miniModeButton?.addEventListener('click', () => this.toggleMiniMode());
+        this.restoreButton?.addEventListener('click', () => this.toggleMiniMode());
+        this.miniPlayButton?.addEventListener('click', () => this.togglePlay());
+        
         // Build playlist UI
         this.buildPlaylistUI();
+    }
+    
+    toggleMiniMode() {
+        this.isMiniMode = !this.isMiniMode;
+        if (this.playerElement) {
+            this.playerElement.classList.toggle('mini-mode', this.isMiniMode);
+        }
     }
     
     createSpectrumBars() {
@@ -301,8 +327,16 @@ class MusicPlayer {
         if (this.coverElement) {
             this.coverElement.src = track.cover;
         }
+        // Sync mini-mode cover
+        if (this.coverMiniElement) {
+            this.coverMiniElement.src = track.cover;
+        }
         if (this.titleElement) {
             this.titleElement.textContent = track.title;
+        }
+        // Sync mini-mode title
+        if (this.titleMiniElement) {
+            this.titleMiniElement.textContent = track.title;
         }
         if (this.artistElement) {
             this.artistElement.textContent = `${track.artist} · ${track.engine}`;
@@ -364,14 +398,26 @@ class MusicPlayer {
         if (this.progressElement) {
             this.progressElement.value = percent;
         }
+        // Sync mini-mode progress
+        if (this.progressMiniElement) {
+            this.progressMiniElement.value = percent;
+        }
         if (this.currentTimeElement) {
             this.currentTimeElement.textContent = this.formatTime(this.audio.currentTime);
+        }
+        // Sync mini-mode current time
+        if (this.currentTimeMiniElement) {
+            this.currentTimeMiniElement.textContent = this.formatTime(this.audio.currentTime);
         }
     }
     
     updateDuration() {
         if (this.durationElement) {
             this.durationElement.textContent = this.formatTime(this.audio.duration);
+        }
+        // Sync mini-mode duration
+        if (this.durationMiniElement) {
+            this.durationMiniElement.textContent = this.formatTime(this.audio.duration);
         }
     }
     
