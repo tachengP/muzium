@@ -176,9 +176,9 @@
         }
         .illust-container img {
             transition: transform 0.4s ease, opacity 0.4s ease;
-            /* Apply mask to image itself for bottom fade transparency - contained within container */
-            mask-image: linear-gradient(to bottom, black 65%, transparent 95%);
-            -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 95%);
+            /* Apply mask to image itself for bottom fade transparency - bottom 10% gradually transparent */
+            mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
             /* Scale to focus on top portion of image - increased to 1.7 (120% of 1.4) */
             transform: scale(1.7);
             transform-origin: center top;
@@ -202,12 +202,7 @@
         }
         
         /* Icon selector - stick to the right edge */
-        .icon-selector {
-            position: fixed;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-        }
+        /* Icon selector is absolute within hero section only - not fixed */
         
         /* Engine section spacing - increased to 150% of original */
         .engine-section .space-y-6 {
@@ -260,7 +255,7 @@
             background: rgba(31, 41, 55, 0.95);
             border-radius: 0.5rem;
             padding: 0.5rem 0;
-            min-width: 10rem;
+            min-width: 15rem;
             opacity: 0;
             visibility: hidden;
             transform: translateY(10px);
@@ -354,7 +349,7 @@
 <body class="bg-gray-900 text-white">
     <!-- Header -->
     <header id="main-header" class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
-        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div class="container mx-auto px-4 py-6 flex items-center justify-between">
             <!-- Logo -->
             <a href="../index.html" class="flex items-center">
                 <img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-36 brightness-0 invert">
@@ -495,7 +490,7 @@
                     </div>
                     
                     <!-- Icon Selector - Fixed to right edge -->
-                    <div class="icon-selector flex flex-col gap-2 bg-black/30 rounded-l-lg p-2 z-20">
+                    <div class="icon-selector absolute right-0 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 bg-black/30 rounded-l-lg p-2 z-20">
                         <img src="../assets/icon/Fuyi_Icon_01.png" alt="立绘1" class="w-12 h-12 rounded-lg cursor-pointer object-cover" data-illust="../assets/illust/Fuyi_Illust_01.png" data-designer="99円" data-artist="99円">
                         <img src="../assets/icon/Fuyi_Icon_02.png" alt="立绘2" class="w-12 h-12 rounded-lg cursor-pointer object-cover" data-illust="../assets/illust/Fuyi_Illust_02.png" data-designer="99円" data-artist="CruxLake">
                         <img src="../assets/icon/Fuyi_Icon_03.png" alt="立绘3" class="w-12 h-12 rounded-lg cursor-pointer object-cover" data-illust="../assets/illust/Fuyi_Illust_03.png" data-designer="海纳不是法号" data-artist="海纳不是法号">
@@ -1060,11 +1055,11 @@
                 <div class="mini-cover-container">
                     <img id="player-cover-mini" src="../assets/album/Fuyi-Album.png" alt="Album Cover">
                     <div class="mini-play-overlay">
-                        <button id="player-mini-play" class="p-1.5 bg-white text-gray-900 rounded-full hover:bg-gray-200 transition-colors">
-                            <svg id="mini-play-icon" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <button id="player-mini-play" class="p-1.5 hover:bg-black/30 rounded-full transition-colors">
+                            <svg id="mini-play-icon" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"></path>
                             </svg>
-                            <svg id="mini-pause-icon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24">
+                            <svg id="mini-pause-icon" class="w-4 h-4 text-white hidden" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
                             </svg>
                         </button>

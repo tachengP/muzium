@@ -31,19 +31,52 @@
         .scroll-to-top { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .scroll-to-top.visible { opacity: 1; visibility: visible; }
         
-        .prose h2 { font-size: 1.5rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #f3f4f6; }
+        .prose h2 { font-size: 1.5rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; color: #f3f4f6; scroll-margin-top: 100px; }
         .prose h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; color: #e5e7eb; }
         .prose p { margin-bottom: 1rem; color: #d1d5db; }
         .prose ul, .prose ol { margin-bottom: 1rem; padding-left: 1.5rem; color: #d1d5db; }
         .prose li { margin-bottom: 0.5rem; }
         .prose blockquote { border-left: 4px solid #4f46e5; padding-left: 1rem; margin: 1rem 0; color: #9ca3af; font-style: italic; }
         .prose strong { color: #f9fafb; }
+        
+        /* Music player styles */
+        .music-player { backdrop-filter: blur(10px); background: rgba(30, 30, 30, 0.8); transition: all 0.3s ease; }
+        .music-player.mini-mode { width: 18rem; padding: 0.375rem; border-radius: 0.75rem; overflow: hidden; }
+        .music-player.mini-mode .player-full-content { display: none; }
+        .music-player.mini-mode .player-mini-content { display: flex; flex-direction: column; gap: 0.125rem; }
+        .player-mini-content { display: none; }
+        .mini-player-row { display: flex; align-items: center; gap: 0.5rem; }
+        .mini-cover-container { position: relative; width: 2.25rem; height: 2.25rem; flex-shrink: 0; }
+        .mini-cover-container img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; transition: transform 0.3s ease; }
+        .mini-cover-container img.rotating { animation: rotate-cover 8s linear infinite; }
+        @keyframes rotate-cover { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .mini-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.4); border-radius: 50%; opacity: 0; transition: opacity 0.2s ease; }
+        .mini-cover-container:hover .mini-play-overlay { opacity: 1; }
+        .mini-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.125rem; }
+        .mini-song-info { text-align: center; font-size: 0.75rem; color: #d1d5db; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .mini-progress-container { width: 100%; }
+        .mini-restore-btn { flex-shrink: 0; }
+        .spectrum-bar { transition: height 0.05s linear; }
+        #playlist-panel::-webkit-scrollbar { width: 6px; }
+        #playlist-panel::-webkit-scrollbar-track { background: transparent; }
+        #playlist-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 3px; }
+        #playlist-panel::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
+        #playlist-panel { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.3) transparent; }
+        
+        /* TOC menu styles */
+        .toc-container { position: fixed; bottom: 4rem; right: 1rem; z-index: 40; }
+        .toc-btn { width: 3rem; height: 3rem; border-radius: 9999px; background: rgba(31, 41, 55, 0.9); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: background 0.3s ease; }
+        .toc-btn:hover { background: rgba(55, 65, 81, 0.9); }
+        .toc-menu { position: absolute; bottom: 100%; right: 0; margin-bottom: 0.5rem; background: rgba(31, 41, 55, 0.95); border-radius: 0.5rem; padding: 0.5rem 0; min-width: 15rem; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .toc-container:hover .toc-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .toc-menu a { display: block; padding: 0.5rem 1rem; color: #d1d5db; font-size: 0.875rem; transition: all 0.2s ease; }
+        .toc-menu a:hover { color: white; background: rgba(75, 85, 99, 0.5); }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen">
     <!-- Header -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
-        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="container mx-auto px-4 py-6 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2">
                 <img src="assets/icon/Icon_03.svg" alt="Logo" class="h-10 w-10">
                 <span class="text-xl font-bold hidden sm:block">虚拟歌手</span>
@@ -80,11 +113,11 @@
                     尽管已经停止维护与劝诫停止使用，角色「飞梦SoaringDream」将始终以配布时随库分发的EULA为准。
                 </blockquote>
                 
-                <h2>关于著作者</h2>
+                <h2 id="about-author">关于著作者</h2>
                 <p>本规范适用的角色对应歌声合成数据库的制作、管理<strong>分别由多人担当</strong>，详见各角色详细资料。</p>
                 <p><strong>禁止冒领角色歌声合成数据库制作者、形象设计者身份。</strong></p>
                 
-                <h2>注意</h2>
+                <h2 id="notice">注意</h2>
                 <p>本歌声合成数据库及形象使用规范（以下简称本规范），是关于系列虚拟歌手角色的终端用户（以下简称用户）与我方及引擎开发方的规约。<strong>使用本站歌声合成数据库或角色形象时即视为同意本规约。</strong></p>
                 <p>本站配布歌声合成数据库是以在「VocalSharp」、「DeepVocal」、「Project Vogen」等歌声合成平台上使用为前提制作的，因此<strong>不保证能在其他软件上正常使用</strong>。</p>
                 <p><strong>使用本站歌声合成数据库或者角色形象时，请务必在能让观众清楚看到的地方记载角色名称。</strong></p>
@@ -92,7 +125,7 @@
                 <p>由于使用本站音源及角色造成的一切问题请<strong>自负责任</strong>。</p>
                 <p>本规约有在<strong>未经事先通知的情况下</strong>被修改的<strong>可能性</strong>。</p>
                 
-                <h2>创作许可条目</h2>
+                <h2 id="permitted">创作许可条目</h2>
                 <ol>
                     <li>使用以上角色歌声合成数据库和角色形象进行图画、文字、音乐、语音、视频等形式的二次创作作品；</li>
                     <li>进行能辨认出角色原型程度的服装更改、相貌更改、年龄更改等描写；</li>
@@ -102,7 +135,7 @@
                     <li>将自己制作的图画、3D模型、工程文件等素材作为素材公开配布。</li>
                 </ol>
                 
-                <h2>创作禁止条目</h2>
+                <h2 id="prohibited">创作禁止条目</h2>
                 <ol>
                     <li>动物化、兽人化、机械化等人外化描写；</li>
                     <li>对歌声合成数据库本体进行再次加工（如提取原音、修改采样、导出采样制作其他引擎等）、二次配布；</li>
@@ -115,7 +148,7 @@
                     <li>任何刻意诋毁角色形象的行为，其他违反法律及公众道德的行为，以及<strong>管理者认为不当的行为</strong>。</li>
                 </ol>
                 
-                <h2>创作补充事项</h2>
+                <h2 id="supplement">创作补充事项</h2>
                 <ol>
                     <li>即使内容不涉及年龄限制，仍然推荐对于色情、暴力等可能造成他人不适的内容<strong>添加预警</strong>，并尽量<strong>避免被搜索到</strong>；</li>
                     <li>当作品涉及明确的成人内容时，请务必在<strong>展示出作品中成人内容之前</strong>设置预警，并且将其设置为<strong>通过角色名称无法搜索到</strong>以及<strong>18岁以下的人无法查看</strong>的状态；</li>
@@ -129,7 +162,7 @@
                     <li>用户在注明输入源的情况下，可以使用本规范所约束角色所属歌声数据库制作歌声转换输入源。</li>
                 </ol>
                 
-                <h2>对官方设定与二次设定进行引导与规范的特别说明</h2>
+                <h2 id="secondary-settings">对官方设定与二次设定进行引导与规范的特别说明</h2>
                 <p>为了避免误解，未经过我方同意，<strong>禁止</strong>将本说明适用人物以二次设定的形象与其他虚拟歌手的官方设定关联，<strong>禁止</strong>使用本说明适用人物二次设定的形象参与其他虚拟歌手的官方<strong>人格化运营</strong>中。</p>
                 <p>对于一定规模的作品（如系列曲、架空世界等），在涉及到对本说明适用人物的设定进行细化、补充与一定程度的修改等其它类型的二次设定时，请在合适的位置<strong>标明该二次设定从属的项目，并尽量减少使用本名</strong>。</p>
                 <blockquote>我方认为，合适的做法可以参考其他相似作品中利用虚拟歌手形象再次创作的人物设计，如KAITO在MitchieM老师的作品《德川杯面禁止令》中饰演架空世界原创角色"家夷斗"，洛天依在乌龟Sui老师的作品《权御天下》中饰演历史角色"孙权"等。</blockquote>
@@ -137,7 +170,7 @@
                 <p><strong>请注意区分官方设定与二次设定。</strong></p>
                 <p><strong>使用在本说明约束下的二次设定得到我方支持，但不代表我方对本说明适用人物的角色理解，不作为我方的官方立场。</strong></p>
                 
-                <h2>同人活动与商业盈利</h2>
+                <h2 id="commercial">同人活动与商业盈利</h2>
                 <p>这是一些<strong>视情况可能会需要你联系作者</strong>的行为相关的解说，主要涉及各种与金钱交易有关的事项。</p>
                 <p>在网络上的非盈利使用只要确认上述创作规约即可。</p>
                 <p>但是如果你的作品有发生盈利/获得收入的可能性，则请务必记得事先阅读以下内容。</p>
@@ -192,11 +225,69 @@
                     <li>参加比赛而获得的奖金或奖品。</li>
                 </ul>
                 
-                <h2>用户使用规范拟定与纠错感谢名单</h2>
+                <h2 id="credits">用户使用规范拟定与纠错感谢名单</h2>
                 <p>Haru.jpg、夏宇、Dec顾令</p>
             </article>
         </div>
     </main>
+    
+    <!-- Music Player (Fixed Bottom Left) - Default to mini mode -->
+    <div id="music-player" class="music-player fixed bottom-4 left-4 z-40 rounded-xl p-4 w-80 shadow-2xl mini-mode">
+        <!-- Full Player Content -->
+        <div class="player-full-content">
+            <div class="flex items-center gap-3 mb-3">
+                <img id="player-cover" src="assets/album/Fuyi-Album.png" alt="Album Cover" class="w-14 h-14 rounded-lg object-cover">
+                <div class="flex-1 min-w-0"><h4 id="player-title" class="font-medium truncate">选择歌曲</h4><p id="player-artist" class="text-sm text-gray-400 truncate">--</p></div>
+                <button id="player-mini-mode" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="小窗模式"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 3h-4m4 0v4m0-4l-5 5M4 21h4m-4 0v-4m0 4l5-5"></path></svg></button>
+                <button id="player-download" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="下载"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
+            </div>
+            <div id="spectrum" class="flex items-end justify-center h-10 gap-0.5 mb-3 bg-gray-800/50 rounded-lg p-1 overflow-hidden"></div>
+            <div class="mb-3">
+                <input type="range" id="player-progress" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
+                <div class="flex justify-between text-xs text-gray-400 mt-1"><span id="player-current-time">0:00</span><span id="player-duration">0:00</span></div>
+            </div>
+            <div class="flex items-center justify-center gap-4">
+                <button id="player-prev" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path></svg></button>
+                <button id="player-play" class="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-200 transition-colors"><svg id="play-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg><svg id="pause-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+                <button id="player-next" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path></svg></button>
+                <button id="player-list" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg></button>
+            </div>
+            <div id="playlist-panel" class="hidden mt-4 max-h-60 overflow-y-auto"><ul id="playlist" class="space-y-1"></ul></div>
+        </div>
+        <!-- Mini-mode Content -->
+        <div class="player-mini-content">
+            <div class="mini-player-row">
+                <div class="mini-cover-container">
+                    <img id="player-cover-mini" src="assets/album/Fuyi-Album.png" alt="Album Cover">
+                    <div class="mini-play-overlay"><button id="player-mini-play" class="p-1.5 hover:bg-black/30 rounded-full transition-colors"><svg id="mini-play-icon" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg><svg id="mini-pause-icon" class="w-4 h-4 text-white hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button></div>
+                </div>
+                <div class="mini-info">
+                    <div id="player-song-info-mini" class="mini-song-info">选择歌曲</div>
+                    <div class="mini-progress-container">
+                        <input type="range" id="player-progress-mini" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
+                        <div class="flex justify-between text-xs text-gray-500 mt-0.5"><span id="player-current-time-mini">0:00</span><span id="player-duration-mini">0:00</span></div>
+                    </div>
+                </div>
+                <button id="player-restore" class="mini-restore-btn p-1.5 bg-black/30 hover:bg-black/50 rounded-full transition-colors" title="恢复常规窗口"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg></button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TOC Button -->
+    <div class="toc-container">
+        <div class="toc-menu">
+            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">回到顶部</a>
+            <a href="#about-author">关于著作者</a>
+            <a href="#notice">注意</a>
+            <a href="#permitted">创作许可条目</a>
+            <a href="#prohibited">创作禁止条目</a>
+            <a href="#supplement">创作补充事项</a>
+            <a href="#secondary-settings">对官方设定与二次设定进行引导与规范的特别说明</a>
+            <a href="#commercial">同人活动与商业盈利</a>
+            <a href="#credits">用户使用规范拟定与纠错感谢名单</a>
+        </div>
+        <button class="toc-btn" title="目录"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg></button>
+    </div>
     
     <!-- Scroll to Top Button -->
     <button id="scroll-to-top" class="scroll-to-top fixed bottom-4 right-4 z-40 p-3 bg-gray-800 hover:bg-gray-700 rounded-full shadow-lg transition-colors">
@@ -235,5 +326,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
+    <script src="js/main.js"></script>
+    <script src="js/player.js"></script>
 </body>
 </html>

@@ -45,8 +45,7 @@
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .engine-section { scroll-margin-top: 80px; }
         .illust-container { position: relative; overflow: hidden; }
-        .illust-container::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 30%; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8)); pointer-events: none; }
-        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; }
+        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 90%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%); }
         .illust-container.slide-left img { transform: translateX(-20px); opacity: 0; }
         .illust-container.slide-right img { transform: translateX(20px); opacity: 0; }
         #playlist-panel::-webkit-scrollbar { width: 6px; }
@@ -60,7 +59,7 @@
         .toc-container { position: fixed; bottom: 4rem; right: 1rem; z-index: 40; }
         .toc-btn { width: 3rem; height: 3rem; border-radius: 9999px; background: rgba(31, 41, 55, 0.9); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: background 0.3s ease; }
         .toc-btn:hover { background: rgba(55, 65, 81, 0.9); }
-        .toc-menu { position: absolute; bottom: 100%; right: 0; margin-bottom: 0.5rem; background: rgba(31, 41, 55, 0.95); border-radius: 0.5rem; padding: 0.5rem 0; min-width: 10rem; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .toc-menu { position: absolute; bottom: 100%; right: 0; margin-bottom: 0.5rem; background: rgba(31, 41, 55, 0.95); border-radius: 0.5rem; padding: 0.5rem 0; min-width: 15rem; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         .toc-container:hover .toc-menu { opacity: 1; visibility: visible; transform: translateY(0); }
         .toc-menu a { display: block; padding: 0.5rem 1rem; color: #d1d5db; font-size: 0.875rem; transition: all 0.2s ease; }
         .toc-menu a:hover { color: white; background: rgba(75, 85, 99, 0.5); }
@@ -69,7 +68,7 @@
 <body class="bg-gray-900 text-white">
     <!-- Header -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
-        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div class="container mx-auto px-4 py-6 flex items-center justify-between">
             <a href="../index.html" class="flex items-center">
                 <img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-36 brightness-0 invert">
             </a>
@@ -304,7 +303,7 @@
             <div class="mini-player-row">
                 <div class="mini-cover-container">
                     <img id="player-cover-mini" src="../assets/album/Feimeng-Album.png" alt="Album Cover">
-                    <div class="mini-play-overlay"><button id="player-mini-play" class="p-1.5 bg-white text-gray-900 rounded-full hover:bg-gray-200 transition-colors"><svg id="mini-play-icon" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg><svg id="mini-pause-icon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button></div>
+                    <div class="mini-play-overlay"><button id="player-mini-play" class="p-1.5 hover:bg-black/30 rounded-full transition-colors"><svg id="mini-play-icon" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg><svg id="mini-pause-icon" class="w-4 h-4 text-white hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button></div>
                 </div>
                 <div class="mini-info">
                     <div id="player-song-info-mini" class="mini-song-info">选择歌曲</div>
