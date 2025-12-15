@@ -91,14 +91,10 @@ class MusicPlayer {
             const response = await fetch(basePath + 'data/playlist.json');
             const playlistData = await response.json();
             
-            // Use GitHub raw URLs for faster loading when hosted on GitHub Pages
-            const isGitHubPages = window.location.hostname.endsWith('.github.io');
-            const githubRawBase = 'https://raw.githubusercontent.com/tachengP/muzium/main';
-            
-            // Convert paths based on hosting environment
+            // Convert paths to use relative paths (reverted from GitHub raw URLs)
             this.playlist = playlistData.map(track => ({
                 ...track,
-                url: isGitHubPages ? githubRawBase + track.url : basePath + track.url.replace(/^\//, ''),
+                url: basePath + track.url.replace(/^\//, ''),
                 cover: basePath + track.cover.replace(/^\//, '')
             }));
             
