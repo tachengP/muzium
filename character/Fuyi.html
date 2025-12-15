@@ -165,6 +165,13 @@
             margin-bottom: calc(2.25rem * var(--tw-space-y-reverse));
         }
         
+        /* PJAX loading state */
+        .pjax-loading #pjax-container {
+            opacity: 0.6;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        
         /* Section scroll - removed snap scroll for smoother experience */
         html {
             scroll-behavior: smooth;
@@ -363,8 +370,8 @@
         </div>
     </header>
     
-    <!-- Main Content -->
-    <main class="pt-20">
+    <!-- Main Content - PJAX Container -->
+    <main id="pjax-container" class="pt-20">
         <!-- Hero Section - Character Introduction -->
         <section class="section-full flex items-center" style="background: linear-gradient(135deg, #98453F 0%, #5C2D2D 100%);">
             <div class="container mx-auto px-4 py-12">
@@ -1246,5 +1253,6 @@
     </script>
     <script src="../js/main.js"></script>
     <script src="../js/player.js"></script>
+    <script src="../js/pjax.js"></script>
 </body>
 </html>

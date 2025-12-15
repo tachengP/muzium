@@ -23,6 +23,7 @@
         .icon-selector img.active { box-shadow: 0 0 0 3px #545F8D; }
         html { scroll-behavior: smooth; }
         .section-full { min-height: 100vh; }
+        .pjax-loading #pjax-container { opacity: 0.6; pointer-events: none; transition: opacity 0.2s ease; }
         .tools-dropdown { opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; }
         .tools-nav:hover .tools-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
         .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
@@ -70,7 +71,7 @@
         </div>
     </header>
     
-    <main class="pt-20">
+    <main id="pjax-container" class="pt-20">
         <section class="section-full flex items-center" style="background: linear-gradient(135deg, #545F8D 0%, #2E3550 100%);">
             <div class="container mx-auto px-4 py-12">
                 <div class="flex flex-col lg:flex-row gap-8 items-center">
@@ -432,5 +433,6 @@
     </script>
     <script src="../js/main.js"></script>
     <script src="../js/player.js"></script>
+    <script src="../js/pjax.js"></script>
 </body>
 </html>

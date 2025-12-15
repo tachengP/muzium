@@ -100,6 +100,13 @@
             background: rgba(30, 30, 30, 0.8);
         }
         
+        /* PJAX loading state */
+        .pjax-loading #pjax-container {
+            opacity: 0.6;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        
         /* Pixelated spectrum */
         .spectrum-bar {
             transition: height 0.05s linear;
@@ -245,7 +252,7 @@
     </header>
     
     <!-- Main Content - Homepage -->
-    <main id="homepage" class="h-screen w-full pt-16 overflow-hidden">
+    <main id="pjax-container" class="h-screen w-full pt-16 overflow-hidden">
         <div class="character-panels flex h-full w-full">
             <!-- Feimeng Panel -->
             <div class="character-panel cursor-pointer relative group" onclick="location.href='character/Feimeng.html'" style="background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);">
@@ -452,5 +459,6 @@
     
     <script src="js/main.js"></script>
     <script src="js/player.js"></script>
+    <script src="js/pjax.js"></script>
 </body>
 </html>

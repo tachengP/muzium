@@ -1,11 +1,9 @@
 // Music Player with Pixelated Spectrum Visualization
 // 
-// PJAX Implementation Notes for Persistent Player:
-// To keep the music player persistent across page navigation, consider using:
-// - PJAX.js, Turbo/Turbolinks, or Barba.js for AJAX-based page transitions
-// - Keep player in persistent container outside pjax-swappable regions
-// - Use sessionStorage for state persistence (already implemented)
-// - Reinitialize page-specific scripts after content swap
+// PJAX Integration:
+// This player works with the PJAX system (pjax.js) to persist across page navigation.
+// The player exists outside the #pjax-container, so it won't be swapped during navigation.
+// Session state is saved/restored via sessionStorage for seamless playback continuity.
 
 class MusicPlayer {
     constructor() {
