@@ -149,8 +149,10 @@ class MusicPlayer {
         this.miniModeButton = document.getElementById('player-mini-mode');
         this.restoreButton = document.getElementById('player-restore');
         this.miniPlayButton = document.getElementById('player-mini-play');
+        this.miniPlayIcon = document.getElementById('mini-play-icon');
+        this.miniPauseIcon = document.getElementById('mini-pause-icon');
         this.coverMiniElement = document.getElementById('player-cover-mini');
-        this.titleMiniElement = document.getElementById('player-title-mini');
+        this.songInfoMiniElement = document.getElementById('player-song-info-mini');
         this.progressMiniElement = document.getElementById('player-progress-mini');
         this.currentTimeMiniElement = document.getElementById('player-current-time-mini');
         this.durationMiniElement = document.getElementById('player-duration-mini');
@@ -335,9 +337,9 @@ class MusicPlayer {
         if (this.titleElement) {
             this.titleElement.textContent = track.title;
         }
-        // Sync mini-mode title
-        if (this.titleMiniElement) {
-            this.titleMiniElement.textContent = track.title;
+        // Sync mini-mode song info (format: Artist · Song Name)
+        if (this.songInfoMiniElement) {
+            this.songInfoMiniElement.textContent = `${track.artist} · ${track.title}`;
         }
         if (this.artistElement) {
             this.artistElement.textContent = `${track.artist} · ${track.engine}`;
@@ -388,6 +390,24 @@ class MusicPlayer {
             } else {
                 this.playIcon.classList.remove('hidden');
                 this.pauseIcon.classList.add('hidden');
+            }
+        }
+        // Update mini player icons
+        if (this.miniPlayIcon && this.miniPauseIcon) {
+            if (this.isPlaying) {
+                this.miniPlayIcon.classList.add('hidden');
+                this.miniPauseIcon.classList.remove('hidden');
+            } else {
+                this.miniPlayIcon.classList.remove('hidden');
+                this.miniPauseIcon.classList.add('hidden');
+            }
+        }
+        // Update mini player cover rotation
+        if (this.coverMiniElement) {
+            if (this.isPlaying) {
+                this.coverMiniElement.classList.add('rotating');
+            } else {
+                this.coverMiniElement.classList.remove('rotating');
             }
         }
     }

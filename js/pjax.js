@@ -181,6 +181,13 @@ class PJAX {
     }
     
     reinitialize(newDoc) {
+        // Update TOC (Table of Contents) menu from new document
+        const newTocMenu = newDoc.querySelector('.toc-menu');
+        const currentTocMenu = document.querySelector('.toc-menu');
+        if (newTocMenu && currentTocMenu) {
+            currentTocMenu.innerHTML = newTocMenu.innerHTML;
+        }
+        
         // Reinitialize sample audio players
         document.querySelectorAll('.sample-player').forEach(container => {
             const audioUrl = container.dataset.src;
