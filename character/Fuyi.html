@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>浮亦 - 虚拟歌手官网</title>
+    <title>浮亦 - Muzium 藏声馆</title>
     <link rel="icon" type="image/svg+xml" href="../assets/icon/Icon_01.svg">
     
     <!-- MiSans SC Font -->
@@ -172,13 +172,14 @@
             width: calc(100% + 300px);
             margin-left: -150px;
             margin-right: -150px;
-            height: 100%;
+            height: calc(100% + 8%);
+            padding-bottom: 8%;
         }
         .illust-container img {
             transition: transform 0.4s ease, opacity 0.4s ease;
-            /* Apply mask to image itself for bottom fade transparency - bottom 10% gradually transparent */
-            mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+            /* Apply mask to image itself for bottom fade transparency - bottom 8% gradually transparent */
+            mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
             /* Scale to focus on top portion of image - increased to 1.7 (120% of 1.4) */
             transform: scale(1.7);
             transform-origin: center top;
@@ -255,7 +256,7 @@
             background: rgba(31, 41, 55, 0.95);
             border-radius: 0.5rem;
             padding: 0.5rem 0;
-            min-width: 15rem;
+            min-width: 12rem;
             opacity: 0;
             visibility: hidden;
             transform: translateY(10px);
@@ -344,6 +345,74 @@
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
         }
+        
+        /* Light mode (day mode) styles */
+        body.light-mode {
+            background-color: #f5f5f5;
+            color: #1a1a1a;
+        }
+        body.light-mode .bg-gray-900 {
+            background-color: #ffffff;
+        }
+        body.light-mode .bg-gray-900\/95 {
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        body.light-mode .bg-gray-800 {
+            background-color: #f0f0f0;
+        }
+        body.light-mode .bg-gray-700 {
+            background-color: #e0e0e0;
+        }
+        body.light-mode .bg-gray-700\/50 {
+            background-color: rgba(224, 224, 224, 0.5);
+        }
+        body.light-mode .text-white {
+            color: #1a1a1a;
+        }
+        body.light-mode .text-gray-300 {
+            color: #4a4a4a;
+        }
+        body.light-mode .text-gray-400 {
+            color: #666666;
+        }
+        body.light-mode .text-gray-200 {
+            color: #333333;
+        }
+        body.light-mode .border-gray-700 {
+            border-color: #d0d0d0;
+        }
+        body.light-mode .music-player {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1a1a1a;
+        }
+        body.light-mode .toc-btn {
+            background: rgba(240, 240, 240, 0.9);
+        }
+        body.light-mode .toc-btn:hover {
+            background: rgba(220, 220, 220, 0.9);
+        }
+        body.light-mode .toc-menu {
+            background: rgba(255, 255, 255, 0.95);
+        }
+        body.light-mode .toc-menu a {
+            color: #4a4a4a;
+        }
+        body.light-mode .toc-menu a:hover {
+            color: #1a1a1a;
+            background: rgba(200, 200, 200, 0.5);
+        }
+        body.light-mode .scroll-to-top {
+            background-color: #e0e0e0;
+        }
+        body.light-mode .scroll-to-top:hover {
+            background-color: #d0d0d0;
+        }
+        body.light-mode #theme-icon-dark {
+            display: none;
+        }
+        body.light-mode #theme-icon-light {
+            display: block;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -412,6 +481,16 @@
                         </button>
                     </div>
                 </div>
+                
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" class="p-2 text-gray-300 hover:text-white transition-colors" title="切换日间/夜间模式">
+                    <svg id="theme-icon-dark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                    <svg id="theme-icon-light" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </button>
             </nav>
         </div>
     </header>
@@ -726,7 +805,7 @@
                             </div>
                             <div>
                                 <span class="text-gray-400">原音标定</span>
-                                <p>北京时域科技有限公司</p>
+                                <p>北京时域科技有限公司（自动推定）</p>
                             </div>
                             <div>
                                 <span class="text-gray-400">声库制作</span>
@@ -1112,7 +1191,7 @@
         <div class="container mx-auto px-4">
             <div class="flex flex-wrap items-center justify-between text-sm text-gray-400">
                 <div class="flex items-center gap-4">
-                    <span>© 2024 虚拟歌手官网</span>
+                    <span>© 2024 Muzium 藏声馆</span>
                     <span>|</span>
                     <span>字体: MiSans by Xiaomi</span>
                 </div>
@@ -1305,5 +1384,6 @@
     <script src="../js/main.js"></script>
     <script src="../js/player.js"></script>
     <script src="../js/pjax.js"></script>
+    <script src="../js/theme.js"></script>
 </body>
 </html>

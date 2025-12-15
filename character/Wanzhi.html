@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>宛沚 - 虚拟歌手官网</title>
+    <title>宛沚 - Muzium 藏声馆</title>
     <link rel="icon" type="image/svg+xml" href="../assets/icon/Icon_01.svg">
     <link href="https://cdn-font.hyperos.mi.com/font/css?family=MiSans_VF:VF:Chinese_Simplify,Latin&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -44,8 +44,8 @@
         .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .engine-section { scroll-margin-top: 80px; }
-        .illust-container { position: relative; overflow: hidden; width: 100%; min-width: 100%; }
-        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 90%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%); transform: scale(1.7); transform-origin: center top; }
+        .illust-container { position: relative; overflow: hidden; width: calc(100% + 300px); margin-left: -150px; margin-right: -150px; height: calc(100% + 8%); padding-bottom: 8%; }
+        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 92%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 92%, transparent 100%); transform: scale(1.7); transform-origin: center top; }
         .illust-container.slide-left img { transform: scale(1.7) translateX(-20px); opacity: 0; }
         .illust-container.slide-right img { transform: scale(1.7) translateX(20px); opacity: 0; }
         #playlist-panel::-webkit-scrollbar { width: 6px; }
@@ -59,10 +59,32 @@
         .toc-container { position: fixed; bottom: 4rem; right: 1rem; z-index: 40; }
         .toc-btn { width: 3rem; height: 3rem; border-radius: 9999px; background: rgba(31, 41, 55, 0.9); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: background 0.3s ease; }
         .toc-btn:hover { background: rgba(55, 65, 81, 0.9); }
-        .toc-menu { position: absolute; bottom: 100%; right: 0; margin-bottom: 0.5rem; background: rgba(31, 41, 55, 0.95); border-radius: 0.5rem; padding: 0.5rem 0; min-width: 15rem; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .toc-menu { position: absolute; bottom: 100%; right: 0; margin-bottom: 0.5rem; background: rgba(31, 41, 55, 0.95); border-radius: 0.5rem; padding: 0.5rem 0; min-width: 12rem; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         .toc-container:hover .toc-menu { opacity: 1; visibility: visible; transform: translateY(0); }
         .toc-menu a { display: block; padding: 0.5rem 1rem; color: #d1d5db; font-size: 0.875rem; transition: all 0.2s ease; }
         .toc-menu a:hover { color: white; background: rgba(75, 85, 99, 0.5); }
+        /* Light mode styles */
+        body.light-mode { background-color: #f5f5f5; color: #1a1a1a; }
+        body.light-mode .bg-gray-900 { background-color: #ffffff; }
+        body.light-mode .bg-gray-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+        body.light-mode .bg-gray-800 { background-color: #f0f0f0; }
+        body.light-mode .bg-gray-700 { background-color: #e0e0e0; }
+        body.light-mode .bg-gray-700\/50 { background-color: rgba(224, 224, 224, 0.5); }
+        body.light-mode .text-white { color: #1a1a1a; }
+        body.light-mode .text-gray-300 { color: #4a4a4a; }
+        body.light-mode .text-gray-400 { color: #666666; }
+        body.light-mode .text-gray-200 { color: #333333; }
+        body.light-mode .border-gray-700 { border-color: #d0d0d0; }
+        body.light-mode .music-player { background: rgba(255, 255, 255, 0.9); color: #1a1a1a; }
+        body.light-mode .toc-btn { background: rgba(240, 240, 240, 0.9); }
+        body.light-mode .toc-btn:hover { background: rgba(220, 220, 220, 0.9); }
+        body.light-mode .toc-menu { background: rgba(255, 255, 255, 0.95); }
+        body.light-mode .toc-menu a { color: #4a4a4a; }
+        body.light-mode .toc-menu a:hover { color: #1a1a1a; background: rgba(200, 200, 200, 0.5); }
+        body.light-mode .scroll-to-top { background-color: #e0e0e0; }
+        body.light-mode .scroll-to-top:hover { background-color: #d0d0d0; }
+        body.light-mode #theme-icon-dark { display: none; }
+        body.light-mode #theme-icon-light { display: block; }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -82,6 +104,15 @@
                         <a href="../tools.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">工具列表</a>
                     </div>
                 </div>
+                <div class="relative group">
+                    <button class="flex items-center gap-1 text-gray-300 hover:text-white transition-colors"><img src="../assets/icon/lang-zh.svg" alt="Language" class="w-5 h-5"></button>
+                    <div class="absolute top-full right-0 mt-2 bg-gray-800 rounded-lg shadow-xl py-2 min-w-32 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                        <button data-lang="zh" class="flex items-center gap-2 w-full px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700"><img src="../assets/icon/lang-zh.svg" alt="中文" class="w-5 h-5">简体中文</button>
+                        <button data-lang="en" class="flex items-center gap-2 w-full px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700"><img src="../assets/icon/lang-en.svg" alt="English" class="w-5 h-5">English</button>
+                        <button data-lang="ja" class="flex items-center gap-2 w-full px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700"><img src="../assets/icon/lang-ja.svg" alt="日本語" class="w-5 h-5">日本語</button>
+                    </div>
+                </div>
+                <button id="theme-toggle" class="p-2 text-gray-300 hover:text-white transition-colors" title="切换日间/夜间模式"><svg id="theme-icon-dark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg><svg id="theme-icon-light" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg></button>
             </nav>
         </div>
     </header>
@@ -216,6 +247,43 @@
             </div>
         </section>
         
+        <!-- 歌叽歌叽 Section -->
+        <section id="engine-gejigji" class="engine-section section-full flex items-center bg-gray-800">
+            <div class="container mx-auto px-4 py-12">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <div class="lg:w-1/2 space-y-6">
+                        <div class="flex items-center gap-4">
+                            <img src="../assets/icon/Wanzhi_Icon_01.png" alt="宛沚" class="w-14 h-14 rounded-lg">
+                            <div><h2 class="text-3xl font-bold">宛沚 for 歌叽歌叽</h2><a href="https://gejigejikugou.com/index.html" target="_blank" class="text-indigo-400 hover:underline text-sm">引擎官网 →</a></div>
+                        </div>
+                        <p class="text-gray-300">歌叽歌叽是由腾讯音乐集团广州酷狗计算机科技有限公司推出的AI歌声合成引擎，现已停止维护。</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><span class="text-gray-400 text-sm">支持音色</span><p class="font-medium">Natural</p></div>
+                            <div><span class="text-gray-400 text-sm">最新版本</span><p class="font-medium">2022</p></div>
+                        </div>
+                        <div><span class="text-gray-400 text-sm">支持语言</span>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm"><img src="../assets/icon/lang-zh.svg" alt="zh" class="w-4 h-4"> 汉语普通话</span>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <h3 class="font-bold">音色信息</h3>
+                            <div class="bg-gray-700/50 rounded-lg p-4"><h4 class="font-medium text-indigo-300">Natural</h4><p class="text-sm text-gray-300 mt-1">以最自然的发声状态录制的声库</p><div class="flex gap-4 mt-2 text-sm"><span class="text-gray-400">推荐音域: <span class="text-white">B3 ~ C5</span></span><span class="text-gray-400">推荐曲速: <span class="text-white">60 ~ 140 BPM</span></span></div></div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 text-sm mt-4">
+                            <div><span class="text-gray-400">角色配音</span><p>卷毛兔w</p></div>
+                            <div><span class="text-gray-400">原音标定</span><p>广州酷狗计算机科技有限公司（自动推定）</p></div>
+                            <div><span class="text-gray-400">声库制作</span><p>广州酷狗计算机科技有限公司</p></div>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-gray-700 rounded-lg text-gray-400">声库下载：无法提供</span>
+                            <a href="https://gejigejikugou.com/index.html" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors">编辑器下载</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
         <!-- DiffSinger Section -->
         <section id="engine-diffsinger" class="engine-section section-full flex items-center bg-gray-800">
             <div class="container mx-auto px-4 py-12">
@@ -311,6 +379,46 @@
                 </div>
             </div>
         </section>
+        
+        <!-- Unknown Section -->
+        <section id="engine-unknown" class="engine-section section-full flex items-center bg-gray-800">
+            <div class="container mx-auto px-4 py-12">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <div class="lg:w-1/2 space-y-6">
+                        <div class="flex items-center gap-4">
+                            <img src="../assets/icon/Wanzhi_Icon_01.png" alt="宛沚" class="w-14 h-14 rounded-lg">
+                            <div><h2 class="text-3xl font-bold">宛沚 for Unknown</h2><span class="text-gray-400 text-sm">引擎官网：404 Not Found</span></div>
+                        </div>
+                        <p class="text-gray-300">404 Not Found</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><span class="text-gray-400 text-sm">支持音色</span><p class="font-medium">Power</p></div>
+                            <div><span class="text-gray-400 text-sm">最新版本</span><p class="font-medium">v4</p></div>
+                        </div>
+                        <div><span class="text-gray-400 text-sm">支持语言</span>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm"><img src="../assets/icon/lang-zh.svg" alt="zh" class="w-4 h-4"> 汉语普通话</span>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <h3 class="font-bold">音色信息</h3>
+                            <div class="bg-gray-700/50 rounded-lg p-4"><h4 class="font-medium text-indigo-300">Power</h4><p class="text-sm text-gray-300 mt-1">以大声朗读的发声状态录制的声库</p><div class="flex gap-4 mt-2 text-sm"><span class="text-gray-400">推荐音域: <span class="text-white">E3 ~ G5</span></span><span class="text-gray-400">推荐曲速: <span class="text-white">60 ~ 160 BPM</span></span></div></div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 text-sm mt-4">
+                            <div><span class="text-gray-400">角色配音</span><p>卷毛兔w</p></div>
+                            <div><span class="text-gray-400">原音标定</span><p>他城（復一）</p></div>
+                            <div><span class="text-gray-400">声库制作</span><p>他城（復一）</p></div>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-gray-700 rounded-lg text-gray-400">声库下载：404 Not Found</span>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 space-y-6">
+                        <h3 class="text-xl font-bold">干声试听</h3>
+                        <div class="space-y-6"><div><h4 class="text-sm text-gray-400 mb-2">Power 音色</h4><div class="space-y-2"><div class="sample-player" data-src="../assets/sample/Wanzhi_Unknown_Power_01.mp3"></div></div></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
     
     <div id="music-player" class="music-player fixed bottom-4 left-4 z-40 rounded-xl p-4 w-80 shadow-2xl mini-mode">
@@ -360,8 +468,10 @@
             <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">角色信息</a>
             <a href="#engine-vocalsharp">宛沚 for VocalSharp</a>
             <a href="#engine-vogen">宛沚 for Project Vogen</a>
+            <a href="#engine-gejigji">宛沚 for 歌叽歌叽</a>
             <a href="#engine-diffsinger">宛沚 for DiffSinger</a>
             <a href="#engine-ace">宛沚 for ACE Studio</a>
+            <a href="#engine-unknown">宛沚 for Unknown</a>
         </div>
         <button class="toc-btn" title="目录"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg></button>
     </div>
@@ -371,7 +481,7 @@
     <footer class="bg-gray-900 border-t border-gray-700 py-6">
         <div class="container mx-auto px-4">
             <div class="flex flex-wrap items-center justify-between text-sm text-gray-400">
-                <div class="flex items-center gap-4"><span>© 2024 虚拟歌手官网</span><span>|</span><span>字体: MiSans by Xiaomi</span></div>
+                <div class="flex items-center gap-4"><span>© 2024 Muzium 藏声馆</span><span>|</span><span>字体: MiSans by Xiaomi</span></div>
                 <div class="flex items-center gap-4"><a href="mailto:contact@example.com" class="hover:text-white transition-colors">联系我们</a><a href="../eula.html" class="hover:text-white transition-colors">使用规范</a></div>
             </div>
         </div>
@@ -470,5 +580,6 @@
     <script src="../js/main.js"></script>
     <script src="../js/player.js"></script>
     <script src="../js/pjax.js"></script>
+    <script src="../js/theme.js"></script>
 </body>
 </html>

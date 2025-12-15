@@ -181,11 +181,29 @@ class PJAX {
     }
     
     reinitialize(newDoc) {
+        // Update header navigation from new document
+        const newHeader = newDoc.querySelector('#main-header') || newDoc.querySelector('header');
+        const currentHeader = document.querySelector('#main-header') || document.querySelector('header');
+        if (newHeader && currentHeader) {
+            currentHeader.innerHTML = newHeader.innerHTML;
+        }
+        
         // Update TOC (Table of Contents) menu from new document
         const newTocMenu = newDoc.querySelector('.toc-menu');
         const currentTocMenu = document.querySelector('.toc-menu');
         if (newTocMenu && currentTocMenu) {
             currentTocMenu.innerHTML = newTocMenu.innerHTML;
+        }
+        
+        // Update TOC container (entire element including button)
+        const newTocContainer = newDoc.querySelector('.toc-container');
+        const currentTocContainer = document.querySelector('.toc-container');
+        if (newTocContainer && currentTocContainer) {
+            currentTocContainer.innerHTML = newTocContainer.innerHTML;
+            currentTocContainer.style.display = '';
+        } else if (!newTocContainer && currentTocContainer) {
+            // Hide TOC if new page doesn't have one
+            currentTocContainer.style.display = 'none';
         }
         
         // Reinitialize sample audio players
