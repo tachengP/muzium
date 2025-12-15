@@ -139,6 +139,17 @@ class MusicPlayer {
         this.spectrumContainer = document.getElementById('spectrum');
         this.playlistPanel = document.getElementById('playlist-panel');
         this.playlistElement = document.getElementById('playlist');
+        
+        // Mini-mode elements
+        this.miniModeButton = document.getElementById('player-mini-mode');
+        this.restoreButton = document.getElementById('player-restore');
+        this.miniPlayButton = document.getElementById('player-mini-play');
+        this.coverMiniElement = document.getElementById('player-cover-mini');
+        this.titleMiniElement = document.getElementById('player-title-mini');
+        this.progressMiniElement = document.getElementById('player-progress-mini');
+        this.currentTimeMiniElement = document.getElementById('player-current-time-mini');
+        this.durationMiniElement = document.getElementById('player-duration-mini');
+        this.isMiniMode = false;
     }
     
     setupEventListeners() {
@@ -151,6 +162,12 @@ class MusicPlayer {
         
         // Progress bar
         this.progressElement?.addEventListener('input', (e) => {
+            const percent = e.target.value / 100;
+            this.audio.currentTime = percent * this.audio.duration;
+        });
+        
+        // Mini progress bar
+        this.progressMiniElement?.addEventListener('input', (e) => {
             const percent = e.target.value / 100;
             this.audio.currentTime = percent * this.audio.duration;
         });
@@ -180,8 +197,20 @@ class MusicPlayer {
             this.stopSpectrum();
         });
         
+        // Mini-mode toggle
+        this.miniModeButton?.addEventListener('click', () => this.toggleMiniMode());
+        this.restoreButton?.addEventListener('click', () => this.toggleMiniMode());
+        this.miniPlayButton?.addEventListener('click', () => this.togglePlay());
+        
         // Build playlist UI
         this.buildPlaylistUI();
+    }
+    
+    toggleMiniMode() {
+        this.isMiniMode = !this.isMiniMode;
+        if (this.playerElement) {
+            this.playerElement.classList.toggle('mini-mode', this.isMiniMode);
+        }
     }
     
     createSpectrumBars() {
@@ -297,8 +326,16 @@ class MusicPlayer {
         if (this.coverElement) {
             this.coverElement.src = track.cover;
         }
+        // Sync mini-mode cover
+        if (this.coverMiniElement) {
+            this.coverMiniElement.src = track.cover;
+        }
         if (this.titleElement) {
             this.titleElement.textContent = track.title;
+        }
+        // Sync mini-mode title
+        if (this.titleMiniElement) {
+            this.titleMiniElement.textContent = track.title;
         }
         if (this.artistElement) {
             this.artistElement.textContent = `${track.artist} · ${track.engine}`;
@@ -360,14 +397,26 @@ class MusicPlayer {
         if (this.progressElement) {
             this.progressElement.value = percent;
         }
+        // Sync mini-mode progress
+        if (this.progressMiniElement) {
+            this.progressMiniElement.value = percent;
+        }
         if (this.currentTimeElement) {
             this.currentTimeElement.textContent = this.formatTime(this.audio.currentTime);
+        }
+        // Sync mini-mode current time
+        if (this.currentTimeMiniElement) {
+            this.currentTimeMiniElement.textContent = this.formatTime(this.audio.currentTime);
         }
     }
     
     updateDuration() {
         if (this.durationElement) {
             this.durationElement.textContent = this.formatTime(this.audio.duration);
+        }
+        // Sync mini-mode duration
+        if (this.durationMiniElement) {
+            this.durationMiniElement.textContent = this.formatTime(this.audio.duration);
         }
     }
     
