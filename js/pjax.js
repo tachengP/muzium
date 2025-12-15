@@ -200,11 +200,10 @@ class PJAX {
         const currentTocContainer = document.querySelector('.toc-container');
         if (newTocContainer && currentTocContainer) {
             currentTocContainer.innerHTML = newTocContainer.innerHTML;
-        } else if (!newTocContainer && currentTocContainer) {
-            // Remove TOC if new page doesn't have one
-            currentTocContainer.style.display = 'none';
-        } else if (newTocContainer && currentTocContainer) {
             currentTocContainer.style.display = '';
+        } else if (!newTocContainer && currentTocContainer) {
+            // Hide TOC if new page doesn't have one
+            currentTocContainer.style.display = 'none';
         }
         
         // Reinitialize sample audio players
