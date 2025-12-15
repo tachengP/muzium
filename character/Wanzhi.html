@@ -44,8 +44,8 @@
         .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .engine-section { scroll-margin-top: 80px; }
-        .illust-container { position: relative; overflow: hidden; width: 100%; min-width: 100%; }
-        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 90%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%); transform: scale(1.7); transform-origin: center top; }
+        .illust-container { position: relative; overflow: hidden; width: calc(100% + 300px); margin-left: -150px; margin-right: -150px; height: calc(100% + 8%); padding-bottom: 8%; }
+        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 92%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 92%, transparent 100%); transform: scale(1.7); transform-origin: center top; }
         .illust-container.slide-left img { transform: scale(1.7) translateX(-20px); opacity: 0; }
         .illust-container.slide-right img { transform: scale(1.7) translateX(20px); opacity: 0; }
         #playlist-panel::-webkit-scrollbar { width: 6px; }
@@ -59,7 +59,7 @@
         .toc-container { position: fixed; bottom: 4rem; right: 1rem; z-index: 40; }
         .toc-btn { width: 3rem; height: 3rem; border-radius: 9999px; background: rgba(31, 41, 55, 0.9); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: background 0.3s ease; }
         .toc-btn:hover { background: rgba(55, 65, 81, 0.9); }
-        .toc-menu { position: absolute; bottom: 100%; right: 0; margin-bottom: 0.5rem; background: rgba(31, 41, 55, 0.95); border-radius: 0.5rem; padding: 0.5rem 0; min-width: 15rem; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .toc-menu { position: absolute; bottom: 100%; right: 0; margin-bottom: 0.5rem; background: rgba(31, 41, 55, 0.95); border-radius: 0.5rem; padding: 0.5rem 0; min-width: 12rem; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         .toc-container:hover .toc-menu { opacity: 1; visibility: visible; transform: translateY(0); }
         .toc-menu a { display: block; padding: 0.5rem 1rem; color: #d1d5db; font-size: 0.875rem; transition: all 0.2s ease; }
         .toc-menu a:hover { color: white; background: rgba(75, 85, 99, 0.5); }

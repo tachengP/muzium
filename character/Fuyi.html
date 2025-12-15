@@ -172,13 +172,14 @@
             width: calc(100% + 300px);
             margin-left: -150px;
             margin-right: -150px;
-            height: 100%;
+            height: calc(100% + 8%);
+            padding-bottom: 8%;
         }
         .illust-container img {
             transition: transform 0.4s ease, opacity 0.4s ease;
-            /* Apply mask to image itself for bottom fade transparency - bottom 10% gradually transparent */
-            mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+            /* Apply mask to image itself for bottom fade transparency - bottom 8% gradually transparent */
+            mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
             /* Scale to focus on top portion of image - increased to 1.7 (120% of 1.4) */
             transform: scale(1.7);
             transform-origin: center top;
@@ -255,7 +256,7 @@
             background: rgba(31, 41, 55, 0.95);
             border-radius: 0.5rem;
             padding: 0.5rem 0;
-            min-width: 15rem;
+            min-width: 12rem;
             opacity: 0;
             visibility: hidden;
             transform: translateY(10px);

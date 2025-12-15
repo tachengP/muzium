@@ -44,10 +44,10 @@
         .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .engine-section { scroll-margin-top: 80px; }
-        .illust-container { position: relative; overflow: hidden; }
-        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 90%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%); }
-        .illust-container.slide-left img { transform: translateX(-20px); opacity: 0; }
-        .illust-container.slide-right img { transform: translateX(20px); opacity: 0; }
+        .illust-container { position: relative; overflow: hidden; width: calc(100% + 300px); margin-left: -150px; margin-right: -150px; height: calc(100% + 8%); padding-bottom: 8%; }
+        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 92%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 92%, transparent 100%); transform: scale(1.7); transform-origin: center top; }
+        .illust-container.slide-left img { transform: scale(1.7) translateX(-20px); opacity: 0; }
+        .illust-container.slide-right img { transform: scale(1.7) translateX(20px); opacity: 0; }
         #playlist-panel::-webkit-scrollbar { width: 6px; }
         #playlist-panel::-webkit-scrollbar-track { background: transparent; }
         #playlist-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 3px; }
@@ -59,7 +59,7 @@
         .toc-container { position: fixed; bottom: 4rem; right: 1rem; z-index: 40; }
         .toc-btn { width: 3rem; height: 3rem; border-radius: 9999px; background: rgba(31, 41, 55, 0.9); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: background 0.3s ease; }
         .toc-btn:hover { background: rgba(55, 65, 81, 0.9); }
-        .toc-menu { position: absolute; bottom: 100%; right: 0; margin-bottom: 0.5rem; background: rgba(31, 41, 55, 0.95); border-radius: 0.5rem; padding: 0.5rem 0; min-width: 15rem; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .toc-menu { position: absolute; bottom: 100%; right: 0; margin-bottom: 0.5rem; background: rgba(31, 41, 55, 0.95); border-radius: 0.5rem; padding: 0.5rem 0; min-width: 12rem; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         .toc-container:hover .toc-menu { opacity: 1; visibility: visible; transform: translateY(0); }
         .toc-menu a { display: block; padding: 0.5rem 1rem; color: #d1d5db; font-size: 0.875rem; transition: all 0.2s ease; }
         .toc-menu a:hover { color: white; background: rgba(75, 85, 99, 0.5); }
@@ -128,15 +128,15 @@
                         </div>
                     </div>
                     
-                    <div class="lg:w-1/3 relative">
+                    <div class="lg:w-1/3 relative lg:-mr-[20%]">
                         <div class="illust-container relative">
-                            <img id="main-illust" src="../assets/illust/Feimeng_Illust_03.png" alt="飞梦立绘" class="w-full h-auto max-h-[70vh] object-contain object-top" style="transform: scale(1.15); transform-origin: center top;">
-                            <button id="download-illust-btn" class="absolute bottom-12 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full transition-colors flex items-center gap-2 z-10">
+                            <img id="main-illust" src="../assets/illust/Feimeng_Illust_03.png" alt="飞梦立绘" class="w-full h-auto max-h-[70vh] object-contain">
+                            <button id="download-illust-btn" class="absolute bottom-20 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full transition-colors flex items-center gap-2 z-10">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                 下载立绘
                             </button>
                         </div>
-                        <div class="icon-selector absolute right-0 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 bg-black/30 rounded-l-lg p-2">
+                        <div class="icon-selector absolute right-0 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 bg-black/30 rounded-l-lg p-2 z-20">
                             <img src="../assets/icon/Feimeng_Icon_01.png" alt="立绘1" class="w-12 h-12 rounded-lg cursor-pointer object-cover" data-illust="../assets/illust/Feimeng_Illust_01.png" data-designer="椰椰子" data-artist="椰椰子">
                             <img src="../assets/icon/Feimeng_Icon_02.png" alt="立绘2" class="w-12 h-12 rounded-lg cursor-pointer object-cover" data-illust="../assets/illust/Feimeng_Illust_02.png" data-designer="椰椰子、阿也" data-artist="阿也">
                             <img src="../assets/icon/Feimeng_Icon_03.png" alt="立绘3" class="w-12 h-12 rounded-lg cursor-pointer object-cover active" data-illust="../assets/illust/Feimeng_Illust_03.png" data-designer="直立行走" data-artist="直立行走">
