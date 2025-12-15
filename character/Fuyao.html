@@ -21,46 +21,56 @@
         .icon-selector img { transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .icon-selector img:hover { transform: scale(1.1); }
         .icon-selector img.active { box-shadow: 0 0 0 3px #FFB600; }
-        html { scroll-snap-type: y proximity; scroll-behavior: smooth; }
-        .section-full { min-height: 100vh; scroll-snap-align: start; }
+        html { scroll-behavior: smooth; }
+        .section-full { min-height: 100vh; }
         .tools-dropdown { opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; }
         .tools-nav:hover .tools-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
         .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .engine-section { scroll-margin-top: 80px; }
-        .illust-container { position: relative; overflow: visible; width: 100%; min-width: 100%; }
-        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 60%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%); transform: scale(1.4); transform-origin: center top; }
-        .illust-container.slide-left img { transform: scale(1.4) translateX(-20px); opacity: 0; }
-        .illust-container.slide-right img { transform: scale(1.4) translateX(20px); opacity: 0; }
+        .illust-container { position: relative; overflow: hidden; width: 100%; min-width: 100%; }
+        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 65%, transparent 95%); -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 95%); transform: scale(1.7); transform-origin: center top; }
+        .illust-container.slide-left img { transform: scale(1.7) translateX(-20px); opacity: 0; }
+        .illust-container.slide-right img { transform: scale(1.7) translateX(20px); opacity: 0; }
         #playlist-panel::-webkit-scrollbar { width: 6px; }
         #playlist-panel::-webkit-scrollbar-track { background: transparent; }
         #playlist-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 3px; }
         #playlist-panel::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
         #playlist-panel { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.3) transparent; }
+        .nav-item-hover { position: relative; padding: 0.25rem 0.5rem; }
+        .nav-item-hover::before { content: ''; position: absolute; inset: 0; background: rgba(255, 255, 255, 0.1); border-radius: 0.25rem; opacity: 0; transition: opacity 0.2s ease; }
+        .nav-item-hover:hover::before { opacity: 1; }
+        .toc-container { position: fixed; bottom: 4rem; right: 1rem; z-index: 40; }
+        .toc-btn { width: 3rem; height: 3rem; border-radius: 9999px; background: rgba(31, 41, 55, 0.9); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: background 0.3s ease; }
+        .toc-btn:hover { background: rgba(55, 65, 81, 0.9); }
+        .toc-menu { position: absolute; bottom: 100%; right: 0; margin-bottom: 0.5rem; background: rgba(31, 41, 55, 0.95); border-radius: 0.5rem; padding: 0.5rem 0; min-width: 10rem; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .toc-container:hover .toc-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .toc-menu a { display: block; padding: 0.5rem 1rem; color: #d1d5db; font-size: 0.875rem; transition: all 0.2s ease; }
+        .toc-menu a:hover { color: white; background: rgba(75, 85, 99, 0.5); }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
     <header class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
-        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="../index.html" class="flex items-center"><img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-28 brightness-0 invert"></a>
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="../index.html" class="flex items-center"><img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-36 brightness-0 invert"></a>
             <nav class="flex items-center gap-6">
-                <a href="Feimeng.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">飞梦</a>
-                <a href="Fuyao.html" class="nav-character active text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">浮曜</a>
-                <a href="Fuyi.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">浮亦</a>
-                <a href="Wanzhi.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">宛沚</a>
-                <a href="Fuhao.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">浮皓</a>
+                <a href="Feimeng.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">飞梦</a>
+                <a href="Fuyao.html" class="nav-character nav-item-hover active text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">浮曜</a>
+                <a href="Fuyi.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">浮亦</a>
+                <a href="Wanzhi.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">宛沚</a>
+                <a href="Fuhao.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">浮皓</a>
+                <a href="../eula.html" class="nav-item-hover text-gray-300 hover:text-white transition-colors">使用规范</a>
                 <div class="relative tools-nav">
-                    <button class="text-gray-300 hover:text-white transition-colors flex items-center gap-1">其他工具<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                    <button class="nav-item-hover text-gray-300 hover:text-white transition-colors flex items-center gap-1">其他工具<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
                     <div class="tools-dropdown absolute top-full right-0 mt-2 bg-gray-800 rounded-lg shadow-xl py-2 min-w-40">
                         <a href="../tools.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">工具列表</a>
-                        <a href="../eula.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">使用规范</a>
                     </div>
                 </div>
             </nav>
         </div>
     </header>
     
-    <main class="pt-16">
+    <main class="pt-20">
         <section class="section-full flex items-center" style="background: linear-gradient(135deg, #FFB600 0%, #B8860B 100%);">
             <div class="container mx-auto px-4 py-12">
                 <div class="flex flex-col lg:flex-row gap-8 items-center">

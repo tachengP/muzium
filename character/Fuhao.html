@@ -21,46 +21,56 @@
         .icon-selector img { transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .icon-selector img:hover { transform: scale(1.1); }
         .icon-selector img.active { box-shadow: 0 0 0 3px #D0D7E5; }
-        html { scroll-snap-type: y proximity; scroll-behavior: smooth; }
-        .section-full { min-height: 100vh; scroll-snap-align: start; }
+        html { scroll-behavior: smooth; }
+        .section-full { min-height: 100vh; }
         .tools-dropdown { opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; }
         .tools-nav:hover .tools-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
         .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .engine-section { scroll-margin-top: 80px; }
-        .illust-container { position: relative; overflow: visible; width: 100%; min-width: 100%; }
-        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 60%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%); transform: scale(1.4); transform-origin: center top; }
-        .illust-container.slide-left img { transform: scale(1.4) translateX(-20px); opacity: 0; }
-        .illust-container.slide-right img { transform: scale(1.4) translateX(20px); opacity: 0; }
+        .illust-container { position: relative; overflow: hidden; width: 100%; min-width: 100%; }
+        .illust-container img { transition: transform 0.4s ease, opacity 0.4s ease; mask-image: linear-gradient(to bottom, black 65%, transparent 95%); -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 95%); transform: scale(1.7); transform-origin: center top; }
+        .illust-container.slide-left img { transform: scale(1.7) translateX(-20px); opacity: 0; }
+        .illust-container.slide-right img { transform: scale(1.7) translateX(20px); opacity: 0; }
         #playlist-panel::-webkit-scrollbar { width: 6px; }
         #playlist-panel::-webkit-scrollbar-track { background: transparent; }
         #playlist-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 3px; }
         #playlist-panel::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
         #playlist-panel { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.3) transparent; }
+        .nav-item-hover { position: relative; padding: 0.25rem 0.5rem; }
+        .nav-item-hover::before { content: ''; position: absolute; inset: 0; background: rgba(255, 255, 255, 0.1); border-radius: 0.25rem; opacity: 0; transition: opacity 0.2s ease; }
+        .nav-item-hover:hover::before { opacity: 1; }
+        .toc-container { position: fixed; bottom: 4rem; right: 1rem; z-index: 40; }
+        .toc-btn { width: 3rem; height: 3rem; border-radius: 9999px; background: rgba(31, 41, 55, 0.9); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: background 0.3s ease; }
+        .toc-btn:hover { background: rgba(55, 65, 81, 0.9); }
+        .toc-menu { position: absolute; bottom: 100%; right: 0; margin-bottom: 0.5rem; background: rgba(31, 41, 55, 0.95); border-radius: 0.5rem; padding: 0.5rem 0; min-width: 10rem; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .toc-container:hover .toc-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .toc-menu a { display: block; padding: 0.5rem 1rem; color: #d1d5db; font-size: 0.875rem; transition: all 0.2s ease; }
+        .toc-menu a:hover { color: white; background: rgba(75, 85, 99, 0.5); }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
     <header class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
-        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="../index.html" class="flex items-center"><img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-28 brightness-0 invert"></a>
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="../index.html" class="flex items-center"><img src="../assets/icon/Icon_03.svg" alt="Logo" class="w-36 brightness-0 invert"></a>
             <nav class="flex items-center gap-6">
-                <a href="Feimeng.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">飞梦</a>
-                <a href="Fuyao.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">浮曜</a>
-                <a href="Fuyi.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">浮亦</a>
-                <a href="Wanzhi.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">宛沚</a>
-                <a href="Fuhao.html" class="nav-character active text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">浮皓</a>
+                <a href="Feimeng.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">飞梦</a>
+                <a href="Fuyao.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">浮曜</a>
+                <a href="Fuyi.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">浮亦</a>
+                <a href="Wanzhi.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">宛沚</a>
+                <a href="Fuhao.html" class="nav-character nav-item-hover active text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">浮皓</a>
+                <a href="../eula.html" class="nav-item-hover text-gray-300 hover:text-white transition-colors">使用规范</a>
                 <div class="relative tools-nav">
-                    <button class="text-gray-300 hover:text-white transition-colors flex items-center gap-1">其他工具<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                    <button class="nav-item-hover text-gray-300 hover:text-white transition-colors flex items-center gap-1">其他工具<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
                     <div class="tools-dropdown absolute top-full right-0 mt-2 bg-gray-800 rounded-lg shadow-xl py-2 min-w-40">
                         <a href="../tools.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">工具列表</a>
-                        <a href="../eula.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">使用规范</a>
                     </div>
                 </div>
             </nav>
         </div>
     </header>
     
-    <main class="pt-16">
+    <main class="pt-20">
         <section class="section-full flex items-center" style="background: linear-gradient(135deg, #D0D7E5 0%, #6B7280 100%);">
             <div class="container mx-auto px-4 py-12">
                 <div class="flex flex-col lg:flex-row gap-8 items-center">
@@ -118,8 +128,8 @@
                             <img src="../assets/icon/Fuhao_Icon_02.png" alt="浮皓" class="w-14 h-14 rounded-lg">
                             <div><h2 class="text-3xl font-bold">浮皓 for DeepVocal</h2><a href="https://www.deep-vocal.com/#/" target="_blank" class="text-indigo-400 hover:underline text-sm">引擎官网 →</a></div>
                         </div>
-                        <p class="text-gray-300">DeepVocal是由BoxStar自主研发的拼接式歌声合成引擎。</p>
-                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4"><p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮皓」歌声数据库将暂时关闭声库申请通道并下架。</p></div>
+                        <p class="text-gray-300">DeepVocal是由BoxStar自主研发的拼接式歌声合成引擎，具有操作便捷、音素系统高度可定制化等特点。</p>
+                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4 space-y-2"><p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮皓」歌声数据库将暂时关闭声库申请通道并下架，未经许可使用与传播「浮皓」歌声数据库将不被允许。</p><p class="text-amber-200 text-sm">⚠️ 在此希望已经获得歌声数据集副本的用户停止使用该角色所属歌声数据库进行创作，不要将其传播给其他人。</p><p class="text-amber-200 text-sm">⚠️ 如有违背管理者个人意愿的稿件，我方可能会提出交涉下架相关视频/音频。</p></div>
                         <div class="grid grid-cols-2 gap-4">
                             <div><span class="text-gray-400 text-sm">支持音色</span><p class="font-medium">Original、Power</p></div>
                             <div><span class="text-gray-400 text-sm">最新版本</span><p class="font-medium">2020</p></div>
@@ -162,8 +172,8 @@
                             <img src="../assets/icon/Fuhao_Icon_02.png" alt="浮皓" class="w-14 h-14 rounded-lg">
                             <div><h2 class="text-3xl font-bold">浮皓 for ACE Studio</h2><a href="https://ace-studio.timedomain.cn/" target="_blank" class="text-indigo-400 hover:underline text-sm">引擎官网 →</a></div>
                         </div>
-                        <p class="text-gray-300">ACE Studio 是由北京时域科技有限公司自主研发的次世代 AI 歌声合成引擎。</p>
-                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4"><p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮皓」歌声数据库将暂时关闭声库申请通道并下架。</p></div>
+                        <p class="text-gray-300">ACE Studio 是由北京时域科技有限公司自主研发的次世代 AI 歌声合成引擎，支持汉语普通话、日语与英语等多种语言的高性能合成，现已面向个人非企业单位用户提供歌声数据库定制服务。根据不同的付费会员档位，用户可以获取声线调整、干声转换等进阶功能。</p>
+                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4 space-y-2"><p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮皓」歌声数据库将暂时关闭声库申请通道并下架，未经许可使用与传播「浮皓」歌声数据库将不被允许。</p><p class="text-amber-200 text-sm">⚠️ 在此希望已经获得歌声数据集副本的用户停止使用该角色所属歌声数据库进行创作，不要将其传播给其他人。</p><p class="text-amber-200 text-sm">⚠️ 如有违背管理者个人意愿的稿件，我方可能会提出交涉下架相关视频/音频。</p></div>
                         <div class="grid grid-cols-2 gap-4">
                             <div><span class="text-gray-400 text-sm">支持音色</span><p class="font-medium">Original、Power</p></div>
                             <div><span class="text-gray-400 text-sm">最新版本</span><p class="font-medium">Solo24</p></div>
@@ -209,7 +219,7 @@
                             <div><h2 class="text-3xl font-bold">浮皓 for Unknown</h2><span class="text-gray-400 text-sm">引擎官网：404 Not Found</span></div>
                         </div>
                         <p class="text-gray-300">404 Not Found</p>
-                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4"><p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮皓」歌声数据库将暂时关闭声库申请通道并下架。</p></div>
+                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4 space-y-2"><p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮皓」歌声数据库将暂时关闭声库申请通道并下架，未经许可使用与传播「浮皓」歌声数据库将不被允许。</p><p class="text-amber-200 text-sm">⚠️ 在此希望已经获得歌声数据集副本的用户停止使用该角色所属歌声数据库进行创作，不要将其传播给其他人。</p><p class="text-amber-200 text-sm">⚠️ 如有违背管理者个人意愿的稿件，我方可能会提出交涉下架相关视频/音频。</p></div>
                         <div class="grid grid-cols-2 gap-4">
                             <div><span class="text-gray-400 text-sm">支持音色</span><p class="font-medium">Power</p></div>
                             <div><span class="text-gray-400 text-sm">最新版本</span><p class="font-medium">v4</p></div>
@@ -259,6 +269,17 @@
             <button id="player-list" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg></button>
         </div>
         <div id="playlist-panel" class="hidden mt-4 max-h-60 overflow-y-auto"><ul id="playlist" class="space-y-1"></ul></div>
+    </div>
+    
+    <!-- TOC Button -->
+    <div class="toc-container">
+        <div class="toc-menu">
+            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">角色信息</a>
+            <a href="#engine-deepvocal">浮皓 for DeepVocal</a>
+            <a href="#engine-ace">浮皓 for ACE Studio</a>
+            <a href="#engine-unknown">浮皓 for Unknown</a>
+        </div>
+        <button class="toc-btn" title="目录"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg></button>
     </div>
     
     <button id="scroll-to-top" class="scroll-to-top fixed bottom-4 right-4 z-40 p-3 bg-gray-800 hover:bg-gray-700 rounded-full shadow-lg transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg></button>
@@ -360,55 +381,6 @@
                 const audioUrl = container.dataset.src;
                 if (audioUrl && window.SampleAudioPlayer) new SampleAudioPlayer(container, audioUrl);
             });
-            
-            // Custom smooth scroll with bezier easing for snap sections
-            let isScrolling = false;
-            let scrollTimeout = null;
-            const sections = document.querySelectorAll('.section-full, .engine-section');
-            
-            function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-            
-            function smoothScrollTo(targetY, duration = 600) {
-                if (isScrolling) return;
-                isScrolling = true;
-                const startY = window.scrollY;
-                const distance = targetY - startY;
-                const startTime = performance.now();
-                
-                function scrollStep(currentTime) {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    window.scrollTo(0, startY + distance * easeOutCubic(progress));
-                    if (progress < 1) requestAnimationFrame(scrollStep);
-                    else isScrolling = false;
-                }
-                requestAnimationFrame(scrollStep);
-            }
-            
-            window.addEventListener('scroll', () => {
-                if (scrollTimeout) clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    if (isScrolling) return;
-                    const scrollTop = window.scrollY;
-                    const viewportHeight = window.innerHeight;
-                    let closestSection = null;
-                    let minDistance = Infinity;
-                    
-                    sections.forEach(section => {
-                        const rect = section.getBoundingClientRect();
-                        const distance = Math.abs(rect.top);
-                        if (distance < viewportHeight * 0.3 && distance < minDistance) {
-                            minDistance = distance;
-                            closestSection = section;
-                        }
-                    });
-                    
-                    if (closestSection && minDistance > 50) {
-                        const rect = closestSection.getBoundingClientRect();
-                        smoothScrollTo(scrollTop + rect.top, 500);
-                    }
-                }, 150);
-            }, { passive: true });
         });
     </script>
     <script src="../js/main.js"></script>
