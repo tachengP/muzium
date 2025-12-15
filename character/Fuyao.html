@@ -131,8 +131,8 @@
                             <img src="../assets/icon/Fuyao_Icon_05.png" alt="浮曜" class="w-14 h-14 rounded-lg">
                             <div><h2 class="text-3xl font-bold">浮曜 for UTAU</h2><a href="http://utau.us/" target="_blank" class="text-indigo-400 hover:underline text-sm">引擎官网 →</a></div>
                         </div>
-                        <p class="text-gray-300">UTAU是由饴屋P开发的老牌免费拼接式歌声合成引擎。</p>
-                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4"><p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮曜」歌声数据库将暂时关闭声库申请通道并下架。</p></div>
+                        <p class="text-gray-300">UTAU是由饴屋P开发的老牌免费拼接式歌声合成引擎，可以替换重采样引擎与高度定制化，可以支持各种社区开发的辅助工具与语言。</p>
+                        <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4 space-y-2"><p class="text-amber-200 text-sm">⚠️ 2024年08月08日0点后，「浮曜」歌声数据库将暂时关闭声库申请通道并下架，未经许可使用与传播「浮曜」歌声数据库将不被允许。</p><p class="text-amber-200 text-sm">⚠️ 在此希望已经获得歌声数据集副本的用户停止使用该角色所属歌声数据库进行创作，不要将其传播给其他人。</p><p class="text-amber-200 text-sm">⚠️ 如有违背管理者个人意愿的稿件，我方可能会提出交涉下架相关视频/音频。</p></div>
                         <div class="grid grid-cols-2 gap-4">
                             <div><span class="text-gray-400 text-sm">支持音色</span><p class="font-medium">Original、Natural、Tight</p></div>
                             <div><span class="text-gray-400 text-sm">最新版本</span><p class="font-medium">2020</p></div>
@@ -309,6 +309,18 @@
         <div id="playlist-panel" class="hidden mt-4 max-h-60 overflow-y-auto"><ul id="playlist" class="space-y-1"></ul></div>
     </div>
     
+    <!-- TOC Button -->
+    <div class="toc-container">
+        <div class="toc-menu">
+            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">角色信息</a>
+            <a href="#engine-utau">浮曜 for UTAU</a>
+            <a href="#engine-deepvocal">浮曜 for DeepVocal</a>
+            <a href="#engine-ace">浮曜 for ACE Studio</a>
+            <a href="#engine-diffsinger">浮曜 for DiffSinger</a>
+        </div>
+        <button class="toc-btn" title="目录"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg></button>
+    </div>
+    
     <button id="scroll-to-top" class="scroll-to-top fixed bottom-4 right-4 z-40 p-3 bg-gray-800 hover:bg-gray-700 rounded-full shadow-lg transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg></button>
     
     <footer class="bg-gray-900 border-t border-gray-700 py-6">
@@ -408,55 +420,6 @@
                 const audioUrl = container.dataset.src;
                 if (audioUrl && window.SampleAudioPlayer) new SampleAudioPlayer(container, audioUrl);
             });
-            
-            // Custom smooth scroll with bezier easing for snap sections
-            let isScrolling = false;
-            let scrollTimeout = null;
-            const sections = document.querySelectorAll('.section-full, .engine-section');
-            
-            function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-            
-            function smoothScrollTo(targetY, duration = 600) {
-                if (isScrolling) return;
-                isScrolling = true;
-                const startY = window.scrollY;
-                const distance = targetY - startY;
-                const startTime = performance.now();
-                
-                function scrollStep(currentTime) {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    window.scrollTo(0, startY + distance * easeOutCubic(progress));
-                    if (progress < 1) requestAnimationFrame(scrollStep);
-                    else isScrolling = false;
-                }
-                requestAnimationFrame(scrollStep);
-            }
-            
-            window.addEventListener('scroll', () => {
-                if (scrollTimeout) clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    if (isScrolling) return;
-                    const scrollTop = window.scrollY;
-                    const viewportHeight = window.innerHeight;
-                    let closestSection = null;
-                    let minDistance = Infinity;
-                    
-                    sections.forEach(section => {
-                        const rect = section.getBoundingClientRect();
-                        const distance = Math.abs(rect.top);
-                        if (distance < viewportHeight * 0.3 && distance < minDistance) {
-                            minDistance = distance;
-                            closestSection = section;
-                        }
-                    });
-                    
-                    if (closestSection && minDistance > 50) {
-                        const rect = closestSection.getBoundingClientRect();
-                        smoothScrollTo(scrollTop + rect.top, 500);
-                    }
-                }, 150);
-            }, { passive: true });
         });
     </script>
     <script src="../js/main.js"></script>
