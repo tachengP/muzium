@@ -50,8 +50,9 @@ class PJAX {
             const lowerHref = href.toLowerCase().trim();
             if (dangerousSchemes.some(scheme => lowerHref.startsWith(scheme))) return;
             
-            // Skip if same page
-            const targetUrl = new URL(href, window.location.origin);
+            // Use current page URL as base for relative path resolution
+            // This ensures that relative paths work correctly on GitHub Pages (e.g., /muzium/)
+            const targetUrl = new URL(href, window.location.href);
             if (targetUrl.href === window.location.href) return;
             
             // Skip external links

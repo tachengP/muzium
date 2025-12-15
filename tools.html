@@ -21,6 +21,10 @@
         }
         .nav-character:hover::after { transform: scaleX(1); }
         
+        .nav-item-hover { position: relative; padding: 0.25rem 0.5rem; }
+        .nav-item-hover::before { content: ''; position: absolute; inset: 0; background: rgba(255, 255, 255, 0.1); border-radius: 0.25rem; opacity: 0; transition: opacity 0.2s ease; }
+        .nav-item-hover:hover::before { opacity: 1; }
+        
         .tools-dropdown { opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; }
         .tools-nav:hover .tools-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
         
@@ -45,19 +49,19 @@
                 <span class="text-xl font-bold hidden sm:block">虚拟歌手</span>
             </a>
             <nav class="flex items-center gap-6">
-                <a href="character/Feimeng.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">飞梦</a>
-                <a href="character/Fuhao.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">浮皓</a>
-                <a href="character/Fuyao.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">浮曜</a>
-                <a href="character/Fuyi.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">浮亦</a>
-                <a href="character/Wanzhi.html" class="nav-character text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">宛沚</a>
+                <a href="character/Feimeng.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #000000;">飞梦</a>
+                <a href="character/Fuyao.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #FFB600;">浮曜</a>
+                <a href="character/Fuyi.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #98453F;">浮亦</a>
+                <a href="character/Wanzhi.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #545F8D;">宛沚</a>
+                <a href="character/Fuhao.html" class="nav-character nav-item-hover text-gray-300 hover:text-white transition-colors" style="--character-color: #D0D7E5;">浮皓</a>
+                <a href="eula.html" class="nav-item-hover text-gray-300 hover:text-white transition-colors">使用规范</a>
                 <div class="relative tools-nav">
-                    <button class="text-gray-300 hover:text-white transition-colors flex items-center gap-1">
+                    <button class="nav-item-hover text-gray-300 hover:text-white transition-colors flex items-center gap-1">
                         其他工具
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     <div class="tools-dropdown absolute top-full right-0 mt-2 bg-gray-800 rounded-lg shadow-xl py-2 min-w-40">
                         <a href="tools.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700 bg-gray-700/50">工具列表</a>
-                        <a href="eula.html" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700">使用规范</a>
                     </div>
                 </div>
             </nav>

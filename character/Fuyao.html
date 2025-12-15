@@ -16,7 +16,16 @@
         .nav-character:hover::after, .nav-character.active::after { transform: scaleX(1); }
         .scroll-to-top { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .scroll-to-top.visible { opacity: 1; visibility: visible; }
-        .music-player { backdrop-filter: blur(10px); background: rgba(30, 30, 30, 0.8); }
+        .music-player { backdrop-filter: blur(10px); background: rgba(30, 30, 30, 0.8); transition: all 0.3s ease; }
+        .music-player.mini-mode { width: 16rem; padding: 0; border-radius: 0.75rem; overflow: hidden; }
+        .music-player.mini-mode .player-full-content { display: none; }
+        .music-player.mini-mode .player-mini-content { display: block; }
+        .player-mini-content { display: none; }
+        .mini-cover-container { position: relative; width: 100%; aspect-ratio: 1; }
+        .mini-cover-container img { width: 100%; height: 100%; object-fit: cover; }
+        .mini-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.3); opacity: 0; transition: opacity 0.2s ease; }
+        .mini-cover-container:hover .mini-play-overlay { opacity: 1; }
+        .mini-info { padding: 0.75rem; background: rgba(17, 24, 39, 0.95); }
         .spectrum-bar { transition: height 0.05s linear; }
         .icon-selector img { transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .icon-selector img:hover { transform: scale(1.1); }
@@ -290,24 +299,43 @@
         </section>
     </main>
     
-    <div id="music-player" class="music-player fixed bottom-4 left-4 z-40 rounded-xl p-4 w-80 shadow-2xl">
-        <div class="flex items-center gap-3 mb-3">
-            <img id="player-cover" src="../assets/album/Fuyao-Album.png" alt="Album Cover" class="w-14 h-14 rounded-lg object-cover">
-            <div class="flex-1 min-w-0"><h4 id="player-title" class="font-medium truncate">选择歌曲</h4><p id="player-artist" class="text-sm text-gray-400 truncate">--</p></div>
-            <button id="player-download" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="下载"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
+    <div id="music-player" class="music-player fixed bottom-4 left-4 z-40 rounded-xl p-4 w-80 shadow-2xl mini-mode">
+        <!-- Full Player Content -->
+        <div class="player-full-content">
+            <div class="flex items-center gap-3 mb-3">
+                <img id="player-cover" src="../assets/album/Fuyao-Album.png" alt="Album Cover" class="w-14 h-14 rounded-lg object-cover">
+                <div class="flex-1 min-w-0"><h4 id="player-title" class="font-medium truncate">选择歌曲</h4><p id="player-artist" class="text-sm text-gray-400 truncate">--</p></div>
+                <button id="player-mini-mode" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="小窗模式"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 3h-4m4 0v4m0-4l-5 5M4 21h4m-4 0v-4m0 4l5-5"></path></svg></button>
+                <button id="player-download" class="p-2 hover:bg-gray-700 rounded-full transition-colors" title="下载"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
+            </div>
+            <div id="spectrum" class="flex items-end justify-center h-10 gap-0.5 mb-3 bg-gray-800/50 rounded-lg p-1 overflow-hidden"></div>
+            <div class="mb-3">
+                <input type="range" id="player-progress" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
+                <div class="flex justify-between text-xs text-gray-400 mt-1"><span id="player-current-time">0:00</span><span id="player-duration">0:00</span></div>
+            </div>
+            <div class="flex items-center justify-center gap-4">
+                <button id="player-prev" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path></svg></button>
+                <button id="player-play" class="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-200 transition-colors"><svg id="play-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg><svg id="pause-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+                <button id="player-next" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path></svg></button>
+                <button id="player-list" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg></button>
+            </div>
+            <div id="playlist-panel" class="hidden mt-4 max-h-60 overflow-y-auto"><ul id="playlist" class="space-y-1"></ul></div>
         </div>
-        <div id="spectrum" class="flex items-end justify-center h-10 gap-0.5 mb-3 bg-gray-800/50 rounded-lg p-1 overflow-hidden"></div>
-        <div class="mb-3">
-            <input type="range" id="player-progress" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
-            <div class="flex justify-between text-xs text-gray-400 mt-1"><span id="player-current-time">0:00</span><span id="player-duration">0:00</span></div>
+        <!-- Mini-mode Content -->
+        <div class="player-mini-content">
+            <div class="mini-cover-container">
+                <img id="player-cover-mini" src="../assets/album/Fuyao-Album.png" alt="Album Cover">
+                <div class="mini-play-overlay"><button id="player-mini-play" class="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-200 transition-colors"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg></button></div>
+                <button id="player-restore" class="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-black/70 rounded-full transition-colors" title="恢复常规窗口"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg></button>
+            </div>
+            <div class="mini-info">
+                <h4 id="player-title-mini" class="font-medium truncate text-sm">选择歌曲</h4>
+                <div class="mt-2">
+                    <input type="range" id="player-progress-mini" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer" value="0" min="0" max="100">
+                    <div class="flex justify-between text-xs text-gray-500 mt-1"><span id="player-current-time-mini">0:00</span><span id="player-duration-mini">0:00</span></div>
+                </div>
+            </div>
         </div>
-        <div class="flex items-center justify-center gap-4">
-            <button id="player-prev" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path></svg></button>
-            <button id="player-play" class="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-200 transition-colors"><svg id="play-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg><svg id="pause-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
-            <button id="player-next" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path></svg></button>
-            <button id="player-list" class="p-2 hover:bg-gray-700 rounded-full transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg></button>
-        </div>
-        <div id="playlist-panel" class="hidden mt-4 max-h-60 overflow-y-auto"><ul id="playlist" class="space-y-1"></ul></div>
     </div>
     
     <!-- TOC Button -->
