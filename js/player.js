@@ -154,7 +154,8 @@ class MusicPlayer {
         this.progressMiniElement = document.getElementById('player-progress-mini');
         this.currentTimeMiniElement = document.getElementById('player-current-time-mini');
         this.durationMiniElement = document.getElementById('player-duration-mini');
-        this.isMiniMode = false;
+        // Check if player element has mini-mode class (default state from HTML)
+        this.isMiniMode = this.playerElement ? this.playerElement.classList.contains('mini-mode') : false;
     }
     
     setupEventListeners() {
