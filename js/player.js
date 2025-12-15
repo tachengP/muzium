@@ -1,4 +1,11 @@
 // Music Player with Pixelated Spectrum Visualization
+// 
+// PJAX Implementation Notes for Persistent Player:
+// To keep the music player persistent across page navigation, consider using:
+// - PJAX.js, Turbo/Turbolinks, or Barba.js for AJAX-based page transitions
+// - Keep player in persistent container outside pjax-swappable regions
+// - Use sessionStorage for state persistence (already implemented)
+// - Reinitialize page-specific scripts after content swap
 
 class MusicPlayer {
     constructor() {
@@ -160,17 +167,13 @@ class MusicPlayer {
         this.prevButton?.addEventListener('click', () => this.prev());
         this.nextButton?.addEventListener('click', () => this.next());
         
-        // Progress bar
-        this.progressElement?.addEventListener('input', (e) => {
+        // Progress bar handler
+        const handleProgressInput = (e) => {
             const percent = e.target.value / 100;
             this.audio.currentTime = percent * this.audio.duration;
-        });
-        
-        // Mini progress bar
-        this.progressMiniElement?.addEventListener('input', (e) => {
-            const percent = e.target.value / 100;
-            this.audio.currentTime = percent * this.audio.duration;
-        });
+        };
+        this.progressElement?.addEventListener('input', handleProgressInput);
+        this.progressMiniElement?.addEventListener('input', handleProgressInput);
         
         // Playlist toggle
         this.listButton?.addEventListener('click', () => this.togglePlaylist());
