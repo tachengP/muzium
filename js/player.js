@@ -283,7 +283,7 @@ class MusicPlayer {
         const step = Math.floor(usableBufferLength / this.spectrumBars);
         
         // Spectrum display constants - height reduced to 10% of original
-        const SPECTRUM_MAX_HEIGHT = 3;  // Reduced to 10% of original 28px
+        const SPECTRUM_MAX_HEIGHT = 8;  // Changed from 3 to 8 as per requirement
         const SPECTRUM_MIN_HEIGHT = 1;  // Minimum bar height
         const PIXEL_STEP = 1;           // Pixelated effect step size
         const MAX_FREQUENCY_VALUE = 255;
@@ -506,6 +506,7 @@ class SampleAudioPlayer {
         this.audioContext = null;
         this.analyser = null;
         this.waveformData = null;
+        this.animationId = null;
         
         this.init();
     }
@@ -544,22 +545,25 @@ class SampleAudioPlayer {
     setupEventListeners() {
         this.playBtn?.addEventListener('click', () => this.togglePlay());
         
-        this.audio.addEventListener('timeupdate', () => this.updateProgress());
         this.audio.addEventListener('loadedmetadata', () => {
             this.timeDisplay.textContent = this.formatTime(this.audio.duration);
         });
         this.audio.addEventListener('ended', () => {
             this.isPlaying = false;
             this.updatePlayButton();
+            this.stopProgressAnimation();
             this.audio.currentTime = 0;
+            this.updateProgress();
         });
         this.audio.addEventListener('play', () => {
             this.isPlaying = true;
             this.updatePlayButton();
+            this.startProgressAnimation();
         });
         this.audio.addEventListener('pause', () => {
             this.isPlaying = false;
             this.updatePlayButton();
+            this.stopProgressAnimation();
         });
         
         // Click on waveform to seek
@@ -568,7 +572,25 @@ class SampleAudioPlayer {
             const rect = this.waveformDisplay.getBoundingClientRect();
             const percent = (e.clientX - rect.left) / rect.width;
             this.audio.currentTime = percent * this.audio.duration;
+            this.updateProgress();
         });
+    }
+    
+    startProgressAnimation() {
+        const animate = () => {
+            this.updateProgress();
+            if (this.isPlaying) {
+                this.animationId = requestAnimationFrame(animate);
+            }
+        };
+        this.animationId = requestAnimationFrame(animate);
+    }
+    
+    stopProgressAnimation() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
     }
     
     async loadWaveform() {
@@ -578,7 +600,7 @@ class SampleAudioPlayer {
         
         for (let i = 0; i < barCount; i++) {
             const bar = document.createElement('div');
-            bar.className = 'waveform-bar bg-gray-600 transition-colors';
+            bar.className = 'waveform-bar bg-gray-600';
             bar.style.flex = '1 1 0'; // Use flex: 1 1 0 for even distribution
             bar.style.minWidth = '1px';
             bar.style.marginRight = '1px';
