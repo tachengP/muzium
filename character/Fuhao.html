@@ -72,7 +72,7 @@
     
     <main class="pt-[68px]">
         <section class="section-full flex items-center" style="background: linear-gradient(135deg, #D0D7E5 0%, #6B7280 100%);">
-            <div class="container mx-auto px-4 py-18">
+            <div class="container mx-auto px-4 py-20">
                 <div class="flex flex-col lg:flex-row gap-8 items-center">
                     <div class="lg:w-2/3 space-y-6">
                         <div class="flex items-center gap-4">
@@ -121,7 +121,7 @@
         
         <!-- DeepVocal Section -->
         <section id="engine-deepvocal" class="engine-section section-full flex items-center bg-gray-800">
-            <div class="container mx-auto px-4 py-18">
+            <div class="container mx-auto px-4 py-20">
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
@@ -169,7 +169,7 @@
         
         <!-- ACE Studio Section -->
         <section id="engine-ace" class="engine-section section-full flex items-center bg-gray-900">
-            <div class="container mx-auto px-4 py-18">
+            <div class="container mx-auto px-4 py-20">
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
@@ -219,7 +219,7 @@
         
         <!-- Unknown Section -->
         <section id="engine-unknown" class="engine-section section-full flex items-center bg-gray-800">
-            <div class="container mx-auto px-4 py-18">
+            <div class="container mx-auto px-4 py-20">
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="lg:w-1/2 space-y-6">
                         <div class="flex items-center gap-4">
@@ -466,28 +466,40 @@
                     window.musicPlayer.audio.currentTime = percent * window.musicPlayer.audio.duration;
                 });
                 
-                // Sync progress
+                // Sync progress - only update when in mini mode
+                let lastProgress = -1;
+                let lastIsPlaying = false;
+                
                 setInterval(() => {
                     if (musicPlayer?.classList.contains('mini-mode') && window.musicPlayer) {
-                        const progress = (window.musicPlayer.audio.currentTime / window.musicPlayer.audio.duration) * 100 || 0;
-                        progressMini.value = progress;
-                        const currentTime = document.getElementById('player-current-time-mini');
-                        const duration = document.getElementById('player-duration-mini');
-                        if (currentTime) currentTime.textContent = window.musicPlayer.formatTime(window.musicPlayer.audio.currentTime);
-                        if (duration) duration.textContent = window.musicPlayer.formatTime(window.musicPlayer.audio.duration);
+                        const currentProgress = (window.musicPlayer.audio.currentTime / window.musicPlayer.audio.duration) * 100 || 0;
+                        const isPlaying = window.musicPlayer.isPlaying;
                         
-                        // Sync play/pause icons
-                        const playIcon = document.querySelector('.play-icon-mini');
-                        const pauseIcon = document.querySelector('.pause-icon-mini');
-                        if (window.musicPlayer.isPlaying) {
-                            playIcon?.classList.add('hidden');
-                            pauseIcon?.classList.remove('hidden');
-                        } else {
-                            playIcon?.classList.remove('hidden');
-                            pauseIcon?.classList.add('hidden');
+                        // Only update if values changed
+                        if (Math.abs(currentProgress - lastProgress) > 0.5) {
+                            progressMini.value = currentProgress;
+                            const currentTime = document.getElementById('player-current-time-mini');
+                            const duration = document.getElementById('player-duration-mini');
+                            if (currentTime) currentTime.textContent = window.musicPlayer.formatTime(window.musicPlayer.audio.currentTime);
+                            if (duration) duration.textContent = window.musicPlayer.formatTime(window.musicPlayer.audio.duration);
+                            lastProgress = currentProgress;
+                        }
+                        
+                        // Only update icons if play state changed
+                        if (isPlaying !== lastIsPlaying) {
+                            const playIcon = document.querySelector('.play-icon-mini');
+                            const pauseIcon = document.querySelector('.pause-icon-mini');
+                            if (isPlaying) {
+                                playIcon?.classList.add('hidden');
+                                pauseIcon?.classList.remove('hidden');
+                            } else {
+                                playIcon?.classList.remove('hidden');
+                                pauseIcon?.classList.add('hidden');
+                            }
+                            lastIsPlaying = isPlaying;
                         }
                     }
-                }, 100);
+                }, 250);
             }
         });
     </script>

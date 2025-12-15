@@ -105,6 +105,10 @@ Markdown文件中包含完整内容，Fuhao.html已恢复为三行警告：
 4. 给所有nav links添加 `hover:bg-white/10 px-3 py-2 rounded`
 5. 移除tools dropdown中的"使用规范"项
 
+### 更新Section间距的步骤
+1. 找到所有 `py-12` 实例
+2. 替换为 `py-20` (约67%增长，最接近150%要求的标准Tailwind值)
+
 ### 添加TOC的步骤
 1. 更新scroll-to-top按钮位置：`bottom-4` → `bottom-[72px]`
 2. 在scroll-to-top按钮后添加TOC HTML（从Fuhao.html复制）
